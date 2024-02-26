@@ -14,10 +14,10 @@ public class CulpritsManager : MonoBehaviour
 
     private void Start()
     {
-        InitFloors();
+      //  InitFloors();
     }
 
-    private void InitFloors()
+    public void InitFloors()
     {
         Floors = GameObject.FindObjectsOfType<AreaSplitManager>();
         for (int i = 0; i < Floors.Length; i++)
