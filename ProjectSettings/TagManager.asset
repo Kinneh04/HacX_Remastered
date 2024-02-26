@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ball
+  - CulpritSpawnArea
+  - Culprit
+  - Window
+  - Hitzone
+  - EditorHDB
   layers:
   - Default
   - TransparentFX

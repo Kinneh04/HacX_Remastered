@@ -42,9 +42,11 @@ public class SettingsMenu : MonoBehaviour
     }
     private void Start()
     {
-        GetSettingsManager();
-        AddListenersToSettingsSliders();
-        ParseCurrentValuesIntoSliders();
+        if (GetSettingsManager())
+        {
+            AddListenersToSettingsSliders();
+            ParseCurrentValuesIntoSliders();
+        }
     }
 
     public void ParseCurrentValuesIntoSliders()

@@ -11,6 +11,9 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     [Header("Settings")]
     public int NumCulpritsPerRowValue;
 
+    [Header("Builing1")]
+    List<BuildingOrientation> buildings = new();
+
     private static DontDestroyOnLoadSettings _instance;
     public void ResetScene()
     {
@@ -75,4 +78,9 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
         LoadSettingsIntoMainGame();
     }
 
+}
+
+public class BuildingOrientation
+{
+    //
 }
