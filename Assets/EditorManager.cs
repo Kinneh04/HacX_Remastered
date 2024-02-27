@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Newtonsoft.Json;
 public class EditorManager : MonoBehaviour
 {
 
@@ -25,6 +26,12 @@ public class EditorManager : MonoBehaviour
 
     [Header("CurrentSelectedBuildingStats")]
     public CustomBuilding CurrentlySelectedBuilding;
+
+    [Header("SavingOfBuilding")]
+    [TextArea(5, 5)]
+    public string PreviewSavedJsonString;
+    public TMP_InputField ScenarioNameInput;
+    public EditorSaveManager editorSave;
 
     public void GoToEditorMenu()
     {
@@ -123,6 +130,16 @@ public class EditorManager : MonoBehaviour
         WidthValue.text = value.ToString();
     }
 
+    public void SaveNewBuildingPreset()
+    {
+        PreviewSavedJsonString = JsonConvert.SerializeObject(CurrentBuildingsOnEditorDisplay);
+        Scenario newScenario = new Scenario
+        {
+            JsonSave = PreviewSavedJsonString,
+            NameOfScenario = ScenarioNameInput.text
+        };
+        editorSave.CurrentlySavedScenarios.Add(newScenario);
+    }
    
 
     private void Update()
@@ -141,4 +158,13 @@ public class EditorManager : MonoBehaviour
                     customBuilding.HighlightMaterial.color = Color.Lerp(customBuilding.HighlightMaterial.color, OriginalTargetBuildingColor, Time.deltaTime * colorLerpSpeed);
         }
     }
+}
+
+[System.Serializable]
+public class Scenario
+{
+    //[WIP]
+    public string JsonSave;
+    public string NameOfScenario;
+
 }

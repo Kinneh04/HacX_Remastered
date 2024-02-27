@@ -12,4 +12,6 @@ public class CustomBuilding : MonoBehaviour
     }
 
     public BuildingType typeofBuilding;
+    public Vector3 ExactPosition;
+    public Quaternion ExactRotation;
 }
