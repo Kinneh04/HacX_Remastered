@@ -67,11 +67,13 @@ public class Culprit : MonoBehaviour
         if(windowHit[currentTarget] || iterations[currentTarget] >= MAX_ITERATIONS)
         {
             finishedCurrent = true;
-            if (currentTarget + 1 >= windows.Count - 1)
+            if (currentTarget + 1 <= windows.Count - 1)
             {
-                currentBall = balls[currentTarget++];
+                currentTarget++;
+                currentBall = balls[currentTarget];
                 currentBall.gameObject.SetActive(true);
                 currentBallRb = currentBall.GetComponent<Rigidbody>();
+                FireProjectileAt(currentTarget);
             }
             else
                 done = true;

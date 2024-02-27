@@ -53,6 +53,7 @@ public class Ball : MonoBehaviour
     public void Shoot(GameObject target, int targetIndex)
     {
         trailRenderer.Clear();
+        trailRenderer.Clear();
         transform.position = parentShooter.ShootPosition.position;
         rbody.isKinematic = false;
         isLaunched = true;

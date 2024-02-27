@@ -81,7 +81,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: 0
   column: 0
-  MAX_ITERATIONS: 10
+  MAX_ITERATIONS: 20
   ShootPosition: {fileID: 7699480028013600017}
   currentTarget: 0
   travelling: 0
