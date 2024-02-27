@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using TMPro;
 public class PopupUIManager : MonoBehaviour
 {
     // Singleton instance
     public static PopupUIManager Instance { get; private set; }
 
     // Reference to the popup prefab
-    public GameObject popupPrefab;
+    public GameObject PopUpWindow;
+
+    public TMP_Text TitleText, DescriptionText;
 
     private void Awake()
     {
@@ -24,8 +27,10 @@ public class PopupUIManager : MonoBehaviour
     }
 
     // Function to show a popup with the given message
-    public void ShowPopup(string message)
+    public void ShowPopup(string title, string desc)
     {
-        
+        PopUpWindow.SetActive(true);
+        TitleText.text = title;
+        DescriptionText.text = desc;
     }
 }

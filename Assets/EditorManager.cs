@@ -14,6 +14,12 @@ public class EditorManager : MonoBehaviour
 
     [Header("EditorSceneObjects")]
     public GameObject EditorObjects, MainCamera;
+    public bool canSelect = true;
+
+    public void toggleCanSelect(bool b)
+    {
+        canSelect = b;
+    }
 
     [Header("EditorUIMenu")]
     public GameObject EditorUI, BuildingDetailsUI, MainButtonsUI;
@@ -33,6 +39,8 @@ public class EditorManager : MonoBehaviour
     public TMP_InputField ScenarioNameInput;
     public EditorSaveManager editorSave;
 
+    [Header("Materials")]
+    public Material TargetBuildingMaterial, CulpritBuildingMaterial;
     public void GoToEditorMenu()
     {
         isInEditMode = true;
@@ -61,20 +69,24 @@ public class EditorManager : MonoBehaviour
         RaycastHit hit;
 
         // Perform the raycast
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit) && canSelect)
         {
             // Check if the hit object has the tag "window"
             if (hit.collider.CompareTag("EditorHDB"))
             {
                 if (CurrentlySelectedBuilding == hit.collider.GetComponent<CustomBuilding>()) return;
                 CurrentlySelectedBuilding = hit.collider.GetComponent<CustomBuilding>();
-                if (CurrentlySelectedBuilding)
+                if (CurrentlySelectedBuilding != null)
                 {
                     BuildingDetailsUI.SetActive(true);
                     MainButtonsUI.SetActive(false);
                     TitleMenu.text =  "Selected building: " +CurrentlySelectedBuilding.typeofBuilding.ToString();
-                    CurrentlySelectedBuilding.HighlightMaterial.color = Color.white;
-                    OverrideNumFloorSlider(CurrentlySelectedBuilding.numFloors);
+
+                    if (CurrentlySelectedBuilding.typeofBuilding == CustomBuilding.BuildingType.Target)
+                        TargetBuildingMaterial.color = Color.white;
+                    else if (CurrentlySelectedBuilding.typeofBuilding == CustomBuilding.BuildingType.Culprit)
+                        CulpritBuildingMaterial.color = Color.white;
+                        OverrideNumFloorSlider(CurrentlySelectedBuilding.numFloors);
                     OverrideWidthSlider(CurrentlySelectedBuilding.WidthInMetres);
                     SavedFloors = CurrentlySelectedBuilding.numFloors;
                     SavedWidthInMetres = CurrentlySelectedBuilding.WidthInMetres;
@@ -132,13 +144,14 @@ public class EditorManager : MonoBehaviour
 
     public void SaveNewBuildingPreset()
     {
-        PreviewSavedJsonString = JsonConvert.SerializeObject(CurrentBuildingsOnEditorDisplay);
-        Scenario newScenario = new Scenario
+        PreviewSavedJsonString = JsonUtility.ToJson(CurrentBuildingsOnEditorDisplay);
+        Scenario newScenario = new Scenario()
         {
             JsonSave = PreviewSavedJsonString,
             NameOfScenario = ScenarioNameInput.text
         };
         editorSave.CurrentlySavedScenarios.Add(newScenario);
+        PopupUIManager.Instance.ShowPopup("Success", "Scenario saved successfully!");
     }
    
 
@@ -153,9 +166,11 @@ public class EditorManager : MonoBehaviour
         foreach(CustomBuilding customBuilding in CurrentBuildingsOnEditorDisplay)
         {
             if (customBuilding.typeofBuilding == CustomBuilding.BuildingType.Culprit)
-                customBuilding.HighlightMaterial.color = Color.Lerp(customBuilding.HighlightMaterial.color, OriginalCulpritBuildingColor, Time.deltaTime * colorLerpSpeed);
+                CulpritBuildingMaterial.color = Color.Lerp(CulpritBuildingMaterial.color, OriginalCulpritBuildingColor, Time.deltaTime * colorLerpSpeed);
             else if (customBuilding.typeofBuilding == CustomBuilding.BuildingType.Target)
-                    customBuilding.HighlightMaterial.color = Color.Lerp(customBuilding.HighlightMaterial.color, OriginalTargetBuildingColor, Time.deltaTime * colorLerpSpeed);
+                    TargetBuildingMaterial.color = Color.Lerp(TargetBuildingMaterial.color, OriginalTargetBuildingColor, Time.deltaTime * colorLerpSpeed);
+
+            customBuilding.UpdateBuildingTransforms();
         }
     }
 }
