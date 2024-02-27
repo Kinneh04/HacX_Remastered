@@ -11,6 +11,10 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     [Header("Settings")]
     public int NumCulpritsPerRowValue;
     public int MaxIterations;
+    public float SimulationSpeedValue;
+    public int MaxIterationsValue;
+    public float dragCoefficient;
+    public float initialVelocity;
 
     [Header("Builing1")]
     List<BuildingOrientation> buildings = new();
