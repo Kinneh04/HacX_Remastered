@@ -163,7 +163,6 @@ public class Ball : MonoBehaviour
 
 
         parentShooter.windowHit[target] = true;
-        parentShooter.CheckIfNext();
 
         //if (target == 0)
         //    shooter.hitWindow1 = true;

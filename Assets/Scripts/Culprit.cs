@@ -85,9 +85,10 @@ public class Culprit : MonoBehaviour
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 
+        CheckIfNext();
+
         if (done || !shootNext)
             return;
-
 
         if (currentBall.transform.position.y > windows[currentTarget].transform.position.y)
         {
