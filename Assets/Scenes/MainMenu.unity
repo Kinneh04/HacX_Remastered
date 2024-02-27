@@ -17585,17 +17585,37 @@ PrefabInstance:
       value: V0.1
       objectReference: {fileID: 0}
     - target: {fileID: 345873920838892896, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 305.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892896, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 34.947
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892896, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 164.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892896, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 319
+      value: 360
       objectReference: {fileID: 0}
     - target: {fileID: 345873920838892897, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_text
-      value: '   3000'
+      value: 3001
       objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892897, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
     - target: {fileID: 345873920838892897, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892897, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
     - target: {fileID: 345873921013840445, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -17613,9 +17633,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 345873921217933482, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
+    - target: {fileID: 345873921217933482, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 345873921217933482, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
     - target: {fileID: 345873921217933493, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 350.47144
@@ -17786,16 +17814,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 345873922369323300, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 129.26999
+      value: 139.5
       objectReference: {fileID: 0}
     - target: {fileID: 345873922369323300, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 386.25842
+      value: 406.9
       objectReference: {fileID: 0}
+    - target: {fileID: 345873922369323301, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
     - target: {fileID: 345873922369323301, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 345873922369323301, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
     - target: {fileID: 2612145776351556509, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_text
       value: EDITOR
