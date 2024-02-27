@@ -17471,6 +17471,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 867971612}
     m_Modifications:
+    - target: {fileID: 345873920367268670, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 175
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920367268670, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 222
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920367268671, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_ChildAlignment
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 345873920556119438, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 154.9
@@ -17478,6 +17490,10 @@ PrefabInstance:
     - target: {fileID: 345873920556119439, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_text
       value: V0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873920838892896, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 319
       objectReference: {fileID: 0}
     - target: {fileID: 345873920838892897, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_text
@@ -17499,6 +17515,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 345873921217933493, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 350.47144
+      objectReference: {fileID: 0}
     - target: {fileID: 345873921252313668, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -17518,6 +17538,10 @@ PrefabInstance:
     - target: {fileID: 345873921252313671, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873921562508747, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 345873921664109418, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_AnchorMax.y
@@ -17539,6 +17563,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1034550459}
+    - target: {fileID: 345873921811714607, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873922188029941, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 345873922204592092, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -17631,9 +17663,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 345873922369323300, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 129.26999
+      objectReference: {fileID: 0}
+    - target: {fileID: 345873922369323300, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 386.25842
+      objectReference: {fileID: 0}
     - target: {fileID: 2612145776351556509, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_text
       value: EDITOR
+      objectReference: {fileID: 0}
+    - target: {fileID: 2612145776351556509, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4431488613210987071, guid: 3b6242c1ba707294c9ca8d3686123cfa, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -49082,7 +49126,7 @@ MonoBehaviour:
   - {fileID: 6504373700423952692}
   colorLerpSpeed: 3
   EditorObjects: {fileID: 1242457541}
-  MainCamera: {fileID: 0}
+  MainMenuObjects: {fileID: 1950372503}
   canSelect: 1
   EditorUI: {fileID: 1698961232}
   BuildingDetailsUI: {fileID: 1495902543}

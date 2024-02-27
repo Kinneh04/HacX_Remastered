@@ -15,7 +15,7 @@ public class EditorManager : MonoBehaviour
     public float colorLerpSpeed;
 
     [Header("EditorSceneObjects")]
-    public GameObject EditorObjects, MainCamera;
+    public GameObject EditorObjects, MainMenuObjects;
     public bool canSelect = true;
 
     public void toggleCanSelect(bool b)
@@ -134,7 +134,7 @@ public class EditorManager : MonoBehaviour
     public void GoToEditorMenu()
     {
         isInEditMode = true;
-        MainCamera.SetActive(false);
+        MainMenuObjects.SetActive(false);
         EditorObjects.SetActive(true);
         EditorUI.SetActive(true);
     }
@@ -142,7 +142,7 @@ public class EditorManager : MonoBehaviour
     {
         isInEditMode = false;
         EditorUI.SetActive(false);
-        MainCamera.SetActive(true);
+        MainMenuObjects.SetActive(true);
         EditorObjects.SetActive(false);
     }
 
