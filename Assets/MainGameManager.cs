@@ -9,4 +9,9 @@ public class MainGameManager : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void StartSimulation()
+    {
+        Debug.Log("Starting SImulation");
+    }
 }

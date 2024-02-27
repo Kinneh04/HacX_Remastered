@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class WindowsManager : MonoBehaviour
 {
@@ -14,16 +16,25 @@ public class WindowsManager : MonoBehaviour
 
     [Header("SelectedWindows")]
     public List<GameObject> SelectedWindows = new();
+
+    public GameObject StartButton;
+    public TMP_Text WindowCounter;
+
+    private void Awake()
+    {
+        StartButton.SetActive(false);
+        WindowCounter.text = "Windows Selected: " + 0;
+    }
     void ToggleWindow()
     {
         if (SelectedWindows.Contains(CurrentlyHoveredWindow))
         {
             DeselectWindow(CurrentlyHoveredWindow);
         }
-        else selectWindow(CurrentlyHoveredWindow);
+        else SelectWindow(CurrentlyHoveredWindow);
     }
 
-    void selectWindow(GameObject GO)
+    void SelectWindow(GameObject GO)
     {
         GO.GetComponent<MeshRenderer>().material.color = SelectedColor;
         SelectedWindows.Add(GO);
@@ -42,6 +53,8 @@ public class WindowsManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && CurrentlyHoveredWindow)
         {
             ToggleWindow();
+            WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
+            StartButton.SetActive(SelectedWindows.Count > 0);
         }
         // Create a ray from the mouse position
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
