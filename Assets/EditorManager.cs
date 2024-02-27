@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
+using UnityEngine.UI.Extensions;
+
 public class EditorManager : MonoBehaviour
 {
 
@@ -41,6 +43,40 @@ public class EditorManager : MonoBehaviour
 
     [Header("Materials")]
     public Material TargetBuildingMaterial, CulpritBuildingMaterial;
+
+    [Header("DistanceToggle")]
+
+    public Camera OrthoCamera;
+    public bool showDistance;
+    public UILineRenderer CanvasLineRenderer;
+
+    [Header("ScenarioSettings")]
+    public Slider DistanceBetweenBuildingsSlider;
+    public TMP_Text DistanceBetweenBuildingsValueText;
+    public GameObject SceneSettingsUI;
+
+    public void OpenSceneSettingsUI()
+    {
+        SceneSettingsUI.SetActive(true);
+        MainButtonsUI.SetActive(false);
+        canSelect = false;
+    }
+
+    public void CloseSceneSettingsUI()
+    {
+        SceneSettingsUI.SetActive(false);
+        MainButtonsUI.SetActive(true);
+        canSelect = true;
+    }
+
+    public void OnChangeDistanceBetweenBuildings()
+    {
+        DistanceBetweenBuildingsValueText.text = DistanceBetweenBuildingsSlider.value.ToString() + "m";
+        Vector3 pos = CurrentBuildingsOnEditorDisplay[0].transform.position;
+        pos.x = DistanceBetweenBuildingsSlider.value + CurrentBuildingsOnEditorDisplay[1].transform.position.x;
+        CurrentBuildingsOnEditorDisplay[0].transform.position = pos;
+
+    }
     public void GoToEditorMenu()
     {
         isInEditMode = true;
@@ -144,11 +180,25 @@ public class EditorManager : MonoBehaviour
 
     public void SaveNewBuildingPreset()
     {
-        PreviewSavedJsonString = JsonUtility.ToJson(CurrentBuildingsOnEditorDisplay);
+        List<SavableBuildingDetails> buildingDataBlock = new();
+        foreach(CustomBuilding building in CurrentBuildingsOnEditorDisplay)
+        {
+            SavableBuildingDetails buildingData = new SavableBuildingDetails()
+            {
+                savedBuildingType = building.typeofBuilding,
+                SavedNumFloors = building.numFloors,
+                SavedWidthInMetres = building.WidthInMetres
+            };
+            buildingDataBlock.Add(buildingData);
+        }
+        PreviewSavedJsonString = JsonConvert.SerializeObject(buildingDataBlock);
+
         Scenario newScenario = new Scenario()
         {
             JsonSave = PreviewSavedJsonString,
-            NameOfScenario = ScenarioNameInput.text
+            NameOfScenario = ScenarioNameInput.text,
+            DistanceBetweenBuildings = DistanceBetweenBuildingsSlider.value
+            
         };
         editorSave.CurrentlySavedScenarios.Add(newScenario);
         PopupUIManager.Instance.ShowPopup("Success", "Scenario saved successfully!");
@@ -170,8 +220,36 @@ public class EditorManager : MonoBehaviour
             else if (customBuilding.typeofBuilding == CustomBuilding.BuildingType.Target)
                     TargetBuildingMaterial.color = Color.Lerp(TargetBuildingMaterial.color, OriginalTargetBuildingColor, Time.deltaTime * colorLerpSpeed);
 
-            customBuilding.UpdateBuildingTransforms();
+         //   customBuilding.UpdateBuildingTransforms();
         }
+
+
+        // [WIP] canvas line renderer for showing distance;
+        //if (showDistance)
+        //{
+        //    CanvasLineRenderer.enabled = true;
+        //    DisplayDots();
+        //}
+        //else CanvasLineRenderer.enabled = false;
+    }
+
+    public void DisplayDots()
+    {
+        int o = 0;
+        foreach (CustomBuilding customBuilding in CurrentBuildingsOnEditorDisplay)
+        {
+            CanvasLineRenderer.Points[o].x = OrthoCamera.WorldToScreenPoint(customBuilding.transform.position).x;
+            CanvasLineRenderer.Points[o].y = OrthoCamera.WorldToScreenPoint(customBuilding.transform.position).y;
+            o++;
+        }
+    }
+
+    public void ModifyPoint(float XValue, float YValue)
+    {
+        var point = new Vector2() { x = XValue, y = YValue};
+        var pointlist = new List<Vector2>(CanvasLineRenderer.Points);
+        pointlist.Add(point);
+        CanvasLineRenderer.Points = pointlist.ToArray();
     }
 }
 
@@ -181,5 +259,16 @@ public class Scenario
     //[WIP]
     public string JsonSave;
     public string NameOfScenario;
+    public float DistanceBetweenBuildings;
 
 }
+
+
+[System.Serializable]
+public class SavableBuildingDetails
+{
+    public int SavedNumFloors, SavedWidthInMetres;
+
+    public CustomBuilding.BuildingType savedBuildingType;
+}
+

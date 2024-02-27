@@ -87,7 +87,7 @@ public class WindowsManager : MonoBehaviour
             else
             {
                 //Stop hover on window
-                if(CurrentlyHoveredWindow && !SelectedWindows.Contains(CurrentlyHoveredWindow))
+                if(CurrentlyHoveredWindow)
                 {
                     CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
                     CurrentlyHoveredWindow = null;
