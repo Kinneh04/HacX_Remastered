@@ -104,7 +104,6 @@ public class Culprit : MonoBehaviour
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
-
         currentBall.Shoot(windows[currentTarget], currentTarget);
         travelling = true;
         shootNext = false;

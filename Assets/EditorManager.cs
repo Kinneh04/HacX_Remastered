@@ -61,7 +61,7 @@ public class EditorManager : MonoBehaviour
 
     private void Start()
     {
-        ResetToDefaults();
+     //   ResetToDefaults();
     }
 
     public void ResetToDefaults()
@@ -70,6 +70,7 @@ public class EditorManager : MonoBehaviour
         {
             OverrideBuildingFloors(CB, DefaultFloorCount);
             OverrideBuildingWidth(CB, DefaultBuildingWidth);
+            OverrideBuildingRotation(CB, 0);
         }
         OverrideBuildingDistance(defaultDistanceFromBuildings);
     }
@@ -77,6 +78,16 @@ public class EditorManager : MonoBehaviour
     public void OnChangeAngleOfCurrentBuilding()
     {
         AngleValue.text = AngleSlider.value.ToString() + "°";
+
+        // Get the original rotation of the building
+        Quaternion originalRotation = CurrentlySelectedBuilding.originalRotation;
+
+        // Calculate the new rotation based on the slider value
+        float angle = AngleSlider.value;
+        Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
+        CurrentlySelectedBuilding.AddedAngle = AngleSlider.value;
+        // Apply the new rotation relative to the original rotation
+        CurrentlySelectedBuilding.transform.rotation = originalRotation * newRotation;
     }
 
     public void OpenSceneSettingsUI()
@@ -91,6 +102,22 @@ public class EditorManager : MonoBehaviour
         SceneSettingsUI.SetActive(false);
         MainButtonsUI.SetActive(true);
         canSelect = true;
+    }
+
+    public void OverrideBuildingRotation(int buildingIndex, int newAngle)
+    {
+        CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
+        AngleSlider.value = newAngle;
+        CurrentlySelectedBuilding.AddedAngle = newAngle;
+        OnChangeAngleOfCurrentBuilding();
+        OnSaveBuildingDetails();
+    }
+    public void OverrideBuildingRotation(CustomBuilding building, int newAngle)
+    {
+        CurrentlySelectedBuilding = building;
+        AngleSlider.value = newAngle;
+        OnChangeAngleOfCurrentBuilding();
+        OnSaveBuildingDetails();
     }
     public void OverrideBuildingDistance(float dist)
     {
@@ -150,7 +177,6 @@ public class EditorManager : MonoBehaviour
         MainMenuObjects.SetActive(true);
         EditorObjects.SetActive(false);
     }
-
     public void ToggleEditMode(bool t)
     {
         isInEditMode = t;
@@ -183,6 +209,7 @@ public class EditorManager : MonoBehaviour
                         CulpritBuildingMaterial.color = Color.white;
                         OverrideNumFloorSlider(CurrentlySelectedBuilding.numFloors);
                     OverrideWidthSlider(CurrentlySelectedBuilding.WidthInMetres);
+                    OverrideAngleSlider(CurrentlySelectedBuilding.AddedAngle);
                     SavedFloors = CurrentlySelectedBuilding.numFloors;
                     SavedWidthInMetres = CurrentlySelectedBuilding.WidthInMetres;
                     //NumFloorSlider.value = CurrentlySelectedBuilding.numFloors;
@@ -236,6 +263,12 @@ public class EditorManager : MonoBehaviour
     {
         WidthSlider.value = value;
         WidthValue.text = value.ToString();
+    }
+
+    public void OverrideAngleSlider(float newAngle)
+    {
+        AngleSlider.value = newAngle;
+        AngleValue.text = newAngle.ToString() + "°";
     }
 
     public void SaveNewBuildingPreset()
