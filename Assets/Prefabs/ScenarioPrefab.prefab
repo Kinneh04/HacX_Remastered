@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnClickButton: {fileID: 2017826730273799964}
   NameText: {fileID: 5392785302650313776}
+  backgroundImage: {fileID: 3679195447679152024}
 --- !u!1 &3589958751710390351
 GameObject:
   m_ObjectHideFlags: 0

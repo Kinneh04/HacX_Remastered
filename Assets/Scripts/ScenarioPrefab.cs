@@ -8,4 +8,5 @@ public class ScenarioPrefab : MonoBehaviour
 {
     public Button OnClickButton;
     public TMP_Text NameText;
+    public Image backgroundImage;
 }
