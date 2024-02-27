@@ -55,6 +55,25 @@ public class EditorManager : MonoBehaviour
     public TMP_Text DistanceBetweenBuildingsValueText;
     public GameObject SceneSettingsUI;
 
+    [Header("DefaultValues")]
+    public float defaultDistanceFromBuildings = 40;
+    public int DefaultFloorCount, DefaultBuildingWidth;
+
+    private void Start()
+    {
+        ResetToDefaults();
+    }
+
+    public void ResetToDefaults()
+    {
+        foreach(CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
+        {
+            OverrideBuildingFloors(CB, DefaultFloorCount);
+            OverrideBuildingWidth(CB, DefaultBuildingWidth);
+        }
+        OverrideBuildingDistance(defaultDistanceFromBuildings);
+    }
+
     public void OpenSceneSettingsUI()
     {
         SceneSettingsUI.SetActive(true);
@@ -67,6 +86,41 @@ public class EditorManager : MonoBehaviour
         SceneSettingsUI.SetActive(false);
         MainButtonsUI.SetActive(true);
         canSelect = true;
+    }
+    public void OverrideBuildingDistance(float dist)
+    {
+        DistanceBetweenBuildingsSlider.value = dist;
+        OnChangeDistanceBetweenBuildings();
+     //   OnSaveBuildingDetails();
+    }
+
+    public void OverrideBuildingFloors(int buildingIndex, int newFloors )
+    {
+        CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
+        NumFloorSlider.value = newFloors;
+        OnChangeSelectedBuildingFloors();
+        OnSaveBuildingDetails();
+    }
+    public void OverrideBuildingFloors(CustomBuilding building, int newFloors)
+    {
+        CurrentlySelectedBuilding = building;
+        NumFloorSlider.value = newFloors;
+        OnChangeSelectedBuildingFloors();
+        OnSaveBuildingDetails();
+    }
+    public void OverrideBuildingWidth(CustomBuilding building, int newWidth)
+    {
+        CurrentlySelectedBuilding = building;
+        WidthSlider.value = newWidth;
+        OnChangeSelectedBuildingWidth();
+        OnSaveBuildingDetails();
+    }
+    public void OverrideBuildingWidth(int buildingIndex, int newWidth)
+    {
+        CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
+        WidthSlider.value = newWidth;
+        OnChangeSelectedBuildingWidth();
+        OnSaveBuildingDetails();
     }
 
     public void OnChangeDistanceBetweenBuildings()
@@ -146,6 +200,7 @@ public class EditorManager : MonoBehaviour
         WidthValue.text = WidthSlider.value.ToString();
         SavedWidthInMetres = (int)WidthSlider.value;
     }
+
     public void OnSaveBuildingDetails()
     {
         CurrentlySelectedBuilding.WidthInMetres = SavedWidthInMetres;

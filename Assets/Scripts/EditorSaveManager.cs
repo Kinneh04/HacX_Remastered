@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Newtonsoft.Json;
 public class EditorSaveManager : MonoBehaviour
 {
 
@@ -16,6 +16,7 @@ public class EditorSaveManager : MonoBehaviour
     public Transform ScenarioUIPrefabParentTransform;
 
     [Header("SelectScenarioUI")]
+    public EditorManager editorManager;
     public GameObject ScenarioSettingsUI;
     public Scenario SelectedScenario;
 
@@ -33,6 +34,21 @@ public class EditorSaveManager : MonoBehaviour
 
     public void LoadCurrentScene()
     {
+
+        //Load selected scene
+
+        List<SavableBuildingDetails> BuildingDatablock = new();
+
+        BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SelectedScenario.JsonSave);
+
+        for(int i = 0; i < BuildingDatablock.Count; i++)
+        {
+            editorManager.OverrideBuildingFloors(i, BuildingDatablock[i].SavedNumFloors);
+            editorManager.OverrideBuildingWidth(i, BuildingDatablock[i].SavedWidthInMetres);
+        }
+
+        editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);
+
         CloseScenarioSettings();
         ScenarioListUI.SetActive(false);
     }
