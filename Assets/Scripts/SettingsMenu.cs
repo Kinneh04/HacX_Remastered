@@ -27,6 +27,15 @@ public class SettingsMenu : MonoBehaviour
     public TMP_Text Text_MaxIterations;
     private DontDestroyOnLoadSettings settingsManager;
 
+    [Header("DragCoefficient")]
+    public Slider Slider_Drag;
+    public TMP_Text Text_drag;
+
+    [Header("InitVelocity")]
+    public Slider Slider_StartVelocity;
+    public TMP_Text Text_StartVelocity;
+
+
     public void StartGame()
     {
         settingsManager.StartGame();
@@ -69,6 +78,12 @@ public class SettingsMenu : MonoBehaviour
 
         Slider_NumCulpritsPerRow.value= settingsManager.NumCulpritsPerRowValue;
         Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
+
+        Slider_StartVelocity.value = settingsManager.initialVelocity;
+        Text_StartVelocity.text = Slider_StartVelocity.value.ToString("F2") + "m/s";
+
+        Slider_Drag.value = settingsManager.dragCoefficient;
+        Text_drag.text = Slider_Drag.value.ToString("F1");
     }
 
     public void ParseSlidersIntoCurrentValues()
@@ -76,6 +91,20 @@ public class SettingsMenu : MonoBehaviour
         OnChangeNumCulpritsPerRow();
         OnChangeMaxIterations();
         OnChangeSimulationSpeed();
+        OnChangeDragCoefficient();
+        OnChangeInitialVelocity();
+    }
+
+    public void OnChangeDragCoefficient()
+    {
+        settingsManager.dragCoefficient = Slider_Drag.value;
+        Text_drag.text = Slider_Drag.value.ToString("F1");
+    }
+
+    public void OnChangeInitialVelocity()
+    {
+        settingsManager.initialVelocity = Slider_StartVelocity.value;
+        Text_StartVelocity.text = Slider_StartVelocity.value.ToString("F1") + "m/s";
     }
 
     public void OnChangeMaxIterations()
@@ -102,6 +131,10 @@ public class SettingsMenu : MonoBehaviour
         Slider_MaxIterations.onValueChanged.AddListener(delegate { OnChangeMaxIterations(); });
 
         Slider_SimulationSpeed.onValueChanged.AddListener(delegate { OnChangeSimulationSpeed(); });
+
+        Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
+
+        Slider_StartVelocity.onValueChanged.AddListener(delegate { OnChangeInitialVelocity(); });
     }
     public void DisplayHelpMenu(string title, string desc, Sprite Image)
     {

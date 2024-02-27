@@ -31,6 +31,7 @@ public class SimulationSelectionManager : MonoBehaviour
     }
     public void DeselectCurrentScenario()
     {
+        if (!SelectedScenarioPrefab) return;
         SelectedScenarioPrefab.backgroundImage.color = originalColor;
         SelectedScenarioPrefab = null;
         RunButton.interactable = false;
