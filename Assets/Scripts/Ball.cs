@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
     Vector3 vel;
     float defaultVel = 70.0f;
     private GameObject targetWindow;
-    TrailRenderer trailRenderer;
+    public TrailRenderer trailRenderer;
 
     Culprit parentShooter;
     void Awake()
@@ -52,9 +52,8 @@ public class Ball : MonoBehaviour
 
     public void Shoot(GameObject target, int targetIndex)
     {
-        trailRenderer.Clear();
-        trailRenderer.Clear();
         transform.position = parentShooter.ShootPosition.position;
+        trailRenderer.Clear();
         rbody.isKinematic = false;
         isLaunched = true;
         targetWindow = target;

@@ -26,11 +26,11 @@ public class EditorManager : MonoBehaviour
     [Header("EditorUIMenu")]
     public GameObject EditorUI, BuildingDetailsUI, MainButtonsUI;
     public TMP_Text TitleMenu;
-    public Slider NumFloorSlider, WidthSlider;
-    public TMP_Text NumFloorSliderValue, WidthValue;
+    public Slider NumFloorSlider, WidthSlider, AngleSlider;
+    public TMP_Text NumFloorSliderValue, WidthValue, AngleValue;
 
     [Header("LastSavedDetails")]
-    public int SavedFloors, SavedWidthInMetres;
+    public int SavedFloors, SavedWidthInMetres, SavedAngleInDegrees;
 
     [Header("CurrentSelectedBuildingStats")]
     public CustomBuilding CurrentlySelectedBuilding;
@@ -57,7 +57,7 @@ public class EditorManager : MonoBehaviour
 
     [Header("DefaultValues")]
     public float defaultDistanceFromBuildings = 40;
-    public int DefaultFloorCount, DefaultBuildingWidth;
+    public int DefaultFloorCount, DefaultBuildingWidth, DefaultAngle = 0;
 
     private void Start()
     {
@@ -72,6 +72,11 @@ public class EditorManager : MonoBehaviour
             OverrideBuildingWidth(CB, DefaultBuildingWidth);
         }
         OverrideBuildingDistance(defaultDistanceFromBuildings);
+    }
+
+    public void OnChangeAngleOfCurrentBuilding()
+    {
+        AngleValue.text = AngleSlider.value.ToString() + "°";
     }
 
     public void OpenSceneSettingsUI()
