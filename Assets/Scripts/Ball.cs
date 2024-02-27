@@ -24,11 +24,13 @@ public class Ball : MonoBehaviour
     Vector3 vel;
     float defaultVel = 70.0f;
     private GameObject targetWindow;
+    TrailRenderer trailRenderer;
 
     Culprit parentShooter;
     void Awake()
     {
         rbody = GetComponent<Rigidbody>();
+        trailRenderer = GetComponent<TrailRenderer>();
         parentShooter = transform.parent.GetComponent<Culprit>();
         isLaunched = false;
 
@@ -50,6 +52,7 @@ public class Ball : MonoBehaviour
 
     public void Shoot(GameObject target, int targetIndex)
     {
+        trailRenderer.Clear();
         transform.position = parentShooter.ShootPosition.position;
         rbody.isKinematic = false;
         isLaunched = true;
@@ -71,11 +74,17 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!IsGrounded() || !rbody.isKinematic)
+        if (!IsGrounded() && !rbody.isKinematic)
         {
             // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime(Time.deltaTime);
             vel = rbody.velocity;
+        }
+        else
+        {
+            //rbody.isKinematic = true;
+            //parentShooter.travelling = false;
+            //parentShooter.shootNext = true;
         }
     }
 
@@ -130,8 +139,15 @@ public class Ball : MonoBehaviour
     {
         rbody.isKinematic = true;
         parentShooter.travelling = false;
+        parentShooter.shootNext = true;
+
         if (other.transform.gameObject != targetWindow)
+        {
+            trailRenderer.Clear();
             return;
+        }
+ 
+
 
         //Vector3 vel = rbody.velocity;
         Vector3 normal = other.contacts[0].normal;
@@ -140,7 +156,11 @@ public class Ball : MonoBehaviour
         transform.position = other.contacts[0].point;
 
         if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+        {
+            trailRenderer.Clear();
             return;
+        }
+
 
         parentShooter.windowHit[target] = true;
         parentShooter.CheckIfNext();

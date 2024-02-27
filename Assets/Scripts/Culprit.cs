@@ -70,6 +70,7 @@ public class Culprit : MonoBehaviour
             if (currentTarget + 1 >= windows.Count - 1)
             {
                 currentBall = balls[currentTarget++];
+                currentBall.gameObject.SetActive(true);
                 currentBallRb = currentBall.GetComponent<Rigidbody>();
             }
             else
@@ -78,6 +79,7 @@ public class Culprit : MonoBehaviour
     }
     private void Update()
     {
+        //Debug.Log(currentBall);
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 

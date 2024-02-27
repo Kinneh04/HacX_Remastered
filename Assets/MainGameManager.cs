@@ -14,6 +14,7 @@ public class MainGameManager : MonoBehaviour
     public void StartSimulation()
     {
         OnStartGame?.Invoke();
+        WindowsManager.Instance.canSelectWindow = false;
         Debug.Log("Starting SImulation");
     }
 }

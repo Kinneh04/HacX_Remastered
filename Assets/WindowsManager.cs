@@ -25,9 +25,10 @@ public class WindowsManager : MonoBehaviour
     {
         StartButton.SetActive(false);
         WindowCounter.text = "Windows Selected: " + 0;
-
+        
         Instance = this;
     }
+
     void ToggleWindow()
     {
         if (SelectedWindows.Contains(CurrentlyHoveredWindow))
@@ -49,6 +50,7 @@ public class WindowsManager : MonoBehaviour
         GO.GetComponent<MeshRenderer>().material.color = originalColor;
         SelectedWindows.Remove(GO);
     }
+
     private void Update()
     {
         if (!canSelectWindow) return;
