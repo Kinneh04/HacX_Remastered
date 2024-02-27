@@ -6,6 +6,7 @@ using TMPro;
 
 public class WindowsManager : MonoBehaviour
 {
+    public static WindowsManager Instance;
     public bool canSelectWindow;
     [SerializeField] private Color originalColor; // Store the original color of the window
 
@@ -24,6 +25,8 @@ public class WindowsManager : MonoBehaviour
     {
         StartButton.SetActive(false);
         WindowCounter.text = "Windows Selected: " + 0;
+
+        Instance = this;
     }
     void ToggleWindow()
     {
@@ -80,16 +83,17 @@ public class WindowsManager : MonoBehaviour
 
                 if (SelectedWindows.Contains(CurrentlyHoveredWindow)) return;
                 Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
-              //  originalColor = M.color;
+                //  originalColor = M.color;
                 M.color = HighlightedColor;
 
             }
             else
             {
                 //Stop hover on window
-                if(CurrentlyHoveredWindow)
+                if (CurrentlyHoveredWindow)
                 {
-                    CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
+                    if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
+                        CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
                     CurrentlyHoveredWindow = null;
                 }
             }

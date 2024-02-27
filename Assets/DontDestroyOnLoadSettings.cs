@@ -10,6 +10,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
 {
     [Header("Settings")]
     public int NumCulpritsPerRowValue;
+    public int MaxIterations;
 
     [Header("Builing1")]
     List<BuildingOrientation> buildings = new();

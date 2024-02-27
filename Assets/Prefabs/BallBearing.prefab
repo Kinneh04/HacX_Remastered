@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 1454201081097711203}
   - component: {fileID: 1454201081097711202}
   - component: {fileID: 1454201081097711205}
-  - component: {fileID: 489141831583915556}
   - component: {fileID: 106663636556536878}
+  - component: {fileID: 880592054051702171}
   m_Layer: 3
   m_Name: BallBearing
   m_TagString: Ball
@@ -116,27 +116,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &489141831583915556
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1454201081097711204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85099a9c3e3a0e24a8ad3e4af73c5c57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  islaunched: 0
-  density: 7785
-  dragCoefficient: 0.47
-  volume: 0
-  initialVel: 70
-  r: 0
-  area: 0
-  window1: {fileID: 2100000, guid: c09b43bd7a44e824cb4152f4b1c60f4a, type: 2}
-  window2: {fileID: 2100000, guid: b1bd50b8561c016418f9e3580b3441ad, type: 2}
 --- !u!96 &106663636556536878
 TrailRenderer:
   serializedVersion: 2
@@ -236,3 +215,24 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &880592054051702171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1454201081097711204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03927d86616734e46a22ddc44ccb3faf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLaunched: 0
+  density: 7750
+  dragCoefficient: 0.1
+  volume: 0
+  initialVel: 70
+  r: 0
+  area: 0
+  window1: {fileID: 0}
+  window2: {fileID: 0}
