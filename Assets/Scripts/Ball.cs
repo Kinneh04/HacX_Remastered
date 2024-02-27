@@ -143,7 +143,6 @@ public class Ball : MonoBehaviour
 
         if (other.transform.gameObject != targetWindow)
         {
-            trailRenderer.Clear();
             return;
         }
  
@@ -157,7 +156,6 @@ public class Ball : MonoBehaviour
 
         if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
         {
-            trailRenderer.Clear();
             return;
         }
 
