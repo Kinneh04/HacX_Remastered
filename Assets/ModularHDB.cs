@@ -32,6 +32,7 @@ public class ModularHDB : MonoBehaviour
         {
             GameObject ModFloor = Instantiate(ModularHDBTopPrefab, HDBFloorPivot.position, HDBFloorPivot.rotation);
             ModFloor.transform.SetParent(transform);
+            ModFloor.transform.localScale = new Vector3(1, 1, 1);
             Vector3 CurrentFLoorPivotPosition = HDBFloorPivot.position;
             CurrentFLoorPivotPosition.y += floorHeightAdjustment;
             InstantiatedFloors.Add(ModFloor);
