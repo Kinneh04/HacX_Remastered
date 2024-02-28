@@ -47,7 +47,7 @@ public class Culprit : MonoBehaviour
     {
         windows = WindowsManager.Instance.SelectedWindows;
         balls = new Ball[windows.Count];
-;       for (int i = 0; i < windows.Count; i++)
+        for (int i = 0; i < windows.Count; i++)
         {
             windowHit.Add(false);
             iterations.Add(0);

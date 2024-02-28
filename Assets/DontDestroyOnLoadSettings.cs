@@ -10,19 +10,27 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
 {
     [Header("Settings")]
     public int NumCulpritsPerRowValue;
-    public int MaxIterations;
     public float SimulationSpeedValue;
     public int MaxIterationsValue;
     public float dragCoefficient;
     public float initialVelocity;
 
-    [Header("Builing1")]
-    List<BuildingOrientation> buildings = new();
+    [Header("BuildingToLoad")]
+    public Scenario LoadedBuilding;
+
+    [Header("LoadingScenario")]
+    private ScenarioBuilder scenarioBuilder;
 
     private static DontDestroyOnLoadSettings _instance;
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadBuilding()
+    {
+        if (!scenarioBuilder) scenarioBuilder = GameObject.FindObjectOfType<ScenarioBuilder>();
+        scenarioBuilder.ParseScenario(LoadedBuilding);
     }
 
     public void LoadSettingsIntoMainGame()
@@ -81,11 +89,8 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
 
         // Call the method to load settings into the main game
         LoadSettingsIntoMainGame();
+        LoadBuilding();
+
     }
 
-}
-
-public class BuildingOrientation
-{
-    //
 }

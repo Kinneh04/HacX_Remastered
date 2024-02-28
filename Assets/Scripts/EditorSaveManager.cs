@@ -45,6 +45,7 @@ public class EditorSaveManager : MonoBehaviour
         {
             editorManager.OverrideBuildingFloors(i, BuildingDatablock[i].SavedNumFloors);
             editorManager.OverrideBuildingWidth(i, BuildingDatablock[i].SavedWidthInMetres);
+            editorManager.OverrideBuildingRotation(i, BuildingDatablock[i].SavedAngleInDegrees);
         }
 
         editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);

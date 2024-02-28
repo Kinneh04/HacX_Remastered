@@ -14,10 +14,11 @@ public class SimulationSelectionManager : MonoBehaviour
     Color originalColor;
     public Color SelectedColor = Color.green;
     public EditorSaveManager editorSaveManager;
-
+    private DontDestroyOnLoadSettings DDOL_Settings;
     private void Start()
     {
         originalColor = SimulationPrefab.GetComponent<ScenarioPrefab>().backgroundImage.color;
+        DDOL_Settings = GameObject.FindObjectOfType<DontDestroyOnLoadSettings>();
     }
 
     public void OnSelectScenario(ScenarioPrefab scenario)
@@ -28,6 +29,15 @@ public class SimulationSelectionManager : MonoBehaviour
         SelectedScenarioPrefab = scenario;
         SelectedScenarioPrefab.backgroundImage.color = SelectedColor;
         RunButton.interactable = true;
+
+
+        DDOL_Settings.LoadedBuilding = new Scenario()
+        {
+            JsonSave = SelectedScenarioPrefab.scenario.JsonSave,
+            DistanceBetweenBuildings = SelectedScenarioPrefab.scenario.DistanceBetweenBuildings,
+            NameOfScenario = SelectedScenarioPrefab.scenario.NameOfScenario
+        };
+        DDOL_Settings.LoadedBuilding = SelectedScenarioPrefab.scenario;
     }
     public void DeselectCurrentScenario()
     {
@@ -52,6 +62,7 @@ public class SimulationSelectionManager : MonoBehaviour
             ScenarioPrefab SP = GO.GetComponent<ScenarioPrefab>();
             SP.OnClickButton.onClick.AddListener(delegate { OnSelectScenario(SP); });
             SP.NameText.text = scenario.NameOfScenario;
+            SP.scenario = scenario;
             GO.transform.SetParent(SimulationPrefabParent, false);
         }
     }

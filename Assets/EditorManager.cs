@@ -241,10 +241,10 @@ public class EditorManager : MonoBehaviour
         OnDeselectBuilding();
     }
 
-    public void OnRevertBuildingDetails()
-    {
-        OnDeselectBuilding();
-    }
+    //public void OnRevertBuildingDetails()
+    //{
+    //    OnDeselectBuilding();
+    //}
 
     public void OnDeselectBuilding()
     {
@@ -280,7 +280,8 @@ public class EditorManager : MonoBehaviour
             {
                 savedBuildingType = building.typeofBuilding,
                 SavedNumFloors = building.numFloors,
-                SavedWidthInMetres = building.WidthInMetres
+                SavedWidthInMetres = building.WidthInMetres,
+                SavedAngleInDegrees = (int)building.AddedAngle
             };
             buildingDataBlock.Add(buildingData);
         }
@@ -360,8 +361,7 @@ public class Scenario
 [System.Serializable]
 public class SavableBuildingDetails
 {
-    public int SavedNumFloors, SavedWidthInMetres;
-
+    public int SavedNumFloors, SavedWidthInMetres, SavedAngleInDegrees;
     public CustomBuilding.BuildingType savedBuildingType;
 }
 
