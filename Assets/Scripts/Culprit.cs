@@ -6,6 +6,8 @@ using System;
 
 public class Culprit : MonoBehaviour
 {
+
+    public Material culpritMaterial;
     public static Action<GameObject, int> OnCantHit = delegate { };
     public static Action<GameObject, int> OnHit = delegate { };
     public static Action<Culprit> OnDone = delegate { };

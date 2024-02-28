@@ -240,9 +240,10 @@ public class WindowsManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && CurrentlyHoveredWindow && canSelectWindow)
         {
             ToggleWindow();
-            WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
+          
             StartButton.SetActive(SelectedWindows.Count > 0);
         }
+        WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
     }
 }
 
