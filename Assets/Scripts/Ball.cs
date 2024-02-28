@@ -24,6 +24,7 @@ public class Ball : MonoBehaviour
     Vector3 vel;
     float defaultVel = 70.0f;
     private GameObject targetWindow;
+    private Precise_Window targetWindowPrecision;
     public TrailRenderer trailRenderer;
 
     [Header("CalcProbability")]
@@ -55,8 +56,10 @@ public class Ball : MonoBehaviour
         
     }
 
-    public void Shoot(GameObject target, int targetIndex)
+    public void Shoot(Precise_Window PreciseTarget, int targetIndex)
     {
+        GameObject target = PreciseTarget.WindowGO;
+        targetWindowPrecision = PreciseTarget;
         transform.position = parentShooter.ShootPosition.position;
         trailRenderer.Clear();
         rbody.isKinematic = false;
@@ -160,7 +163,7 @@ public class Ball : MonoBehaviour
         rbody.isKinematic = true;
         transform.position = other.contacts[0].point;
 
-        if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+        if (targetWindowPrecision.PrecisionMarker != null && Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x || Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
         {
             return;
         }
