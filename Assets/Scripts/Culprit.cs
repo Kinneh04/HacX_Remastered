@@ -111,16 +111,16 @@ public class Culprit : MonoBehaviour
     public bool CanSeeObject(GameObject target)
     {
         Vector3 origin = ShootPosition.position;
-        Vector3 direction = target.transform.position - origin;
+        Vector3 direction = origin - target.transform.position;
 
         float maxDistance = Vector3.Distance(origin, target.transform.position);
 
         RaycastHit hit;
 
-        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        if (Physics.Raycast(target.transform.position, direction, out hit, maxDistance))
         {
             // Check if the raycast hit the target object
-            if (hit.transform == target.transform)
+            if (hit.transform == ShootPosition)
             {
                 // No obstacle between the objects, so the object can see the target
                 return true;
