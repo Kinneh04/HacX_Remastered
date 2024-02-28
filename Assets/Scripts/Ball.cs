@@ -26,6 +26,11 @@ public class Ball : MonoBehaviour
     private GameObject targetWindow;
     public TrailRenderer trailRenderer;
 
+    [Header("CalcProbability")]
+    public float distanceFromCenter = 0f;
+    public float angleOfImpact = 0f;
+    public float impactSpeed = 0f;
+
     Culprit parentShooter;
     void Awake()
     {
@@ -137,6 +142,7 @@ public class Ball : MonoBehaviour
     //}
     private void OnCollisionEnter(Collision other)
     {
+
         rbody.isKinematic = true;
         parentShooter.travelling = false;
         parentShooter.shootNext = true;
@@ -161,6 +167,12 @@ public class Ball : MonoBehaviour
 
 
         parentShooter.windowHit[target] = true;
+
+        // values to calc accuracy
+        distanceFromCenter = Vector3.Distance(transform.position, targetWindow.transform.position);
+        angleOfImpact = Vector3.Angle(vel, -normal);
+        impactSpeed = vel.magnitude;
+
         Culprit.OnHit?.Invoke(gameObject, target);
         //if (target == 0)
         //    shooter.hitWindow1 = true;

@@ -39,6 +39,7 @@ public class Culprit : MonoBehaviour
     Rigidbody currentBallRb;
     Quaternion targetRotation;
 
+    public TMP_Text probabilityText;
     private void Awake()
     {
         MainGameManager.OnStartGame += OnStart;
@@ -105,7 +106,10 @@ public class Culprit : MonoBehaviour
             FireProjectileAt(currentTarget);
         }
         else
+        {
             done = true;
+            CalculateProbability();
+        }
     }
 
     public bool CanSeeObject(GameObject target)
@@ -196,5 +200,23 @@ public class Culprit : MonoBehaviour
         shootNext = false;
 
         iterations[windowIndex]++;
+    }
+
+    public void CalculateProbability()
+    {
+        probabilityText.gameObject.SetActive(true);
+        float probability = 0.0f;
+        if (windowHit.Contains(false))
+        {
+            probabilityText.text = probability.ToString("F1");
+            return;
+        }
+
+        foreach(Ball ball in balls)
+        {
+            probability += (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 0.5f;
+        }
+        probability = 100 * (probability / balls.Length);
+        probabilityText.text = probability.ToString("F1");
     }
 }
