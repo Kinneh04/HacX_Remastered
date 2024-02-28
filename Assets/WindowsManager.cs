@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using Cinemachine;
 public class WindowsManager : MonoBehaviour
 {
     public static WindowsManager Instance;
@@ -17,9 +17,111 @@ public class WindowsManager : MonoBehaviour
 
     [Header("SelectedWindows")]
     public List<GameObject> SelectedWindows = new();
+    public List<Precise_Window> PreciseWindows = new();
+    public Precise_Window CurrentlySelectedPreciseWindow;
 
     public GameObject StartButton;
     public TMP_Text WindowCounter;
+
+    [Header("PrecisionSelection")]
+
+    [Header("Components")]
+    public CinemachineVirtualCamera MainVCamera;
+    public bool isPrecisionMode = false;
+    public float TargetOrthoSize;
+    Vector3 OriginalCamPosition;
+    Quaternion OriginalCamRotation;
+    public Transform VCamOverviewFollower;
+    public GameObject CurrentlySelectedWIndow;
+
+    [Header("Marker")]
+    public GameObject PrecisionMarkerHighlighter;
+    public GameObject PrecisionMarkerPrefab;
+    [Header("UI")]
+    public GameObject MainUI, WindowPrecisionUI, PrecisionMarkerSettingsUI;
+    public Slider ConfidenceSlider;
+    Vector3 OriginalPrefabScale;
+
+    private void Start()
+    {
+        OriginalCamPosition = MainVCamera.transform.position;
+        OriginalCamRotation = MainVCamera.transform.rotation;
+        OriginalPrefabScale = PrecisionMarkerPrefab.transform.localScale;
+    }
+
+    public bool isRegisteredPreciseWindow(GameObject Target)
+    {
+        foreach (Precise_Window PW in PreciseWindows)
+        {
+            if (Target == PW.WindowGO)
+            {
+                CurrentlySelectedPreciseWindow = PW;
+                return true;
+            }
+        }
+        return false;
+    }
+    public void GotoPrecision(GameObject Target)
+    {
+        if (!isRegisteredPreciseWindow(Target))
+        {
+            Precise_Window PW = new Precise_Window()
+            { 
+                PrecisionMarker = null,
+                WindowGO = Target
+            };
+            PreciseWindows.Add(PW);
+            CurrentlySelectedPreciseWindow = PW;
+
+        }
+        MainUI.SetActive(false);
+        WindowPrecisionUI.SetActive(true);
+        canSelectWindow = false;
+        MainVCamera.Follow = Target.transform;
+        TargetOrthoSize = 2.5f;
+      //  MainVCamera.m_Lens.OrthographicSize = 2.5f;
+        isPrecisionMode = true;
+
+    }
+
+    public void RemoveFromPreciseWindows(GameObject Window)
+    {
+        foreach (Precise_Window PW in PreciseWindows)
+        {
+            if (Window == PW.WindowGO)
+            {
+                if (PW.PrecisionMarker != null) Destroy(PW.PrecisionMarker);
+                PreciseWindows.Remove(PW);
+                return;
+            }
+        }
+    }
+
+    public void OnRemovePrecision()
+    {
+        if (CurrentlySelectedPreciseWindow.PrecisionMarker != null) Destroy(CurrentlySelectedPreciseWindow.PrecisionMarker);
+        PreciseWindows.Remove(CurrentlySelectedPreciseWindow);
+        DeselectWindow(CurrentlySelectedWIndow);
+       // RemoveFromPreciseWindows(CurrentlySelectedPreciseWindow.WindowGO);
+        EndPrecision();
+    }
+
+    public void OnSavePrecision()
+    {
+        EndPrecision();
+    }
+
+    public void EndPrecision()
+    {
+        MainUI.SetActive(true);
+        WindowPrecisionUI.SetActive(false);
+        canSelectWindow = true;
+        MainVCamera.Follow = VCamOverviewFollower;
+        TargetOrthoSize = 22f;
+        if (CurrentlySelectedWIndow) CurrentlySelectedWIndow = null;
+        MainVCamera.transform.position = OriginalCamPosition;
+        MainVCamera.transform.rotation = OriginalCamRotation;
+    }
 
     private void Awake()
     {
@@ -31,15 +133,20 @@ public class WindowsManager : MonoBehaviour
 
     void ToggleWindow()
     {
-        if (SelectedWindows.Contains(CurrentlyHoveredWindow))
-        {
-            DeselectWindow(CurrentlyHoveredWindow);
-        }
-        else SelectWindow(CurrentlyHoveredWindow);
+        //if (SelectedWindows.Contains(CurrentlyHoveredWindow))
+        //{
+        //    DeselectWindow(CurrentlyHoveredWindow);
+        //}
+        //else SelectWindow(CurrentlyHoveredWindow);
+        SelectWindow(CurrentlyHoveredWindow);
     }
 
     void SelectWindow(GameObject GO)
     {
+        GotoPrecision(GO);
+        CurrentlySelectedWIndow = CurrentlyHoveredWindow;
+        if (SelectedWindows.Contains(GO)) return;
+       
         GO.GetComponent<MeshRenderer>().material.color = SelectedColor;
         SelectedWindows.Add(GO);
     }
@@ -48,26 +155,45 @@ public class WindowsManager : MonoBehaviour
     {
 
         GO.GetComponent<MeshRenderer>().material.color = originalColor;
+        isPrecisionMode = false;
         SelectedWindows.Remove(GO);
+    }
+
+    public void PlacePrecisionMarker()
+    {
+        if (CurrentlySelectedPreciseWindow.PrecisionMarker) Destroy(CurrentlySelectedPreciseWindow.PrecisionMarker);
+        GameObject GO = Instantiate(PrecisionMarkerPrefab, PrecisionMarkerHighlighter.transform.position, Quaternion.identity);
+        GO.transform.localScale = PrecisionMarkerPrefab.transform.localScale;
+        CurrentlySelectedPreciseWindow.PrecisionMarker = GO;
+        OnUpdateConfidenceScale();
+    }
+
+    public void OnUpdateConfidenceScale()
+    {
+        CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
     }
 
     private void Update()
     {
-        if (!canSelectWindow) return;
+       
 
-        if (Input.GetMouseButtonDown(0) && CurrentlyHoveredWindow)
-        {
-            ToggleWindow();
-            WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
-            StartButton.SetActive(SelectedWindows.Count > 0);
-        }
+        if (MainVCamera.m_Lens.OrthographicSize != TargetOrthoSize)
+            MainVCamera.m_Lens.OrthographicSize = Mathf.Lerp(MainVCamera.m_Lens.OrthographicSize, TargetOrthoSize, Time.deltaTime * 3);
+        //if (!canSelectWindow) return;
+
+   
         // Create a ray from the mouse position
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         // Declare a RaycastHit variable to store the hit information
         RaycastHit hit;
-
+        if (CurrentlySelectedPreciseWindow != null && CurrentlySelectedPreciseWindow.PrecisionMarker != null)
+        {
+            PrecisionMarkerSettingsUI.SetActive(true);
+        }
+        else PrecisionMarkerSettingsUI.SetActive(false);
         // Perform the raycast
+        PrecisionMarkerHighlighter.SetActive(false);
         if (Physics.Raycast(ray, out hit))
         {
             // Check if the hit object has the tag "window"
@@ -82,12 +208,22 @@ public class WindowsManager : MonoBehaviour
                 //}
 
                 CurrentlyHoveredWindow = hit.collider.gameObject;
+                if (isPrecisionMode && CurrentlyHoveredWindow == CurrentlySelectedPreciseWindow.WindowGO)
+                {
+                    PrecisionMarkerHighlighter.SetActive(true);
+                    PrecisionMarkerHighlighter.transform.position = hit.point;
 
-                if (SelectedWindows.Contains(CurrentlyHoveredWindow)) return;
+                    if(Input.GetMouseButtonUp(0))
+                    {
+                        PlacePrecisionMarker();
+                    }
+                }
+                else if (SelectedWindows.Contains(CurrentlyHoveredWindow)) return;
+
                 Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
                 //  originalColor = M.color;
                 M.color = HighlightedColor;
-
+               
             }
             else
             {
@@ -100,5 +236,18 @@ public class WindowsManager : MonoBehaviour
                 }
             }
         }
+
+        if (Input.GetMouseButtonDown(0) && CurrentlyHoveredWindow && canSelectWindow)
+        {
+            ToggleWindow();
+            WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
+            StartButton.SetActive(SelectedWindows.Count > 0);
+        }
     }
+}
+
+[System.Serializable]
+public class Precise_Window
+{
+    public GameObject PrecisionMarker, WindowGO;
 }

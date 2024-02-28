@@ -33,7 +33,7 @@ public class ScenarioBuilder : MonoBehaviour
         }
         // First building is always the target building with the distance applied to.
         Vector3 position = Buildings[0].transform.position;
-        position.z = Buildings[1].position.x + SavedScenario.DistanceBetweenBuildings;
+        position.z = Buildings[1].position.x - SavedScenario.DistanceBetweenBuildings;
         Buildings[0].position = position;
         NameOfScenario.text = "Loaded: " + SavedScenario.NameOfScenario;
         ScenarioDetails.text = "Distance: " + SavedScenario.DistanceBetweenBuildings.ToString() + "m";
