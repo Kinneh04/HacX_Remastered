@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System;
 
 public class Culprit : MonoBehaviour
 {
+    public static Action<GameObject, int> OnCantHit = delegate { };
+    public static Action<GameObject, int> OnHit = delegate { };
+
     public int floor, column;
 
     public int MAX_ITERATIONS;
@@ -19,6 +23,7 @@ public class Culprit : MonoBehaviour
     public bool done = false;
     public bool finishedCurrent = false;
     public bool shootNext = false;
+    public bool canHitCurrWindow = false;
 
     public Ball[] balls;
     public List<GameObject> windows = new();
@@ -37,14 +42,18 @@ public class Culprit : MonoBehaviour
     private void Awake()
     {
         MainGameManager.OnStartGame += OnStart;
+        MainGameManager.OnNextWindow += CheckCanNext;
     }
 
     private void OnDestroy()
     {
         MainGameManager.OnStartGame -= OnStart;
+        MainGameManager.OnNextWindow -= CheckCanNext;
     }
     public void OnStart()
     {
+        finishedCurrent = false;
+
         windows = WindowsManager.Instance.SelectedWindows;
         balls = new Ball[windows.Count];
         for (int i = 0; i < windows.Count; i++)
@@ -52,9 +61,16 @@ public class Culprit : MonoBehaviour
             windowHit.Add(false);
             iterations.Add(0);
 
+            // pre instantiate the balls for each window
             balls[i] = Instantiate(Ball, ShootPosition.position, ShootPosition.rotation, transform).GetComponent<Ball>();
             //balls[i].SetTarget(i);
             balls[i].gameObject.SetActive(false);
+        }
+        if (!CanSeeObject(windows[currentTarget]))
+        {
+            OnCantHit?.Invoke(gameObject, currentTarget);
+            finishedCurrent = true;
+            return;
         }
         balls[currentTarget].gameObject.SetActive(true);
         currentBall = balls[currentTarget];
@@ -64,31 +80,79 @@ public class Culprit : MonoBehaviour
 
     public void CheckIfNext()
     {
+        Debug.Log("hit");
         if(windowHit[currentTarget] || iterations[currentTarget] >= MAX_ITERATIONS)
         {
-            finishedCurrent = true;
-            if (currentTarget + 1 <= windows.Count - 1)
+            CheckCanNext();
+        }
+    }
+
+    public void CheckCanNext()
+    {
+        if (currentTarget + 1 <= windows.Count - 1)
+        {
+            currentTarget++;
+            if (!CanSeeObject(windows[currentTarget]))
             {
-                currentTarget++;
-                currentBall = balls[currentTarget];
-                currentBall.gameObject.SetActive(true);
-                currentBallRb = currentBall.GetComponent<Rigidbody>();
-                FireProjectileAt(currentTarget);
+                OnCantHit?.Invoke(gameObject, currentTarget);
+                finishedCurrent = true;
+                return;
+            }
+            finishedCurrent = false;
+            currentBall = balls[currentTarget];
+            currentBall.gameObject.SetActive(true);
+            currentBallRb = currentBall.GetComponent<Rigidbody>();
+            FireProjectileAt(currentTarget);
+        }
+        else
+            done = true;
+    }
+
+    public bool CanSeeObject(GameObject target)
+    {
+        Vector3 origin = ShootPosition.position;
+        Vector3 direction = target.transform.position - origin;
+
+        float maxDistance = Vector3.Distance(origin, target.transform.position);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(origin, direction, out hit, maxDistance))
+        {
+            // Check if the raycast hit the target object
+            if (hit.transform == target.transform)
+            {
+                // No obstacle between the objects, so the object can see the target
+                return true;
             }
             else
-                done = true;
+            {
+                // Raycast hit something else, so the object cannot see the target
+                return false;
+            }
+        }
+        else
+        {
+            // Raycast didn't hit anything within the max distance, so the object can potentially see the target
+            return true;
         }
     }
     private void Update()
     {
-        //Debug.Log(currentBall);
+        
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 
-        CheckIfNext();
-
-        if (done || !shootNext)
+        if (done || !shootNext || windowHit[currentTarget] || finishedCurrent)
             return;
+
+        if (iterations[currentTarget] == MAX_ITERATIONS)
+        {
+            OnCantHit?.Invoke(gameObject, currentTarget);
+            finishedCurrent = true;
+            return;
+        }
+
 
         if (currentBall.transform.position.y > windows[currentTarget].transform.position.y)
         {

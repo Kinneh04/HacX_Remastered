@@ -7,12 +7,13 @@ public class AreaSplitManager : MonoBehaviour
     public GameObject CulpritPrefab;
     public int NumberOfCulprits = 5;
     public float DeadzoneRadius = 0.5f;
-    private List<GameObject> SpawnedCulprits = new();
+    public List<GameObject> SpawnedCulprits = new();
     public int Floor = 0;
     public CulpritsManager culpritManager;
     public void RespawnCulprits()
     {
         // if (!mainGameManager) mainGameManager = MainGameManager.instance;
+        SpawnedCulprits.Clear();
         Vector3 boxSize = GetComponent<Renderer>().bounds.size;
         float areaWidth = boxSize.x / NumberOfCulprits;
         int s = 1;
@@ -30,6 +31,7 @@ public class AreaSplitManager : MonoBehaviour
                 Culprit culprit = GO.GetComponent<Culprit>();
                 culprit.column = s;
                 culprit.floor = Floor;
+                SpawnedCulprits.Add(GO);
                 s++;
               //  mainGameManager.CulpritPositions.Add(culprit.ShootPosition.position);
             }

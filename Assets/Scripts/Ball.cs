@@ -161,7 +161,7 @@ public class Ball : MonoBehaviour
 
 
         parentShooter.windowHit[target] = true;
-
+        Culprit.OnHit?.Invoke(gameObject, target);
         //if (target == 0)
         //    shooter.hitWindow1 = true;
 
