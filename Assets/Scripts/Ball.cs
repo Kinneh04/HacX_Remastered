@@ -145,7 +145,6 @@ public class Ball : MonoBehaviour
     //}
     private void OnCollisionEnter(Collision other)
     {
-
         rbody.isKinematic = true;
         parentShooter.travelling = false;
         parentShooter.shootNext = true;
@@ -154,13 +153,8 @@ public class Ball : MonoBehaviour
         {
             return;
         }
- 
 
-
-        //Vector3 vel = rbody.velocity;
         Vector3 normal = other.contacts[0].normal;
-        parentShooter.travelling = false;
-        rbody.isKinematic = true;
         transform.position = other.contacts[0].point;
 
         if (targetWindowPrecision.PrecisionMarker != null 
@@ -179,86 +173,5 @@ public class Ball : MonoBehaviour
         impactSpeed = vel.magnitude;
 
         Culprit.OnHit?.Invoke(gameObject, target);
-        //if (target == 0)
-        //    shooter.hitWindow1 = true;
-
-        //else if (target == 1)
-        //    shooter.hitWindow2 = true;
-
-        //Debug.Log("HIT TARGET: " + target);
-
-        //HitBall HB = new HitBall();
-        //HB.RelatedHumanGameObject = transform.parent.gameObject;
-        //HB.WindowHit = target;
-        //if (target == 0)
-        //{
-        //    HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
-        //    shooter.angle1 = Vector3.Angle(vel, -normal);
-        //    shooter.hitSpeed1 = vel.magnitude;
-        //}
-        //else
-        //{
-        //    HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
-        //    shooter.angle2 = Vector3.Angle(vel, -normal);
-        //    shooter.hitSpeed2 = vel.magnitude;
-        //}
-        //HB.CalculateAccuracy();
-        //HB.Hitposition = transform.position;
-        //MainGameManager.instance.AddNewHitRegistryToList(HB);
-        //}
-
-
-        //if (target == 0 && (shooter.iterations1 < shooter.maxIterations))
-        //    return;
-
-        //else if (target == 1 && (shooter.iterations2 < shooter.maxIterations))
-        //    return;
-
-        //if (other.transform.gameObject != targets[target].gameObject)
-        //{
-        //    shooter.travelling = false;
-        //    rbody.isKinematic = true;
-        //}
-        //else
-        //{
-        //    //Vector3 vel = rbody.velocity;
-        //    Vector3 normal = other.contacts[0].normal;
-
-        //    shooter.travelling = false;
-        //    rbody.isKinematic = true;
-        //    transform.position = other.contacts[0].point;
-
-        //    if (Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
-        //        return;
-
-        //    if (target == 0)
-        //        shooter.hitWindow1 = true;
-
-        //    else if (target == 1)
-        //        shooter.hitWindow2 = true;
-
-
-
-        //    //Debug.Log("HIT TARGET: " + target);
-
-        //    HitBall HB = new HitBall();
-        //    HB.RelatedHumanGameObject = transform.parent.gameObject;
-        //    HB.WindowHit = target;
-        //    if (target == 0)
-        //    {
-        //        HB.DistanceFromCenterW1 = Vector3.Distance(transform.position, targets[target].transform.position);
-        //        shooter.angle1 = Vector3.Angle(vel, -normal);
-        //        shooter.hitSpeed1 = vel.magnitude;
-        //    }
-        //    else
-        //    {
-        //        HB.DistanceFromCenterW2 = Vector3.Distance(transform.position, targets[target].transform.position);
-        //        shooter.angle2 = Vector3.Angle(vel, -normal);
-        //        shooter.hitSpeed2 = vel.magnitude;
-        //    }
-        //    HB.CalculateAccuracy();
-        //    HB.Hitposition = transform.position;
-        //    MainGameManager.instance.AddNewHitRegistryToList(HB);
-        //}
     }
 }
