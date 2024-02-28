@@ -78,7 +78,6 @@ public class MainGameManager : MonoBehaviour
 
     public void StartNextWindow(int target)
     {
-        Debug.Log(ListOfNoHitList[target].Count + ListOfHitList[target].Count == culpritsManager.SpawnedCulprits.Count);
         if (ListOfNoHitList[target].Count + ListOfHitList[target].Count == culpritsManager.SpawnedCulprits.Count)
         {
             OnNextWindow?.Invoke();

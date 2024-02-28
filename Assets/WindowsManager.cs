@@ -200,7 +200,7 @@ public class WindowsManager : MonoBehaviour
             if (hit.collider.CompareTag("Window"))
             {
                 // Do something when a window is hit
-                Debug.Log("Hit a window!");
+                //Debug.Log("Hit a window!");
                 // Restore the color of the previously hovered window
                 //if (hit.collider.TryGetComponent<Renderer>(out Renderer previousRenderer))
                 //{
