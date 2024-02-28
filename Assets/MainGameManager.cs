@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
+using System.Linq;
+
 public class MainGameManager : MonoBehaviour
 {
     public static event Action OnStartGame;
     public static event Action OnNextWindow;
 
-    public int hi = 0;
     public List<List<GameObject>> ListOfHitList = new();
     public List<List<GameObject>> ListOfNoHitList = new();
-
+    public List<Culprit> CulpritsDone = new();
+   
     CulpritsManager culpritsManager;
 
     enum SimulationState
@@ -23,12 +25,11 @@ public class MainGameManager : MonoBehaviour
 
     SimulationState simState = SimulationState.PRESIMULATE;
 
-
-
     void Awake()
     {
         Culprit.OnCantHit += HandleCantHit;
         Culprit.OnHit += HandleHit;
+        Culprit.OnDone += HandleDone;
 
         culpritsManager = FindObjectOfType<CulpritsManager>();
     }
@@ -37,6 +38,7 @@ public class MainGameManager : MonoBehaviour
     {
         Culprit.OnCantHit -= HandleCantHit;
         Culprit.OnHit -= HandleHit;
+        Culprit.OnDone -= HandleDone;
     }
     public void ReturnToMainMenu()
     {
@@ -81,6 +83,19 @@ public class MainGameManager : MonoBehaviour
         if (ListOfNoHitList[target].Count + ListOfHitList[target].Count == culpritsManager.SpawnedCulprits.Count)
         {
             OnNextWindow?.Invoke();
+        }
+    }
+
+    public void HandleDone(Culprit culprit)
+    {
+        CulpritsDone.Add(culprit);
+
+        // check if all done
+        if(CulpritsDone.Count == culpritsManager.SpawnedCulprits.Count)
+        {
+            // sort by highest probability
+            List<Culprit> sortedList = CulpritsDone.OrderByDescending(go => go.probability).ToList();
+            CulpritsDone = sortedList;
         }
     }
 }

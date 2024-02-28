@@ -8,6 +8,7 @@ public class Culprit : MonoBehaviour
 {
     public static Action<GameObject, int> OnCantHit = delegate { };
     public static Action<GameObject, int> OnHit = delegate { };
+    public static Action<Culprit> OnDone = delegate { };
 
     public int floor, column;
 
@@ -33,6 +34,7 @@ public class Culprit : MonoBehaviour
     public float launchAngleMax = 0f;
     public float launchAngleMin = -90f;
     public float angle;
+    public float probability = 0f;
 
     public GameObject Ball;
     Ball currentBall;
@@ -163,7 +165,7 @@ public class Culprit : MonoBehaviour
             return;
         }
 
-
+        // binary search
         if (currentBall.transform.position.y > windows[currentTarget].transform.position.y)
         {
             launchAngleMax = angle;
@@ -174,7 +176,6 @@ public class Culprit : MonoBehaviour
         }
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
-        //Debug.Log(angle + " " + launchAngleMin + " " + launchAngleMax);
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
@@ -186,10 +187,6 @@ public class Culprit : MonoBehaviour
     }
     public void FireProjectileAt(int windowIndex)
     {
-        //maxIterations = SettingsMenu.instance.GetMaxIterations();
-
-        //targets = MainGameManager.instance.GetWindows();
-
         launchAngleMax = -90f;
 
         Vector3 dir = windows[windowIndex].transform.position - ShootPosition.position;
@@ -211,10 +208,11 @@ public class Culprit : MonoBehaviour
     public void CalculateProbability()
     {
         probabilityText.gameObject.SetActive(true);
-        float probability = 0.0f;
+        probability = 0.0f;
         if (windowHit.Contains(false))
         {
             probabilityText.text = probability.ToString("F1");
+            OnDone?.Invoke(this);
             return;
         }
 
@@ -224,5 +222,7 @@ public class Culprit : MonoBehaviour
         }
         probability = 100 * (probability / balls.Length);
         probabilityText.text = probability.ToString("F1");
+
+        OnDone?.Invoke(this);
     }
 }
