@@ -164,8 +164,8 @@ public class Ball : MonoBehaviour
         transform.position = other.contacts[0].point;
 
         if (targetWindowPrecision.PrecisionMarker != null 
-            && Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
-            || Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+            && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
+            )
         {
             return;
         }
@@ -174,7 +174,7 @@ public class Ball : MonoBehaviour
         parentShooter.windowHit[target] = true;
 
         // values to calc accuracy
-        distanceFromCenter = Vector3.Distance(transform.position, targetWindow.transform.position);
+        distanceFromCenter = Vector3.Distance(transform.position, targetWindowPrecision.PrecisionMarker.transform.position);
         angleOfImpact = Vector3.Angle(vel, -normal);
         impactSpeed = vel.magnitude;
 
