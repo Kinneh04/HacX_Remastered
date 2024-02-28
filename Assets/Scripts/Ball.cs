@@ -163,7 +163,9 @@ public class Ball : MonoBehaviour
         rbody.isKinematic = true;
         transform.position = other.contacts[0].point;
 
-        if (targetWindowPrecision.PrecisionMarker != null && Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x || Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
+        if (targetWindowPrecision.PrecisionMarker != null 
+            && Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
+            || Vector3.Distance(other.contacts[0].point, other.transform.position) > 0.2f)
         {
             return;
         }
