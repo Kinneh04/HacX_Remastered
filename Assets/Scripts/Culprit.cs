@@ -54,7 +54,13 @@ public class Culprit : MonoBehaviour
     {
         finishedCurrent = false;
 
-        windows = WindowsManager.Instance.SelectedWindows;
+        foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
+        {
+            if (PW.PrecisionMarker != null)
+                windows.Add(PW.PrecisionMarker);
+            else windows.Add(PW.WindowGO);
+        }
+        //windows = WindowsManager.Instance.PreciseWindows;
         balls = new Ball[windows.Count];
         for (int i = 0; i < windows.Count; i++)
         {
@@ -168,7 +174,7 @@ public class Culprit : MonoBehaviour
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
-        currentBall.Shoot(windows[currentTarget], currentTarget);
+        currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);
         travelling = true;
         shootNext = false;
 
@@ -190,7 +196,7 @@ public class Culprit : MonoBehaviour
         launchAngleMin = angle;
         ShootPosition.rotation = targetRotation;
 
-        currentBall.Shoot(windows[windowIndex], windowIndex);
+        currentBall.Shoot(WindowsManager.Instance.PreciseWindows[windowIndex], windowIndex);
 
         travelling = true;
         shootNext = false;
