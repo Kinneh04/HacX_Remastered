@@ -20,6 +20,7 @@ public class MainGameManager : MonoBehaviour
    
     CulpritsManager culpritsManager;
     public PostUIManager postUIManager;
+    public CameraManager cameraManager;
 
     enum SimulationState
     {
@@ -111,6 +112,7 @@ public class MainGameManager : MonoBehaviour
     {
         SimulationUI.SetActive(false);
         PostSimUI.SetActive(true);
+        cameraManager.OnEndSimulation();
         postUIManager.OnEndSimulation();
     }
 }
