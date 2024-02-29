@@ -22,6 +22,8 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     private ScenarioBuilder scenarioBuilder;
 
     private static DontDestroyOnLoadSettings _instance;
+
+    public List<GameObject> EnvironmentalPrefabs;
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

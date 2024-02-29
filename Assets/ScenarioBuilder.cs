@@ -8,6 +8,7 @@ public class ScenarioBuilder : MonoBehaviour
 {
     [Header("Datablocks")]
     [SerializeField] List<SavableBuildingDetails> ParsedBuildingDatablock;
+    [SerializeField] List<SavableEnvironmentDetails> ParsedEnvDatablock;
     [SerializeField] Scenario SavedScenario;
     [Header("Scenario builder")]
     public List<Transform> Buildings = new();
@@ -32,6 +33,12 @@ public class ScenarioBuilder : MonoBehaviour
             Buildings[i].GetComponent<ModularHDB>().ChangeFloors(numFloors);
             //int width = ParsedBuildingDatablock[i].SavedWidthInMetres;
         }
+        for(int i = 0; i < ParsedEnvDatablock.Count; i++)
+        {
+            GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
+            GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosX, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosZ);
+            GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
+        }
         // First building is always the target building with the distance applied to.
         Vector3 position = Buildings[0].transform.position;
         position.z = Buildings[1].position.x - SavedScenario.DistanceBetweenBuildings;
@@ -44,6 +51,7 @@ public class ScenarioBuilder : MonoBehaviour
     {
         SavedScenario = scenario;
         ParsedBuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SavedScenario.JsonSave);
+        ParsedEnvDatablock = JsonConvert.DeserializeObject<List<SavableEnvironmentDetails>>(SavedScenario.EnvironmentJSON);
         BuildScenario();
     }
 }

@@ -11,9 +11,46 @@ public class EditorEnvironmentManager : MonoBehaviour
     public LayerMask editorFloorLayer;
     public GameObject CurrentlyMovingObject;
 
-    public void SpawnEnvironmentProp(GameObject ItemPrefab)
+    [Header("UI")]
+    public GameObject PropNamePrefab;
+    public Transform PropNamePrefabParent;
+
+    public List<GameObject> InstantiatedPropButtons, InstantiatedProps;
+    
+    public void ClearAllProps()
     {
-        GameObject NewProp = Instantiate(ItemPrefab, EnvironmentSpawnPoint.transform.position, Quaternion.identity);
+        foreach(GameObject GO in InstantiatedPropButtons)
+        {
+            DeleteTiedProp(GO.GetComponent<PropButtonPrefab>().TiedProp, GO, false);
+        }
+        InstantiatedPropButtons.Clear();
+    }
+
+    public void OnClickHelperButton(PropButtonPrefab prefab)
+    {
+        Color originalColor = prefab.TiedProp.GetComponent<EnvironmentalPrefab>().outline.OutlineColor;
+        originalColor.a = 1;
+        prefab.TiedProp.GetComponent<EnvironmentalPrefab>().outline.OutlineColor = originalColor;
+    }
+
+    public void SpawnEnvironmentProp(int itemIndex)
+    {
+        GameObject NewProp = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex], EnvironmentSpawnPoint.transform.position, Quaternion.identity);
+        GameObject NewPropButton = Instantiate(PropNamePrefab);
+        NewPropButton.transform.SetParent(PropNamePrefabParent,false);
+        PropButtonPrefab script = NewPropButton.GetComponent<PropButtonPrefab>();
+        NewPropButton.transform.SetAsFirstSibling();
+        
+        script.propNameText.text = DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex].name;
+        script.TiedProp = NewProp;
+      
+        script.propHelperButton.onClick.AddListener(delegate { OnClickHelperButton(script); });
+        script.propDeleteButton.onClick.AddListener(delegate { DeleteTiedProp(NewProp, NewPropButton); });
+        InstantiatedPropButtons.Add(NewPropButton);
+        InstantiatedProps.Add(NewProp);
+
+        NewProp.GetComponent<EnvironmentalPrefab>().propIndex = itemIndex;
+
     }
 
     public void OnPickupProp(GameObject ObjectToPickup)
@@ -68,5 +105,14 @@ public class EditorEnvironmentManager : MonoBehaviour
                 CurrentlyMovingObject.transform.Rotate(0f, 45f, 0f);
             }
         }
+    }
+
+    public void DeleteTiedProp(GameObject GO, GameObject self, bool removeFromList = true)
+    {
+        Destroy(GO);
+        if(removeFromList)
+        InstantiatedPropButtons.Remove(self);
+        InstantiatedProps.Remove(GO);
+        Destroy(self);
     }
 }

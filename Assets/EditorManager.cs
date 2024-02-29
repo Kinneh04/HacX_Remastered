@@ -70,6 +70,8 @@ public class EditorManager : MonoBehaviour
     private bool isMiddleMouseButtonHeld = false;
     public float Sensitivity = 1.0f;
     public float zoomSpeed = 5f;
+
+   
     public void OnClickOpenEnvironmentUI()
     {
         EnvironmentUI.SetActive(true);
@@ -327,9 +329,28 @@ public class EditorManager : MonoBehaviour
         }
         PreviewSavedJsonString = JsonConvert.SerializeObject(buildingDataBlock);
 
+        List<SavableEnvironmentDetails> EnvironmentDatablock = new();
+        foreach(GameObject GO in editorEnvironmentManager.InstantiatedProps)
+        {
+            EnvironmentalPrefab EnvP = GO.GetComponent<EnvironmentalPrefab>();
+            SavableEnvironmentDetails savableEnv = new SavableEnvironmentDetails()
+            {
+                savedItemIndex = EnvP.propIndex,
+                PosX = GO.transform.position.x,
+                PosY = GO.transform.position.y,
+                PosZ = GO.transform.position.z,
+                RotX = GO.transform.rotation.x,
+                RotY = GO.transform.rotation.y,
+                RotZ = GO.transform.rotation.z
+            };
+            EnvironmentDatablock.Add(savableEnv);
+        }
+        //string s = JsonConvert.SerializeObject(editorEnvironmentManager.InstantiatedProps);
+        string env = JsonConvert.SerializeObject(EnvironmentDatablock);
         Scenario newScenario = new Scenario()
         {
             JsonSave = PreviewSavedJsonString,
+            EnvironmentJSON = env,
             NameOfScenario = ScenarioNameInput.text,
             DistanceBetweenBuildings = DistanceBetweenBuildingsSlider.value
             
@@ -376,13 +397,13 @@ public class EditorManager : MonoBehaviour
             CameraPerspectives[camIndex].transform.Translate(new Vector3(-mouseX * Sensitivity, -mouseY * Sensitivity, 0) * Time.deltaTime);
         }
         // Check for left arrow key press
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             // Move to the previous camera
             SwitchCamera(-1);
         }
         // Check for right arrow key press
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             // Move to the next camera
             SwitchCamera(1);
@@ -443,7 +464,7 @@ public class EditorManager : MonoBehaviour
 public class Scenario
 {
     //[WIP]
-    public string JsonSave;
+    public string JsonSave, EnvironmentJSON;
     public string NameOfScenario;
     public float DistanceBetweenBuildings;
 
@@ -455,5 +476,13 @@ public class SavableBuildingDetails
 {
     public int SavedNumFloors, SavedWidthInMetres, SavedAngleInDegrees;
     public CustomBuilding.BuildingType savedBuildingType;
+}
+
+[System.Serializable]
+public class SavableEnvironmentDetails
+{
+    public int savedItemIndex;
+    public float PosX, PosY, PosZ;
+    public float RotX, RotY, RotZ;
 }
 
