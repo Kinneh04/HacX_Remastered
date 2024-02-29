@@ -26,9 +26,10 @@ public class ModularHDB : MonoBehaviour
             Destroy(GO);
         }
 
-        HDBFloorPivot.position = OriginalHDBFloorPivot;
+        HDBFloorPivot.position = new Vector3(HDBFloorPivot.position.x, OriginalHDBFloorPivot.y, HDBFloorPivot.position.z);
 
-        for(int i = 0; i < numfloors; i++)
+
+        for (int i = 0; i < numfloors; i++)
         {
             GameObject ModFloor = Instantiate(ModularHDBTopPrefab, HDBFloorPivot.position, HDBFloorPivot.rotation);
             ModFloor.transform.SetParent(transform);
