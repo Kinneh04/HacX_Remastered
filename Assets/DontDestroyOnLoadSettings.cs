@@ -85,11 +85,11 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
         // Wait for the next frame
         yield return null;
         // Wait for 0.2 seconds more
-        yield return new WaitForSeconds(0.2f) ;
-
+        yield return new WaitForSeconds(0.2f);
+        LoadBuilding();
+        yield return new WaitForSeconds(0.2f);
         // Call the method to load settings into the main game
         LoadSettingsIntoMainGame();
-        LoadBuilding();
 
     }
 

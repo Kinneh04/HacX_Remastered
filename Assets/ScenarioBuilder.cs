@@ -26,9 +26,10 @@ public class ScenarioBuilder : MonoBehaviour
             Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
             Buildings[i].transform.rotation = OriginalBuildingRotation * newRotation;
 
-            // TODO: Change the floors and width of the current building
+            //TODO: Change the floors and width of the current building
 
-            //int numFloors = ParsedBuildingDatablock[i].SavedNumFloors;
+            int numFloors = ParsedBuildingDatablock[i].SavedNumFloors;
+            Buildings[i].GetComponent<ModularHDB>().ChangeFloors(numFloors);
             //int width = ParsedBuildingDatablock[i].SavedWidthInMetres;
         }
         // First building is always the target building with the distance applied to.
