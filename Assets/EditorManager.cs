@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.UI.Extensions;
+using Cinemachine;
 
 public class EditorManager : MonoBehaviour
 {
@@ -58,6 +59,40 @@ public class EditorManager : MonoBehaviour
     [Header("DefaultValues")]
     public float defaultDistanceFromBuildings = 40;
     public int DefaultFloorCount, DefaultBuildingWidth, DefaultAngle = 0;
+
+    [Header("Environment")]
+    public GameObject EnvironmentUI;
+    public EditorEnvironmentManager editorEnvironmentManager;
+
+    [Header("Cameras")]
+    public List<GameObject> CameraPerspectives = new();
+    public int camIndex = 0;
+    private bool isMiddleMouseButtonHeld = false;
+    public float Sensitivity = 1.0f;
+    public float zoomSpeed = 5f;
+    public void OnClickOpenEnvironmentUI()
+    {
+        EnvironmentUI.SetActive(true);
+        MainButtonsUI.SetActive(false);
+        canSelect = false;
+    }
+    void SwitchCamera(int direction)
+    {
+        // Set the current camera inactive
+        CameraPerspectives[camIndex].SetActive(false);
+
+        // Move to the next or previous camera
+        camIndex = (camIndex + direction + CameraPerspectives.Count) % CameraPerspectives.Count;
+
+        // Set the new camera active
+        CameraPerspectives[camIndex].SetActive(true);
+    }
+    public void OnClickCloseEnvironmentUI()
+    {
+        EnvironmentUI.SetActive(false);
+        MainButtonsUI.SetActive(true);
+        canSelect = true;
+    }
 
     private void Start()
     {
@@ -176,6 +211,10 @@ public class EditorManager : MonoBehaviour
         EditorUI.SetActive(false);
         MainMenuObjects.SetActive(true);
         EditorObjects.SetActive(false);
+
+        CameraPerspectives[camIndex].SetActive(false);
+        camIndex = 0;
+        CameraPerspectives[camIndex].SetActive(true);
     }
     public void ToggleEditMode(bool t)
     {
@@ -317,8 +356,60 @@ public class EditorManager : MonoBehaviour
 
          //   customBuilding.UpdateBuildingTransforms();
         }
+        if (Input.GetMouseButtonDown(2))
+        {
+            isMiddleMouseButtonHeld = true;
+        }
+        else if (Input.GetMouseButtonUp(2))
+        {
+            isMiddleMouseButtonHeld = false;
+        }
 
+        // Move the GameObject if the middle mouse button is held down
+        if (isMiddleMouseButtonHeld)
+        {
+            // Get mouse movement on the x and y axes
+            float mouseX = Input.GetAxis("Mouse X");
+            float mouseY = Input.GetAxis("Mouse Y");
 
+            // Adjust the GameObject's position based on the mouse movement
+            CameraPerspectives[camIndex].transform.Translate(new Vector3(-mouseX * Sensitivity, -mouseY * Sensitivity, 0) * Time.deltaTime);
+        }
+        // Check for left arrow key press
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            // Move to the previous camera
+            SwitchCamera(-1);
+        }
+        // Check for right arrow key press
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            // Move to the next camera
+            SwitchCamera(1);
+        }
+
+        // Check for scroll input
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        // Adjust orthographic size based on scroll input
+        if (scroll != 0f)
+        {
+            CinemachineVirtualCamera vCam = CameraPerspectives[camIndex].GetComponent<CinemachineVirtualCamera>();
+            // Get the current orthographic size
+            float currentSize = vCam.m_Lens.OrthographicSize;
+
+            // Calculate the new orthographic size after scrolling
+            float newSize = Mathf.Clamp(currentSize - scroll * zoomSpeed, 1f, Mathf.Infinity);
+
+            vCam.m_Lens.OrthographicSize = newSize;
+
+            //// Set the new orthographic size
+            //WindowsManager.Instance.OverviewOrthoSize = newSize;
+            //if (!WindowsManager.Instance.isPrecisionMode)
+            //{
+            //    WindowsManager.Instance.TargetOrthoSize = WindowsManager.Instance.OverviewOrthoSize;
+            //}
+        }
         // [WIP] canvas line renderer for showing distance;
         //if (showDistance)
         //{

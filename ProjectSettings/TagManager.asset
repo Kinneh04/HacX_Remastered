@@ -10,6 +10,9 @@ TagManager:
   - Window
   - Hitzone
   - EditorHDB
+  - Editor_HDBTarget
+  - EditorFloor
+  - EditorEnvironmentProp
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Ball
   - Water
   - UI
-  - 
+  - EditorFloor
   - 
   - 
   - 
