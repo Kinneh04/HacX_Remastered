@@ -33,6 +33,7 @@ public class ScenarioBuilder : MonoBehaviour
             Buildings[i].GetComponent<ModularHDB>().ChangeFloors(numFloors);
             //int width = ParsedBuildingDatablock[i].SavedWidthInMetres;
         }
+        if(ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
         for(int i = 0; i < ParsedEnvDatablock.Count; i++)
         {
             GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
