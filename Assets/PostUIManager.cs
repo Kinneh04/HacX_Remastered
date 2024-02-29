@@ -23,6 +23,41 @@ public class PostUIManager : MonoBehaviour
     public float AccuracyLimit;
     public TMP_Text AccuracyLimitValueText;
 
+    public List<int> WindowIndexesSelected = new();
+
+    [Header("Windows")]
+    public GameObject WindowSelectionTogglePrefab;
+    public Transform WindowSelectionPrefabParent;
+    // TODO: Assign these and instantiate them;
+
+    public void InstantiateWindowToggles()
+    {
+        int PWIndex = 0;
+        foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
+        {
+            GameObject GO = Instantiate(WindowSelectionTogglePrefab);
+            GO.transform.SetParent(WindowSelectionPrefabParent, false);
+            GO.GetComponent<Toggle>().onValueChanged.AddListener(delegate { OnSelectWindow(PWIndex, GO.GetComponent<Toggle>()); });
+            PWIndex++;
+
+        }
+    }
+    public void OnSelectWindow(int windowIndex, Toggle T)
+    {
+        if (T.isOn)
+            WindowIndexesSelected.Add(windowIndex);
+        else WindowIndexesSelected.Remove(windowIndex);
+        RecalculateWindows();
+    }
+
+    public void RecalculateWindows()
+    {
+        foreach(Culprit C in culpritsManager.SpawnedCulprits)
+        {
+            C.CalculateProbabilityWithWindows(WindowIndexesSelected);
+        }
+    }
+
     public void OnEndSimulation()
     {
         heatmapManager.UpdateHeatmap();

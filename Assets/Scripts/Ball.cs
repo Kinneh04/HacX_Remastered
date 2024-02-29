@@ -22,8 +22,8 @@ public class Ball : MonoBehaviour
     private int target;
     Vector3 vel;
 
-    private GameObject targetWindow;
-    private Precise_Window targetWindowPrecision;
+    public GameObject targetWindow;
+    public Precise_Window targetWindowPrecision;
     public TrailRenderer trailRenderer;
 
     [Header("CalcProbability")]

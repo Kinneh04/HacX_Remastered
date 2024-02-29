@@ -36,7 +36,9 @@ public class Culprit : MonoBehaviour
     public float launchAngleMax = 0f;
     public float launchAngleMin = -90f;
     public float angle;
+
     public float probability = 0f;
+    public float TotalProbability = 0f;
 
     public GameObject Ball;
     Ball currentBall;
@@ -225,8 +227,31 @@ public class Culprit : MonoBehaviour
         }
         probability = 100 * (probability / balls.Length);
         probabilityText.text = probability.ToString("F1");
-
+        TotalProbability = probability;
         OnDone?.Invoke(this);
+    }
+
+    public void CalculateProbabilityWithWindows(List<int> Windows)
+    {
+        float totalProb = 0.0f;
+        int calculations = 0;
+        for(int i = 0; i < Windows.Count; i++)
+        {
+            foreach(Ball b in balls)
+            {
+                if(b.targetWindowPrecision == WindowsManager.Instance.PreciseWindows[Windows[i]])
+                {
+                    totalProb += calculateAccForBall(b);
+                    calculations++;
+                }
+            }
+        }
+        probability = totalProb / calculations;
+    }
+
+    public float calculateAccForBall(Ball ball)
+    {
+        return (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel));
     }
 
 }
