@@ -29,6 +29,7 @@ public class WindowsManager : MonoBehaviour
     public CinemachineVirtualCamera MainVCamera;
     public bool isPrecisionMode = false;
     public float TargetOrthoSize;
+    public float OverviewOrthoSize = 22f;
     Vector3 OriginalCamPosition;
     Quaternion OriginalCamRotation;
     public Transform VCamOverviewFollower;
@@ -74,14 +75,23 @@ public class WindowsManager : MonoBehaviour
             CurrentlySelectedPreciseWindow = PW;
 
         }
+     
         MainUI.SetActive(false);
         WindowPrecisionUI.SetActive(true);
         canSelectWindow = false;
         MainVCamera.Follow = Target.transform;
         TargetOrthoSize = 2.5f;
-      //  MainVCamera.m_Lens.OrthographicSize = 2.5f;
-        isPrecisionMode = true;
+         //  MainVCamera.m_Lens.OrthographicSize = 2.5f;
+         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+        // Declare a RaycastHit variable to store the hit information
+        RaycastHit hit;
+        isPrecisionMode = true;
+        if (Physics.Raycast(ray, out hit))
+        {
+            PrecisionMarkerHighlighter.transform.position = hit.point;
+        }
+        PlacePrecisionMarker();
     }
 
     public void RemoveFromPreciseWindows(GameObject Window)
@@ -117,7 +127,7 @@ public class WindowsManager : MonoBehaviour
         WindowPrecisionUI.SetActive(false);
         canSelectWindow = true;
         MainVCamera.Follow = VCamOverviewFollower;
-        TargetOrthoSize = 22f;
+        TargetOrthoSize = OverviewOrthoSize;
         if (CurrentlySelectedWIndow) CurrentlySelectedWIndow = null;
         MainVCamera.transform.position = OriginalCamPosition;
         MainVCamera.transform.rotation = OriginalCamRotation;
@@ -213,7 +223,7 @@ public class WindowsManager : MonoBehaviour
                     PrecisionMarkerHighlighter.SetActive(true);
                     PrecisionMarkerHighlighter.transform.position = hit.point;
 
-                    if(Input.GetMouseButtonUp(0))
+                    if(Input.GetMouseButtonDown(0))
                     {
                         PlacePrecisionMarker();
                     }
