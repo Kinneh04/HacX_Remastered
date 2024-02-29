@@ -6,16 +6,33 @@ using System.Linq;
 public class HeatmapManager : MonoBehaviour
 {
     public MainGameManager mainGameManager;
+    public List<float> accs = new();
     public void UpdateHeatmap()
     {
-        float min = mainGameManager.CulpritsDone.Last().probability;
+        float min = 0;
+        for (int i = mainGameManager.CulpritsDone.Count - 1; i >= 0; i--)
+        {
+            Culprit currentCulprit = mainGameManager.CulpritsDone[i];
+
+            // Check if the probability is not equal to 0
+            if (currentCulprit.probability != 0f)
+            {
+                // Found the next culprit with a probability != 0
+                min = currentCulprit.probability;
+
+                break; // Break the loop since we found the next culprit
+            }
+        }
+
         float max = mainGameManager.CulpritsDone[0].probability;
 
         foreach(Culprit C in mainGameManager.CulpritsDone)
         {
             float normalizedAccuracy = Mathf.InverseLerp(min, max, C.probability);
-            Color heatmapColor = Color.Lerp(Color.red, Color.green, normalizedAccuracy);
-            C.culpritMaterial.color = heatmapColor;
+            float clampedNormalizedAccuracy = Mathf.Clamp01(normalizedAccuracy);
+            accs.Add(clampedNormalizedAccuracy);
+            Color heatmapColor = Color.Lerp(Color.red, Color.green, clampedNormalizedAccuracy);
+            C.culpritMeshRenderer.material.color = heatmapColor;
         }
     }
 
@@ -24,7 +41,7 @@ public class HeatmapManager : MonoBehaviour
         foreach (Culprit C in mainGameManager.CulpritsDone)
         {
 
-            C.culpritMaterial.color = Color.red;
+            C.culpritMeshRenderer.material.color = Color.red;
         }
     }
 }

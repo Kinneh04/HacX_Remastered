@@ -19,6 +19,7 @@ public class MainGameManager : MonoBehaviour
     public GameObject SimulationUI, PostSimUI;
    
     CulpritsManager culpritsManager;
+    public PostUIManager postUIManager;
 
     enum SimulationState
     {
@@ -110,5 +111,6 @@ public class MainGameManager : MonoBehaviour
     {
         SimulationUI.SetActive(false);
         PostSimUI.SetActive(true);
+        postUIManager.OnEndSimulation();
     }
 }

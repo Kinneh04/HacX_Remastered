@@ -73,7 +73,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("MainSimulationScene");
+        SceneManager.LoadScene("MainGame");
 
         // Wait for the next frame before calling LoadSettingsIntoMainGame
         StartCoroutine(LoadSettingsCoroutine());

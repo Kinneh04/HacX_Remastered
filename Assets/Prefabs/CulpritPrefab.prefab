@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54501316516651b4db770b611cc301da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  culpritMeshRenderer: {fileID: 1328118590865363972}
   floor: 0
   column: 0
   MAX_ITERATIONS: 20
@@ -98,6 +99,7 @@ MonoBehaviour:
   launchAngleMax: 0
   launchAngleMin: -90
   angle: 0
+  probability: 0
   Ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
   probabilityText: {fileID: 6414307671551196069}
 --- !u!1 &484209761539055410
