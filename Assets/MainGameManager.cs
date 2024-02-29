@@ -13,6 +13,10 @@ public class MainGameManager : MonoBehaviour
     public List<List<GameObject>> ListOfHitList = new();
     public List<List<GameObject>> ListOfNoHitList = new();
     public List<Culprit> CulpritsDone = new();
+
+    [Header("SimulationUI")]
+    public GameObject PreSimUI;
+    public GameObject SimulationUI, PostSimUI;
    
     CulpritsManager culpritsManager;
 
@@ -96,6 +100,15 @@ public class MainGameManager : MonoBehaviour
             // sort by highest probability
             List<Culprit> sortedList = CulpritsDone.OrderByDescending(go => go.probability).ToList();
             CulpritsDone = sortedList;
+
+            // post UI
+            EnablePostUI();
         }
+    }
+
+    public void EnablePostUI()
+    {
+        SimulationUI.SetActive(false);
+        PostSimUI.SetActive(true);
     }
 }

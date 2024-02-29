@@ -11,6 +11,9 @@ public class PostUIManager : MonoBehaviour
     public Toggle ShowHeatmapToggle;
     public Toggle ShowAccuracyToggle, ShowTracersToggle, ShowAllCulpritsToggle;
 
+    [Header("Managers")]
+    public HeatmapManager heatmapManager;
+
   public void ReplayScenario()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -23,6 +26,7 @@ public class PostUIManager : MonoBehaviour
 
     public void OnToggleHeatmap()
     {
-
+        if (ShowHeatmapToggle) heatmapManager.UpdateHeatmap();
+        else heatmapManager.DisableHeatmap();
     }
 }
