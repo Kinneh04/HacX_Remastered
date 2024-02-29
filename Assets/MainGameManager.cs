@@ -55,7 +55,6 @@ public class MainGameManager : MonoBehaviour
     {
         for (int i = 0; i < WindowsManager.Instance.SelectedWindows.Count; i++)
         {
-            Debug.Log("the");
             ListOfHitList.Add(new List<GameObject>());
             ListOfNoHitList.Add(new List<GameObject>());
         }
@@ -63,6 +62,8 @@ public class MainGameManager : MonoBehaviour
         OnStartGame?.Invoke();
         WindowsManager.Instance.canSelectWindow = false;
 
+        Time.fixedDeltaTime = 1/1000f;
+        Time.timeScale = DontDestroyOnLoadSettings.Instance.SimulationSpeedValue;
 
         Debug.Log("Starting SImulation");
     }
