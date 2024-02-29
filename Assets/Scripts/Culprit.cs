@@ -58,6 +58,7 @@ public class Culprit : MonoBehaviour
     public void OnStart()
     {
         finishedCurrent = false;
+        MAX_ITERATIONS = DontDestroyOnLoadSettings.Instance.MaxIterationsValue;
 
         foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
         {

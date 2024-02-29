@@ -175,7 +175,7 @@ public class WindowsManager : MonoBehaviour
         GameObject GO = Instantiate(PrecisionMarkerPrefab, PrecisionMarkerHighlighter.transform.position, Quaternion.identity);
         GO.transform.localScale = PrecisionMarkerPrefab.transform.localScale;
         CurrentlySelectedPreciseWindow.PrecisionMarker = GO;
-        OnUpdateConfidenceScale();
+        OnUpdateConfidenceScale();        
     }
 
     public void OnUpdateConfidenceScale()
@@ -260,5 +260,11 @@ public class WindowsManager : MonoBehaviour
 [System.Serializable]
 public class Precise_Window
 {
+    public float windowThickness = 10f; // window thickness in mm
+    public float windowLength = 2500f;
+    public float windowHeight = 1500f;
+
+    public float breakingStress = 18f; // maximum allowable stress in MPa (N/m^2)
+
     public GameObject PrecisionMarker, WindowGO;
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody rbody;
-    Collider collider;
 
     public bool isLaunched;
 
@@ -22,7 +21,7 @@ public class Ball : MonoBehaviour
     public Material window2;
     private int target;
     Vector3 vel;
-    float defaultVel = 70.0f;
+
     private GameObject targetWindow;
     private Precise_Window targetWindowPrecision;
     public TrailRenderer trailRenderer;
@@ -31,6 +30,8 @@ public class Ball : MonoBehaviour
     public float distanceFromCenter = 0f;
     public float angleOfImpact = 0f;
     public float impactSpeed = 0f;
+    public float impactForce = 0f;
+    public float pressureApplied = 0f;
 
     Culprit parentShooter;
     void Awake()
@@ -40,16 +41,15 @@ public class Ball : MonoBehaviour
         parentShooter = transform.parent.GetComponent<Culprit>();
         isLaunched = false;
 
-        dragCoefficient = 0.1f;
-        // get drag coefficient 
+        dragCoefficient = DontDestroyOnLoadSettings.Instance.dragCoefficient;
 
         r = transform.localScale.y * 0.5f;
         volume = (4 * Mathf.PI * r * r * r) / 3;
-        rbody.mass = (density * volume); // in grams
+        rbody.mass = (density * volume); // in kilograms
 
-        area = 2 * Mathf.PI * r * r;
+        area = Mathf.PI * Mathf.Pow(r,2);
 
-        //initialVel = SettingsMenu.instance.GetInitVel();
+        initialVel = DontDestroyOnLoadSettings.Instance.initialVelocity;
         force = rbody.mass * initialVel;
 
         rbody.isKinematic = true;
@@ -153,9 +153,9 @@ public class Ball : MonoBehaviour
         {
             return;
         }
-
-        Vector3 normal = other.contacts[0].normal;
-        transform.position = other.contacts[0].point;
+        ContactPoint contact = other.GetContact(0);
+        Vector3 normal = contact.normal;
+        transform.position = contact.point;
 
         if (targetWindowPrecision.PrecisionMarker != null 
             && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
@@ -172,6 +172,37 @@ public class Ball : MonoBehaviour
         angleOfImpact = Vector3.Angle(vel, -normal);
         impactSpeed = vel.magnitude;
 
-        Culprit.OnHit?.Invoke(gameObject, target);
+        // impact in newtons, kinetic energy f = 0.5 * m *v^2 / distance
+        impactForce = other.impulse.magnitude;
+
+        // calculate contact area (for spheres only)
+        float contactArea = CalculateContactArea(angleOfImpact);
+
+        // calculate pressure (mPa)
+        pressureApplied = impactForce / area;
+
+        if(pressureApplied > targetWindowPrecision.breakingStress)
+        {
+            Culprit.OnHit?.Invoke(gameObject, target);
+        }
+    }
+
+    float CalculateContactArea(float angle)
+    {
+        // Adjust contact area calculation based on impact angle
+
+        if (angle < Mathf.Epsilon)  // Consider a normal impact
+        {
+            return Mathf.PI * Mathf.Pow(r, 2);  // Circular contact area
+        }
+        else  // Consider an oblique impact
+        {
+            // Calculate semi-major and semi-minor axes of the ellipse
+            float majorAxis = r / Mathf.Cos(angle * Mathf.Deg2Rad);
+            float minorAxis = r;
+
+            // Calculate elliptical contact area
+            return Mathf.PI * majorAxis * minorAxis;
+        }
     }
 }
