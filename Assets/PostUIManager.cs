@@ -168,7 +168,7 @@ public class PostUIManager : MonoBehaviour
 
     public void OnToggleTracers()
     {
-        List<GameObject> BallObjects = mainGameManager.ListOfHitList[1];
+        List<GameObject> BallObjects = mainGameManager.ListOfHitList[0];
         foreach(GameObject GO in BallObjects)
         {
             GO.GetComponent<TrailRenderer>().enabled = ShowTracersToggle.isOn;

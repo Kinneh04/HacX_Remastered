@@ -131,6 +131,7 @@ public class WindowsManager : MonoBehaviour
         if (CurrentlySelectedWIndow) CurrentlySelectedWIndow = null;
         MainVCamera.transform.position = OriginalCamPosition;
         MainVCamera.transform.rotation = OriginalCamRotation;
+        isPrecisionMode = false;
     }
 
     private void Awake()
