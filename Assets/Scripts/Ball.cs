@@ -188,6 +188,10 @@ public class Ball : MonoBehaviour
         {
             Culprit.OnHit?.Invoke(gameObject, target);
         }
+        else
+        {
+            parentShooter.finishedCurrent = true;
+        }
     }
 
     float CalculateContactArea(float angle)
