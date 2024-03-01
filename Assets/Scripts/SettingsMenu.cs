@@ -43,6 +43,9 @@ public class SettingsMenu : MonoBehaviour
     [Header("Density")]
     public TMP_InputField densityInputField;
 
+    [Header("Diameter")]
+    public TMP_InputField diameterInputField;
+
 
 
     public void StartGame()
@@ -199,6 +202,21 @@ public class SettingsMenu : MonoBehaviour
         }
     }
 
+    private void OnDiameterChanged(string value)
+    {
+        if (float.TryParse(value, out var newDiameter) && newDiameter > 0f)
+        {
+            // Add any validation or logic for density if needed
+            settingsManager.diameter = newDiameter;
+            UpdateUI();
+        }
+        else
+        {
+            settingsManager.diameter = 0.01f;
+            Debug.LogError("Invalid input for density. Please enter a valid number.");
+        }
+    }
+
     public void OnTimestepDropdownChanged(int value)
     {
         settingsManager.timeStepAmt = settingsManager.timeSteps[value];
@@ -210,6 +228,7 @@ public class SettingsMenu : MonoBehaviour
         maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
         velocityIncrementInputField.text = settingsManager.velocityIncrement.ToString();
         densityInputField.text = settingsManager.density.ToString();
+        diameterInputField.text = settingsManager.diameter.ToString();
     }
 
     private void AddListenersToSettingsSliders()
@@ -227,6 +246,7 @@ public class SettingsMenu : MonoBehaviour
         velocityIncrementInputField.onValueChanged.AddListener(OnVelocityIncrementChanged);
 
         densityInputField.onValueChanged.AddListener(OnDensityChanged);
+        diameterInputField.onValueChanged.AddListener(OnDiameterChanged);
 
         timeStepDropdown.onValueChanged.AddListener(OnTimestepDropdownChanged);
     }

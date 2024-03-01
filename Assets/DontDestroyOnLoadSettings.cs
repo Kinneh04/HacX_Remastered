@@ -18,7 +18,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     public int NumCulpritsPerRowValue;
 
     [Header("Ball")]
-    public float ballSize;
+    public float diameter;
     public float dragCoefficient;
     public float coefficientOfRestitution;
     public float density;

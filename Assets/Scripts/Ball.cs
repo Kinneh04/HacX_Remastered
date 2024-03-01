@@ -43,7 +43,9 @@ public class Ball : MonoBehaviour
         dragCoefficient = DontDestroyOnLoadSettings.Instance.dragCoefficient;
         density = DontDestroyOnLoadSettings.Instance.density;
         initialVel = DontDestroyOnLoadSettings.Instance.minVelocity;
-
+        transform.localScale = new Vector3(DontDestroyOnLoadSettings.Instance.diameter
+                                        , DontDestroyOnLoadSettings.Instance.diameter
+                                        , DontDestroyOnLoadSettings.Instance.diameter);
         r = transform.localScale.y * 0.5f;
 
         volume = (4 * Mathf.PI * r * r * r) / 3;
