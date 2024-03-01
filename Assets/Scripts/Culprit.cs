@@ -36,7 +36,6 @@ public class Culprit : MonoBehaviour
     public float launchAngleMax = 0f;
     public float launchAngleMin = -90f;
     public float angle;
-
     public float probability = 0f;
     public float TotalProbability = 0f;
 
