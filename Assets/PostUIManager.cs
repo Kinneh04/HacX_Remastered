@@ -37,8 +37,14 @@ public class PostUIManager : MonoBehaviour
         {
             GameObject GO = Instantiate(WindowSelectionTogglePrefab);
             GO.transform.SetParent(WindowSelectionPrefabParent, false);
-            GO.GetComponent<Toggle>().onValueChanged.AddListener(delegate { OnSelectWindow(PWIndex, GO.GetComponent<Toggle>()); });
+            WindowToggle WT = GO.GetComponent<WindowToggle>();
+            WT.WindowText.text = "Window " + (PWIndex+1).ToString();
+            WT.windowSelectedIndex = PWIndex;
+            WT.toggle.onValueChanged.AddListener(delegate { OnSelectWindow(WT.windowSelectedIndex, GO.GetComponent<Toggle>()); });
+            WindowIndexesSelected.Add(PWIndex);
             PWIndex++;
+
+            
 
         }
     }
@@ -48,6 +54,9 @@ public class PostUIManager : MonoBehaviour
             WindowIndexesSelected.Add(windowIndex);
         else WindowIndexesSelected.Remove(windowIndex);
         RecalculateWindows();
+
+        ChangeAccLimitSlider.maxValue = returnCulpritMaxAccuracy();
+        ChangeAccLimitSlider.minValue = returnCulpritMinAccuracy();
     }
 
     public void RecalculateWindows()
@@ -56,6 +65,7 @@ public class PostUIManager : MonoBehaviour
         {
             C.CalculateProbabilityWithWindows(WindowIndexesSelected);
         }
+        heatmapManager.UpdateHeatmap();
     }
 
     public void OnEndSimulation()
@@ -64,6 +74,8 @@ public class PostUIManager : MonoBehaviour
         ChangeAccLimitSlider.maxValue = returnCulpritMaxAccuracy();
         ChangeAccLimitSlider.minValue = returnCulpritMinAccuracy();
         ChangeAccLimitSlider.value = ChangeAccLimitSlider.minValue;
+
+        InstantiateWindowToggles();
     }
 
     public float returnCulpritMinAccuracy()
@@ -85,24 +97,26 @@ public class PostUIManager : MonoBehaviour
         return min;
     }
 
-    public void OnToggleMostLikelyCulprit()
+    public void OnHitMostLikelyCulprit()
     {
+        //Most likely culprit
+        mainGameManager.CulpritsDone[0].outline.OutlineColor = Color.cyan;
 
-        if(showMostLikelyCulpritToggle.isOn)
-        {
-            mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.cyan;
-        }
-        else
-        {
-            if(ShowHeatmapToggle.isOn)
-            {
-                mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.green;
-            }
-            else
-            {
-                mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.red;
-            }
-        }
+        //if(showMostLikelyCulpritToggle.isOn)
+        //{
+        //    mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.cyan;
+        //}
+        //else
+        //{
+        //    if(ShowHeatmapToggle.isOn)
+        //    {
+        //        mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.green;
+        //    }
+        //    else
+        //    {
+        //        mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.red;
+        //    }
+        //}
     }
 
     public float returnCulpritMaxAccuracy()

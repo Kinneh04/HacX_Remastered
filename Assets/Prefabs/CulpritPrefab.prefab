@@ -41,6 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 588569950105617842}
   - component: {fileID: 2918309586818726610}
+  - component: {fileID: 8655809979290022111}
   m_Layer: 2
   m_Name: CulpritPrefab
   m_TagString: Culprit
@@ -100,8 +101,28 @@ MonoBehaviour:
   launchAngleMin: -90
   angle: 0
   probability: 0
+  TotalProbability: 0
   Ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
   probabilityText: {fileID: 6414307671551196069}
+  outline: {fileID: 0}
+--- !u!114 &8655809979290022111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243429592876162824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 0.94258285, b: 1, a: 0.3764706}
+  outlineWidth: 9
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &484209761539055410
 GameObject:
   m_ObjectHideFlags: 0

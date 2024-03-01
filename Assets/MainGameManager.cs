@@ -109,6 +109,12 @@ public class MainGameManager : MonoBehaviour
         }
     }
 
+    public void SortCulpritsList()
+    {
+        List<Culprit> sortedList = CulpritsDone.OrderByDescending(go => go.probability).ToList();
+        CulpritsDone = sortedList;
+    }
+
     public void EnablePostUI()
     {
         SimulationUI.SetActive(false);

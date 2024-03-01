@@ -9,6 +9,7 @@ public class HeatmapManager : MonoBehaviour
     public List<float> accs = new();
     public void UpdateHeatmap()
     {
+        mainGameManager.SortCulpritsList();
         float min = 0;
         for (int i = mainGameManager.CulpritsDone.Count - 1; i >= 0; i--)
         {

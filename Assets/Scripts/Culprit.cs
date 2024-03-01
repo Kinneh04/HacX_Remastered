@@ -46,10 +46,17 @@ public class Culprit : MonoBehaviour
     Quaternion targetRotation;
 
     public TMP_Text probabilityText;
+
+    public Outline outline;
     private void Awake()
     {
         MainGameManager.OnStartGame += OnStart;
         MainGameManager.OnNextWindow += CheckCanNext;
+    }
+
+    private void Start()
+    {
+        outline = GetComponent<Outline>();
     }
 
     private void OnDestroy()
@@ -157,6 +164,8 @@ public class Culprit : MonoBehaviour
     private void Update()
     {
         
+          outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
+
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 
@@ -226,7 +235,7 @@ public class Culprit : MonoBehaviour
             probability += (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 0.5f;
         }
         probability = 100 * (probability / balls.Length);
-        probabilityText.text = probability.ToString("F1");
+        probabilityText.text = probability.ToString("F1") + "%";
         TotalProbability = probability;
         OnDone?.Invoke(this);
     }
@@ -247,11 +256,12 @@ public class Culprit : MonoBehaviour
             }
         }
         probability = totalProb / calculations;
+        probabilityText.text = probability.ToString("F1") + "%";
     }
 
     public float calculateAccForBall(Ball ball)
     {
-        return (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel));
+        return (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 50f;
     }
 
 }
