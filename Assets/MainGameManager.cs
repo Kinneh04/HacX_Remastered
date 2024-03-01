@@ -62,7 +62,7 @@ public class MainGameManager : MonoBehaviour
         OnStartGame?.Invoke();
         WindowsManager.Instance.canSelectWindow = false;
 
-        Time.fixedDeltaTime = 1/1000f;
+        Time.fixedDeltaTime = 1 / DontDestroyOnLoadSettings.Instance.timeStepAmt;
         Time.timeScale = DontDestroyOnLoadSettings.Instance.SimulationSpeedValue;
 
         Debug.Log("Starting SImulation");

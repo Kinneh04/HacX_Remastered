@@ -21,6 +21,7 @@ public class SettingsMenu : MonoBehaviour
     [Header("SimulationSpeed")]
     public Slider Slider_SimulationSpeed;
     public TMP_Text Text_SimulationSpeed;
+    
 
     [Header("Maxiterations")]
     public Slider Slider_MaxIterations;
@@ -31,9 +32,17 @@ public class SettingsMenu : MonoBehaviour
     public Slider Slider_Drag;
     public TMP_Text Text_drag;
 
-    [Header("InitVelocity")]
-    public Slider Slider_StartVelocity;
-    public TMP_Text Text_StartVelocity;
+    [Header("Velocity")]
+    public TMP_InputField minVelocityInputField;
+    public TMP_InputField maxVelocityInputField;
+    public TMP_InputField velocityIncrementInputField;
+
+    [Header("TimeStep")]
+    public TMP_Dropdown timeStepDropdown;
+
+    [Header("Density")]
+    public TMP_InputField densityInputField;
+
 
 
     public void StartGame()
@@ -65,6 +74,7 @@ public class SettingsMenu : MonoBehaviour
         {
             AddListenersToSettingsSliders();
             ParseCurrentValuesIntoSliders();
+            UpdateUI();
         }
     }
 
@@ -79,9 +89,6 @@ public class SettingsMenu : MonoBehaviour
         Slider_NumCulpritsPerRow.value= settingsManager.NumCulpritsPerRowValue;
         Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
 
-        Slider_StartVelocity.value = settingsManager.initialVelocity;
-        Text_StartVelocity.text = Slider_StartVelocity.value.ToString("F2") + "m/s";
-
         Slider_Drag.value = settingsManager.dragCoefficient;
         Text_drag.text = Slider_Drag.value.ToString("F1");
     }
@@ -92,19 +99,12 @@ public class SettingsMenu : MonoBehaviour
         OnChangeMaxIterations();
         OnChangeSimulationSpeed();
         OnChangeDragCoefficient();
-        OnChangeInitialVelocity();
     }
 
     public void OnChangeDragCoefficient()
     {
         settingsManager.dragCoefficient = Slider_Drag.value;
         Text_drag.text = Slider_Drag.value.ToString("F1");
-    }
-
-    public void OnChangeInitialVelocity()
-    {
-        settingsManager.initialVelocity = Slider_StartVelocity.value;
-        Text_StartVelocity.text = Slider_StartVelocity.value.ToString("F1") + "m/s";
     }
 
     public void OnChangeMaxIterations()
@@ -124,6 +124,94 @@ public class SettingsMenu : MonoBehaviour
         Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
     }
 
+    private void OnMinVelocityChanged(string value)
+    {
+        if (float.TryParse(value, out var newMinVelocity) && newMinVelocity > 0f)
+        {
+            // Validation: Ensure minVelocity is less than maxVelocity
+            if (newMinVelocity <= settingsManager.maxVelocity)
+            {
+                settingsManager.minVelocity = newMinVelocity;
+            }
+            else
+            {
+                settingsManager.minVelocity = settingsManager.maxVelocity;
+                Debug.LogError("Min velocity cannot be greater than or equal to max velocity.");
+            }
+            UpdateUI();
+        }
+        else
+        {
+            settingsManager.minVelocity = 0;
+            Debug.LogError("Invalid input for min velocity. Please enter a valid number.");
+        }
+    }
+
+    private void OnMaxVelocityChanged(string value)
+    {
+        if (float.TryParse(value, out var newMaxVelocity) && newMaxVelocity > 0f)
+        {
+            // Validation: Ensure maxVelocity is greater than minVelocity
+            if (newMaxVelocity >= settingsManager.minVelocity)
+            {
+                settingsManager.maxVelocity = newMaxVelocity;
+            }
+            else
+            {
+                settingsManager.maxVelocity = settingsManager.minVelocity;
+                Debug.LogError("Max velocity cannot be less than or equal to min velocity.");
+            }
+            UpdateUI();
+        }
+        else
+        {
+            settingsManager.maxVelocity = 0;
+            Debug.LogError("Invalid input for max velocity. Please enter a valid number.");
+        }
+    }
+
+    private void OnVelocityIncrementChanged(string value)
+    {
+        if (int.TryParse(value, out var newVelocityIncrement) && newVelocityIncrement >= 1)
+        {
+            settingsManager.velocityIncrement = newVelocityIncrement;
+        }
+        else
+        {
+            settingsManager.velocityIncrement = 1;
+            Debug.LogError("Invalid input for velocity increment. Please enter a valid number.");
+        }
+        UpdateUI();
+    }
+
+    private void OnDensityChanged(string value)
+    {
+        if (float.TryParse(value, out var newDensity) && newDensity > 0f)
+        {
+            // Add any validation or logic for density if needed
+            settingsManager.density = newDensity;
+            UpdateUI();
+        }
+        else
+        {
+            settingsManager.density = 7750f;
+            Debug.LogError("Invalid input for density. Please enter a valid number.");
+        }
+    }
+
+    public void OnTimestepDropdownChanged(int value)
+    {
+        settingsManager.timeStepAmt = settingsManager.timeSteps[value];
+    }
+
+    private void UpdateUI()
+    {
+        minVelocityInputField.text = settingsManager.minVelocity.ToString();
+        maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
+        velocityIncrementInputField.text = settingsManager.velocityIncrement.ToString();
+        densityInputField.text = settingsManager.density.ToString();
+    }
+
     private void AddListenersToSettingsSliders()
     {
         Slider_NumCulpritsPerRow.onValueChanged.AddListener(delegate { OnChangeNumCulpritsPerRow(); });
@@ -134,7 +222,13 @@ public class SettingsMenu : MonoBehaviour
 
         Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
 
-        Slider_StartVelocity.onValueChanged.AddListener(delegate { OnChangeInitialVelocity(); });
+        minVelocityInputField.onValueChanged.AddListener(OnMinVelocityChanged);
+        maxVelocityInputField.onValueChanged.AddListener(OnMaxVelocityChanged);
+        velocityIncrementInputField.onValueChanged.AddListener(OnVelocityIncrementChanged);
+
+        densityInputField.onValueChanged.AddListener(OnDensityChanged);
+
+        timeStepDropdown.onValueChanged.AddListener(OnTimestepDropdownChanged);
     }
     public void DisplayHelpMenu(string title, string desc, Sprite Image)
     {

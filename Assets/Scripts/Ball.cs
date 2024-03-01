@@ -13,12 +13,10 @@ public class Ball : MonoBehaviour
     public float volume = 0;
     public float initialVel = 70f; // m/s
     private float force;
-    float distToGround;
+
     public float r;
     float p = 1.225f; //density of air 1.225kg/m^3
     public float area;
-    public Material window1;
-    public Material window2;
     private int target;
     Vector3 vel;
 
@@ -39,21 +37,24 @@ public class Ball : MonoBehaviour
         rbody = GetComponent<Rigidbody>();
         trailRenderer = GetComponent<TrailRenderer>();
         parentShooter = transform.parent.GetComponent<Culprit>();
+
         isLaunched = false;
 
         dragCoefficient = DontDestroyOnLoadSettings.Instance.dragCoefficient;
+        density = DontDestroyOnLoadSettings.Instance.density;
+        initialVel = DontDestroyOnLoadSettings.Instance.minVelocity;
 
         r = transform.localScale.y * 0.5f;
+
         volume = (4 * Mathf.PI * r * r * r) / 3;
+
         rbody.mass = (density * volume); // in kilograms
 
         area = Mathf.PI * Mathf.Pow(r,2);
 
-        initialVel = DontDestroyOnLoadSettings.Instance.initialVelocity;
         force = rbody.mass * initialVel;
 
         rbody.isKinematic = true;
-        
     }
 
     public void Shoot(Precise_Window PreciseTarget, int targetIndex)

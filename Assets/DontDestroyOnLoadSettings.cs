@@ -8,12 +8,23 @@ using TMPro;
 
 public class DontDestroyOnLoadSettings : MonoBehaviour
 {
-    [Header("Settings")]
-    public int NumCulpritsPerRowValue;
+    [Header("Simulation")]
     public float SimulationSpeedValue;
     public int MaxIterationsValue;
+    public float timeStepAmt;
+    public float[] timeSteps = { 50, 100, 200, 500, 1000 };
+
+    [Header("Building")]
+    public int NumCulpritsPerRowValue;
+
+    [Header("Ball")]
+    public float ballSize;
     public float dragCoefficient;
-    public float initialVelocity;
+    public float coefficientOfRestitution;
+    public float density;
+    public float minVelocity;
+    public float maxVelocity;
+    public float velocityIncrement;
 
     [Header("BuildingToLoad")]
     public Scenario LoadedBuilding;
@@ -31,13 +42,13 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
 
     public void LoadBuilding()
     {
-        if (!scenarioBuilder) scenarioBuilder = GameObject.FindObjectOfType<ScenarioBuilder>();
+        if (!scenarioBuilder) scenarioBuilder = FindObjectOfType<ScenarioBuilder>();
         scenarioBuilder.ParseScenario(LoadedBuilding);
     }
 
     public void LoadSettingsIntoMainGame()
     {
-        CulpritsManager culpritsManager = GameObject.FindObjectOfType<CulpritsManager>();
+        CulpritsManager culpritsManager = FindObjectOfType<CulpritsManager>();
         culpritsManager.NumCulpritsPerRow = NumCulpritsPerRowValue;
         culpritsManager.InitFloors();
     }
