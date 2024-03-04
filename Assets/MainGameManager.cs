@@ -9,6 +9,7 @@ public class MainGameManager : MonoBehaviour
 {
     public static event Action OnStartGame;
     public static event Action OnNextWindow;
+    public static Action<int> OnNextIteration = delegate { };
 
     public List<List<GameObject>> ListOfHitList = new();
     public List<List<GameObject>> ListOfNoHitList = new();
@@ -33,9 +34,13 @@ public class MainGameManager : MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         Culprit.OnCantHit += HandleCantHit;
         Culprit.OnHit += HandleHit;
         Culprit.OnDone += HandleDone;
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
         culpritsManager = FindObjectOfType<CulpritsManager>();
     }
@@ -45,6 +50,16 @@ public class MainGameManager : MonoBehaviour
         Culprit.OnCantHit -= HandleCantHit;
         Culprit.OnHit -= HandleHit;
         Culprit.OnDone -= HandleDone;
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "Main Menu")
+        {
+            Destroy(gameObject);
+        }
     }
     public void ReturnToMainMenu()
     {
@@ -99,10 +114,8 @@ public class MainGameManager : MonoBehaviour
 
         // check if all done
         if(CulpritsDone.Count == culpritsManager.SpawnedCulprits.Count)
-        {
-            // sort by highest probability
-            List<Culprit> sortedList = CulpritsDone.OrderByDescending(go => go.probability).ToList();
-            CulpritsDone = sortedList;
+        { 
+            SortCulpritsList();
 
             // post UI
             EnablePostUI();
@@ -111,6 +124,7 @@ public class MainGameManager : MonoBehaviour
 
     public void SortCulpritsList()
     {
+        // sort by highest probability
         List<Culprit> sortedList = CulpritsDone.OrderByDescending(go => go.probability).ToList();
         CulpritsDone = sortedList;
     }
