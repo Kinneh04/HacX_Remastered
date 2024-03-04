@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1454201081097711205}
   - component: {fileID: 106663636556536878}
   - component: {fileID: 880592054051702171}
-  m_Layer: 3
+  m_Layer: 2
   m_Name: BallBearing
   m_TagString: Ball
   m_Icon: {fileID: 0}
@@ -234,9 +234,17 @@ MonoBehaviour:
   initialVel: 70
   r: 0
   area: 0
-  window1: {fileID: 0}
-  window2: {fileID: 0}
+  targetWindow: {fileID: 0}
+  targetWindowPrecision:
+    windowThickness: 10
+    windowLength: 2500
+    windowHeight: 1500
+    breakingStress: 18
+    PrecisionMarker: {fileID: 0}
+    WindowGO: {fileID: 0}
   trailRenderer: {fileID: 0}
   distanceFromCenter: 0
   angleOfImpact: 0
   impactSpeed: 0
+  impactForce: 0
+  pressureApplied: 0

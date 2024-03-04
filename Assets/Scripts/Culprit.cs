@@ -29,15 +29,17 @@ public class Culprit : MonoBehaviour
     public bool canHitCurrWindow = false;
 
     public Ball[] balls;
+    public List<Ball> allBalls = new();
     public List<GameObject> windows = new();
     public List<bool> windowHit = new();
     public List<int> iterations = new();
-    
+    public List<float> probabilities = new();
     public float launchAngleMax = 0f;
     public float launchAngleMin = -90f;
     public float angle;
     public float probability = 0f;
-    public float TotalProbability = 0f;
+    public float averageProbability = 0f;
+    public float currentIteration;
 
     public GameObject Ball;
     Ball currentBall;
@@ -63,9 +65,36 @@ public class Culprit : MonoBehaviour
         MainGameManager.OnStartGame -= OnStart;
         MainGameManager.OnNextWindow -= CheckCanNext;
     }
-    public void OnStart()
+    public void ResetVariables()
     {
+        currentTarget = 0;
+        travelling = false;
+        below = true;
+        hit = false;
+
+        done = false;
         finishedCurrent = false;
+        shootNext = false;
+        canHitCurrWindow = false;
+
+        Array.Clear(balls, 0, balls.Length);
+        windows.Clear();
+        windowHit.Clear();
+        iterations.Clear();
+
+        launchAngleMax = 0f;
+        launchAngleMin = -90f;
+        probability = 0f;
+
+        foreach(Ball ball in allBalls)
+        {
+            ball.trailRenderer.Clear();
+        }
+    }
+    public void OnStart(int newVelocity, int newIter)
+    {
+        ResetVariables();
+        currentIteration = newIter;
         MAX_ITERATIONS = DontDestroyOnLoadSettings.Instance.MaxIterationsValue;
 
         foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
@@ -76,6 +105,7 @@ public class Culprit : MonoBehaviour
         }
         //windows = WindowsManager.Instance.PreciseWindows;
         balls = new Ball[windows.Count];
+
         for (int i = 0; i < windows.Count; i++)
         {
             windowHit.Add(false);
@@ -83,13 +113,15 @@ public class Culprit : MonoBehaviour
 
             // pre instantiate the balls for each window
             balls[i] = Instantiate(Ball, ShootPosition.position, ShootPosition.rotation, transform).GetComponent<Ball>();
-            //balls[i].SetTarget(i);
+            balls[i].NewVel(newVelocity);
+            allBalls.Add(balls[i]);
             balls[i].gameObject.SetActive(false);
         }
         if (!CanSeeObject(windows[currentTarget]))
         {
             OnCantHit?.Invoke(gameObject, currentTarget);
             finishedCurrent = true;
+            Debug.Log(this.name);
             return;
         }
         balls[currentTarget].gameObject.SetActive(true);
@@ -235,7 +267,13 @@ public class Culprit : MonoBehaviour
         }
         probability = 100 * (probability / balls.Length);
         probabilityText.text = probability.ToString("F1") + "%";
-        TotalProbability = probability;
+        probabilities.Add(probability);
+        float total = 0;
+        for (int i = 0; i < probabilities.Count; i++)
+        {
+            total += probabilities[i];
+        }
+        averageProbability = total / probabilities.Count;
         OnDone?.Invoke(this);
     }
 
@@ -245,7 +283,7 @@ public class Culprit : MonoBehaviour
         int calculations = 0;
         for(int i = 0; i < Windows.Count; i++)
         {
-            foreach(Ball b in balls)
+            foreach(Ball b in allBalls)
             {
                 if(b.targetWindowPrecision == WindowsManager.Instance.PreciseWindows[Windows[i]])
                 {

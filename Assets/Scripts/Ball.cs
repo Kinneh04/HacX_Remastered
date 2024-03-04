@@ -59,6 +59,12 @@ public class Ball : MonoBehaviour
         rbody.isKinematic = true;
     }
 
+    public void NewVel(int _vel)
+    {
+        initialVel = _vel;
+        force = rbody.mass * initialVel;
+    }
+
     public void Shoot(Precise_Window PreciseTarget, int targetIndex)
     {
         GameObject target = PreciseTarget.WindowGO;

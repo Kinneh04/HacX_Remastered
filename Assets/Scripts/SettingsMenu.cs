@@ -129,7 +129,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void OnMinVelocityChanged(string value)
     {
-        if (float.TryParse(value, out var newMinVelocity) && newMinVelocity > 0f)
+        if (int.TryParse(value, out var newMinVelocity) && newMinVelocity > 0f)
         {
             // Validation: Ensure minVelocity is less than maxVelocity
             if (newMinVelocity <= settingsManager.maxVelocity)
@@ -152,7 +152,7 @@ public class SettingsMenu : MonoBehaviour
 
     private void OnMaxVelocityChanged(string value)
     {
-        if (float.TryParse(value, out var newMaxVelocity) && newMaxVelocity > 0f)
+        if (int.TryParse(value, out var newMaxVelocity) && newMaxVelocity > 0f)
         {
             // Validation: Ensure maxVelocity is greater than minVelocity
             if (newMaxVelocity >= settingsManager.minVelocity)

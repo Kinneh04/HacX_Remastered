@@ -22,9 +22,9 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     public float dragCoefficient;
     public float coefficientOfRestitution;
     public float density;
-    public float minVelocity;
-    public float maxVelocity;
-    public float velocityIncrement;
+    public int minVelocity;
+    public int maxVelocity;
+    public int velocityIncrement;
 
     [Header("BuildingToLoad")]
     public Scenario LoadedBuilding;

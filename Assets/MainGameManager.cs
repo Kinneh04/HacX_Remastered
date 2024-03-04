@@ -12,13 +12,15 @@ using Newtonsoft.Json;
 
 public class MainGameManager : MonoBehaviour
 {
-    public static event Action OnStartGame;
+    public static Action<int, int> OnStartGame = delegate { };
     public static event Action OnNextWindow;
     public static Action<int> OnNextIteration = delegate { };
 
     public List<List<GameObject>> ListOfHitList = new();
     public List<List<GameObject>> ListOfNoHitList = new();
     public List<Culprit> CulpritsDone = new();
+
+    public List<List<float>> ListOfProbabilityList = new();
 
     [Header("SimulationUI")]
     public GameObject PreSimUI;
@@ -28,17 +30,37 @@ public class MainGameManager : MonoBehaviour
     public PostUIManager postUIManager;
     public CameraManager cameraManager;
 
+    [Header("Multiple Iterations")]
+    DontDestroyOnLoadSettings settings;
+    int startVel, maxVel;
+    int increment;
+    int currentIteration;
+    int potentialIterations;
+
+
     [Header("Importing")]
+
     public TMP_Text ImportingFeedback;
+
     [TextArea(5, 5)]
+
     public string loadedJSONFromFile = "";
+
     public GameObject ImportingCloseButton, importingFeedbackGO;
 
+
+
     [Header("Screenshotting")]
+
     public GameObject MetadataTextGO;
+
     public ScenarioBuilder scenarioBuilder;
 
+
+
     public TMP_Text MD_Title, MD_Date, MD_Time, MD_TargetFloors, MD_CulpritFloors, MD_Distance;
+
+
 
     enum SimulationState
     {
@@ -60,6 +82,20 @@ public class MainGameManager : MonoBehaviour
         SceneManager.sceneLoaded += OnSceneLoaded;
 
         culpritsManager = FindObjectOfType<CulpritsManager>();
+        settings = FindObjectOfType<DontDestroyOnLoadSettings>();
+
+        startVel = settings.minVelocity;
+        maxVel = settings.maxVelocity;
+        increment = settings.velocityIncrement;
+
+        potentialIterations = (maxVel - startVel) / increment + 1;
+        currentIteration = 0;
+
+        //init the amount of probabilities to average
+        for(int i = 0; i < potentialIterations; i++)
+        {
+            ListOfProbabilityList.Add(new());
+        }
     }
 
     private void OnDestroy()
@@ -70,6 +106,8 @@ public class MainGameManager : MonoBehaviour
 
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
@@ -91,13 +129,13 @@ public class MainGameManager : MonoBehaviour
             ListOfNoHitList.Add(new List<GameObject>());
         }
         simState = SimulationState.SIMULATE;
-        OnStartGame?.Invoke();
+        OnStartGame?.Invoke(startVel, currentIteration);
         WindowsManager.Instance.canSelectWindow = false;
 
         Time.fixedDeltaTime = 1 / DontDestroyOnLoadSettings.Instance.timeStepAmt;
         Time.timeScale = DontDestroyOnLoadSettings.Instance.SimulationSpeedValue;
 
-        Debug.Log("Starting SImulation");
+        Debug.Log("Starting Simulation");
     }
 
     IEnumerator TakeScreenshot()
@@ -173,14 +211,82 @@ public class MainGameManager : MonoBehaviour
 
         // check if all done
         if(CulpritsDone.Count == culpritsManager.SpawnedCulprits.Count)
-        { 
-            SortCulpritsList();
+        {
+            if(startVel != maxVel)
+            {
+                startVel = CalculateIterations(startVel);
+                currentIteration++;
+                ResetListsForNextIteration();
+                return;
+            }
+            else // end the simulation
+            {
+                //CalculateAvgProbability(ListOfProbabilityList);
+                SortCulpritsList();
 
-            // post UI
-            EnablePostUI();
+                // post UI
+                EnablePostUI();
+            }
+        }
+    }
+    public void ResetListsForNextIteration()
+    {
+        //settings.StartGame();
+        ListOfHitList.Clear();
+        ListOfNoHitList.Clear();
+        CulpritsDone.Clear();
+
+        StartSimulation();
+    }
+    public int CalculateIterations(int currentVel)
+    {
+        // Calculate the potential final value without incrementing
+        int potentialFinalValue = currentVel + (int)Math.Ceiling((maxVel - currentVel) / (float)increment) * increment;
+
+        // Check for overflow using a comparison with the max value
+        if (potentialFinalValue > maxVel)
+        {
+            // Set the final value to the max if it overflows
+            Debug.Log("Final value would overflow, set to max: " + maxVel);
+            return maxVel;
+
+        }
+        else
+        {
+            return currentVel + increment;
         }
     }
 
+    //public void CalculateAvgProbability(List<List<float>> probabilityArray)
+    //{
+    //    for(int i = 0; i < probabilityArray.Count; i++)
+    //    {
+    //        Debug.Log(probabilityArray[i].Count);
+    //    }    
+    //    // Validate input (ensure all sub-lists have the same length)
+    //    if (!probabilityArray.All(subList => subList.Count == probabilityArray[0].Count))
+    //    {
+    //        throw new ArgumentException("All sub-lists in the probability array must have the same length.");
+    //    }
+
+    //    int numElements = probabilityArray[0].Count; // Assuming all sub-lists have the same length
+
+    //    // Initialize a list to store the average probabilities
+    //    //List<float> averageProbabilities = new List<float>(numElements);
+
+    //    // Calculate the sum of probabilities for each index
+    //    for (int i = 0; i < numElements; i++)
+    //    {
+    //        float sumOfProbabilities = 0f;
+    //        foreach (var subList in probabilityArray)
+    //        {
+    //            sumOfProbabilities += subList[i];
+    //        }
+
+    //        // Calculate the average probability for the current index
+    //        CulpritsDone[i].probability = (sumOfProbabilities / probabilityArray.Count);
+    //    }
+    //}    
     public void SortCulpritsList()
     {
         // sort by highest probability

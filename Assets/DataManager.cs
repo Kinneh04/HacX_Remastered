@@ -26,7 +26,7 @@ public class DataManager : MonoBehaviour
                 ExactCulpritPosX = c.transform.position.x,
                 ExactCulpritPosY = c.transform.position.y,
                 ExactCulpritPosZ = c.transform.position.z,
-                culpritAccuracy = c.TotalProbability,
+                culpritAccuracy = c.averageProbability,
                 WindowHits = c.windowHit
             };
 
@@ -45,7 +45,7 @@ public class DataManager : MonoBehaviour
                 ExactCulpritPosX = c.transform.position.x,
                 ExactCulpritPosY = c.transform.position.y,
                 ExactCulpritPosZ = c.transform.position.z,
-                culpritAccuracy = c.TotalProbability,
+                culpritAccuracy = c.averageProbability,
                 WindowHits = c.windowHit
             };
 
