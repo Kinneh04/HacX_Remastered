@@ -9,6 +9,7 @@ public class AreaSplitManager : MonoBehaviour
     public float DeadzoneRadius = 0.5f;
     public List<GameObject> SpawnedCulprits = new();
     public int Floor = 0;
+    
     public CulpritsManager culpritManager;
     public void RespawnCulprits()
     {
