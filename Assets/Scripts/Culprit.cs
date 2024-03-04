@@ -51,6 +51,9 @@ public class Culprit : MonoBehaviour
     public TMP_Text probabilityText;
 
     public Outline outline;
+
+    [Header("BallsHit")]
+    public int totalBallsThrown, TotalBallsHit;
     private void Awake()
     {
         initialPosition = transform.position;
@@ -242,7 +245,7 @@ public class Culprit : MonoBehaviour
         currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);
         travelling = true;
         shootNext = false;
-
+        totalBallsThrown++;
         iterations[currentTarget]++;
     }
     public void FireProjectileAt(int windowIndex)

@@ -26,6 +26,10 @@ public class CulpritsManager : MonoBehaviour
     public GameObject CulpritUI;
     Vector3 OriginalPosition;
 
+    [Header("CulpritStats")]
+    public TMP_Text FloorText;
+    public TMP_Text ColumnText, OverallAccuracyText, TotalBallsFiredText, BallsHitText, BallsMissedText, MtHRatioText;
+
     private void Start()
     {
         InitFloors();
@@ -61,6 +65,15 @@ public class CulpritsManager : MonoBehaviour
         SelectedCulprit = C;
         culpritVCam.Follow = C.transform;
         culpritVCam.m_Lens.OrthographicSize = 3.0f;
+
+        FloorText.text = "Floor: " + C.floor.ToString();
+        ColumnText.text = "Column: " + C.column.ToString();
+        OverallAccuracyText.text = "Overall Accuracy: " + C.averageProbability.ToString("F2") + "%";
+        TotalBallsFiredText.text = "Total balls fired: " + C.totalBallsThrown.ToString();
+        BallsHitText.text = "Balls hit: " + C.TotalBallsHit.ToString();
+        BallsMissedText.text = "Balls missed: " + (C.totalBallsThrown - C.TotalBallsHit).ToString();
+        float ratio = (float)C.TotalBallsHit / (C.totalBallsThrown - C.TotalBallsHit);
+        MtHRatioText.text = "Ratio: " + ratio.ToString("F2"); // Format to two decimal places
     }
 
     public void DeselectCulprit()

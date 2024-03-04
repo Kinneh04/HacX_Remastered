@@ -177,7 +177,7 @@ public class Ball : MonoBehaviour
 
 
         parentShooter.windowHit[target] = true;
-
+        parentShooter.TotalBallsHit++;
         // values to calc accuracy
         distanceFromCenter = Vector3.Distance(transform.position, targetWindowPrecision.PrecisionMarker.transform.position);
         angleOfImpact = Vector3.Angle(vel, -normal);

@@ -15748,6 +15748,13 @@ MonoBehaviour:
   cameraManager: {fileID: 1077282814}
   mainGameManager: {fileID: 45499186}
   CulpritUI: {fileID: 976395456}
+  FloorText: {fileID: 369468872}
+  ColumnText: {fileID: 541470227}
+  OverallAccuracyText: {fileID: 1713245974}
+  TotalBallsFiredText: {fileID: 1242428203}
+  BallsHitText: {fileID: 342114871}
+  BallsMissedText: {fileID: 1312885735}
+  MtHRatioText: {fileID: 2070604456}
 --- !u!1 &1051541853
 GameObject:
   m_ObjectHideFlags: 0
