@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+
 public class PopupUIManager : MonoBehaviour
 {
     // Singleton instance
@@ -12,6 +14,8 @@ public class PopupUIManager : MonoBehaviour
     public GameObject PopUpWindow;
 
     public TMP_Text TitleText, DescriptionText;
+
+    public Button popUpButton;
 
     private void Awake()
     {
@@ -27,10 +31,15 @@ public class PopupUIManager : MonoBehaviour
     }
 
     // Function to show a popup with the given message
-    public void ShowPopup(string title, string desc)
+    public void ShowPopup(string title, string desc, UnityAction delegateAction = null)
     {
         PopUpWindow.SetActive(true);
         TitleText.text = title;
         DescriptionText.text = desc;
+
+        popUpButton.onClick.RemoveAllListeners();
+        popUpButton.onClick.AddListener(delegate { PopUpWindow.SetActive(false); });
+        popUpButton.onClick.AddListener(delegateAction);
+        
     }
 }
