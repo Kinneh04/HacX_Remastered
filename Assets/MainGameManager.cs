@@ -73,8 +73,6 @@ public class MainGameManager : MonoBehaviour
 
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
-
         Culprit.OnCantHit += HandleCantHit;
         Culprit.OnHit += HandleHit;
         Culprit.OnDone += HandleDone;

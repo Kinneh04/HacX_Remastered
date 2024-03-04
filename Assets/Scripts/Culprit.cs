@@ -89,6 +89,8 @@ public class Culprit : MonoBehaviour
         launchAngleMin = -90f;
         probability = 0f;
 
+        radius = DontDestroyOnLoadSettings.Instance.positionRange;
+
         foreach(Ball ball in allBalls)
         {
             ball.trailRenderer.Clear();
@@ -98,7 +100,6 @@ public class Culprit : MonoBehaviour
 
     public void RandomPosition()
     {
-        radius = 0.5f;
         Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * radius;
         randomPosition += initialPosition;
         transform.localPosition = new Vector3(randomPosition.x, transform.position.y, randomPosition.z);
@@ -268,21 +269,15 @@ public class Culprit : MonoBehaviour
     {
         probabilityText.gameObject.SetActive(true);
         probability = 0.0f;
-        //if (windowHit.Contains(false))
-        //{
-        //    probabilityText.text = probability.ToString("F1");
-        //    OnDone?.Invoke(this);
-        //    return;
-        //}
 
         foreach (Ball ball in balls)
         {
             if (ball.impactForce == 0)
             {
                 probability += 0;
-                continue;
             }
-            probability += (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 0.5f;
+            else
+                probability += (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 0.5f;
         }
         probability = 100 * (probability / balls.Length);
 

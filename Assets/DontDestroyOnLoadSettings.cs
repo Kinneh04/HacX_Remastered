@@ -13,6 +13,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     public int MaxIterationsValue;
     public float timeStepAmt;
     public float[] timeSteps = { 50, 100, 200, 500, 1000 };
+    public float positionRange;
 
     [Header("Building")]
     public int NumCulpritsPerRowValue;
