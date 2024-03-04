@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Cinemachine;
+using UnityEngine.EventSystems;
+
 public class WindowsManager : MonoBehaviour
 {
     public static WindowsManager Instance;
@@ -19,7 +21,7 @@ public class WindowsManager : MonoBehaviour
     public List<GameObject> SelectedWindows = new();
     public List<Precise_Window> PreciseWindows = new();
     public Precise_Window CurrentlySelectedPreciseWindow;
-
+    public Precise_Window CurrentlySelectedRicochetWindow;
     public GameObject StartButton;
     public TMP_Text WindowCounter;
 
@@ -38,10 +40,19 @@ public class WindowsManager : MonoBehaviour
     [Header("Marker")]
     public GameObject PrecisionMarkerHighlighter;
     public GameObject PrecisionMarkerPrefab;
+
+    public GameObject RicochetMarkerHighlighter;
+    public GameObject RicochetMarkerPrefab;
+
+    [Header("Ricochet Marker")]
+    
+
     [Header("UI")]
     public GameObject MainUI, WindowPrecisionUI, PrecisionMarkerSettingsUI;
     public Slider ConfidenceSlider;
     Vector3 OriginalPrefabScale;
+
+    public GraphicRaycaster raycaster;
 
     private void Start()
     {
@@ -179,6 +190,14 @@ public class WindowsManager : MonoBehaviour
         OnUpdateConfidenceScale();        
     }
 
+    public void PlaceRicochetMarker()
+    {
+        if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
+        GameObject GO = Instantiate(RicochetMarkerPrefab, RicochetMarkerHighlighter.transform.position, Quaternion.identity);
+        GO.transform.localScale = RicochetMarkerPrefab.transform.localScale;
+        CurrentlySelectedPreciseWindow.RicochetMarker = GO;
+        OnUpdateConfidenceScale();
+    }
     public void OnUpdateConfidenceScale()
     {
         CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
@@ -205,18 +224,14 @@ public class WindowsManager : MonoBehaviour
         else PrecisionMarkerSettingsUI.SetActive(false);
         // Perform the raycast
         PrecisionMarkerHighlighter.SetActive(false);
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         if (Physics.Raycast(ray, out hit))
         {
             // Check if the hit object has the tag "window"
             if (hit.collider.CompareTag("Window"))
             {
-                // Do something when a window is hit
-                //Debug.Log("Hit a window!");
-                // Restore the color of the previously hovered window
-                //if (hit.collider.TryGetComponent<Renderer>(out Renderer previousRenderer))
-                //{
-                //    previousRenderer.material.color = originalColor;
-                //}
+                RicochetMarkerHighlighter.SetActive(false);
 
                 CurrentlyHoveredWindow = hit.collider.gameObject;
                 if (isPrecisionMode && CurrentlyHoveredWindow == CurrentlySelectedPreciseWindow.WindowGO)
@@ -239,12 +254,24 @@ public class WindowsManager : MonoBehaviour
             }
             else
             {
+                PrecisionMarkerHighlighter.SetActive(false);
                 //Stop hover on window
                 if (CurrentlyHoveredWindow)
                 {
                     if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
                         CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
                     CurrentlyHoveredWindow = null;
+                }
+
+                if (CurrentlySelectedPreciseWindow != null && isPrecisionMode)
+                {
+                    RicochetMarkerHighlighter.SetActive(true);
+                    RicochetMarkerHighlighter.transform.position = hit.point;
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        PlaceRicochetMarker();
+                    }
                 }
             }
         }
@@ -269,4 +296,6 @@ public class Precise_Window
     public float breakingStress = 18f; // maximum allowable stress in MPa (N/m^2)
 
     public GameObject PrecisionMarker, WindowGO;
+
+    public GameObject RicochetMarker;
 }

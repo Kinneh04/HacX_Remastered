@@ -769,6 +769,103 @@ Transform:
   m_Father: {fileID: 1160119625}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &55822402
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 55822406}
+  - component: {fileID: 55822405}
+  - component: {fileID: 55822404}
+  - component: {fileID: 55822403}
+  m_Layer: 2
+  m_Name: RicochetMarker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &55822403
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55822402}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &55822404
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55822402}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 26820d7b6ba79df4190a885b70f6563f, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &55822405
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55822402}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &55822406
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 55822402}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -24.826517, y: 23.063848, z: -3.615}
+  m_LocalScale: {x: 0.18683, y: 0.18683, z: 0.18683}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &67107201
 GameObject:
   m_ObjectHideFlags: 0
@@ -2785,6 +2882,15 @@ MonoBehaviour:
     breakingStress: 18
     PrecisionMarker: {fileID: 0}
     WindowGO: {fileID: 0}
+    RicochetMarker: {fileID: 0}
+  CurrentlySelectedRicochetWindow:
+    windowThickness: 10
+    windowLength: 2500
+    windowHeight: 1500
+    breakingStress: 18
+    PrecisionMarker: {fileID: 0}
+    WindowGO: {fileID: 0}
+    RicochetMarker: {fileID: 0}
   StartButton: {fileID: 790769466}
   WindowCounter: {fileID: 1635474516}
   MainVCamera: {fileID: 1114312052}
@@ -2795,10 +2901,13 @@ MonoBehaviour:
   CurrentlySelectedWIndow: {fileID: 0}
   PrecisionMarkerHighlighter: {fileID: 643637081}
   PrecisionMarkerPrefab: {fileID: 2702159495858541917, guid: 66f92f3521430744f831243edbe750f5, type: 3}
+  RicochetMarkerHighlighter: {fileID: 55822402}
+  RicochetMarkerPrefab: {fileID: 2702159495858541917, guid: 5aa7f332f06d76f4c9e84a3b9004dd57, type: 3}
   MainUI: {fileID: 616877010}
   WindowPrecisionUI: {fileID: 1347647472}
   PrecisionMarkerSettingsUI: {fileID: 1190635780}
   ConfidenceSlider: {fileID: 756468537}
+  raycaster: {fileID: 0}
 --- !u!1 &224689211
 GameObject:
   m_ObjectHideFlags: 0
@@ -8392,7 +8501,7 @@ GameObject:
   - component: {fileID: 643637084}
   - component: {fileID: 643637083}
   - component: {fileID: 643637082}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: PrecisionMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22444,7 +22553,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 130.329, y: -30, z: 0}
 --- !u!1 &1666333360
 GameObject:
