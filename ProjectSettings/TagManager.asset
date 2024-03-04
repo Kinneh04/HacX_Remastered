@@ -13,6 +13,7 @@ TagManager:
   - Editor_HDBTarget
   - EditorFloor
   - EditorEnvironmentProp
+  - Richochet
   layers:
   - Default
   - TransparentFX

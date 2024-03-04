@@ -1819,7 +1819,7 @@ GameObject:
   - component: {fileID: 165811119}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (8)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1903,7 +1903,7 @@ GameObject:
   - component: {fileID: 168265219}
   m_Layer: 0
   m_Name: HDB_White_Parapet (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2432,7 +2432,7 @@ GameObject:
   - component: {fileID: 205492267}
   m_Layer: 0
   m_Name: HDB_White_Pole (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4283,7 +4283,7 @@ GameObject:
   - component: {fileID: 333545645}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4752,7 +4752,7 @@ GameObject:
   - component: {fileID: 362421741}
   m_Layer: 0
   m_Name: HDB_White_Parapet (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6329,7 +6329,7 @@ GameObject:
   - component: {fileID: 473885464}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (4)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7148,7 +7148,7 @@ GameObject:
   - component: {fileID: 544469894}
   m_Layer: 0
   m_Name: HDB_White_Parapet (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7610,7 +7610,7 @@ GameObject:
   - component: {fileID: 562129255}
   m_Layer: 0
   m_Name: HDB_LiftBlock
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7727,7 +7727,7 @@ GameObject:
   - component: {fileID: 568937932}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8561,7 +8561,7 @@ GameObject:
   - component: {fileID: 649659670}
   m_Layer: 0
   m_Name: HDB_White_Pole
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9468,7 +9468,7 @@ GameObject:
   - component: {fileID: 699177273}
   m_Layer: 0
   m_Name: HDB_White_Parapet (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9699,7 +9699,7 @@ GameObject:
   - component: {fileID: 703659245}
   m_Layer: 0
   m_Name: HDB_White_Pole (3)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10045,7 +10045,7 @@ GameObject:
   - component: {fileID: 722750358}
   m_Layer: 0
   m_Name: HDB_LiftBlock
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12846,7 +12846,7 @@ GameObject:
   - component: {fileID: 881683780}
   m_Layer: 0
   m_Name: HDB_White_Parapet (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15768,7 +15768,7 @@ GameObject:
   - component: {fileID: 1051541855}
   m_Layer: 0
   m_Name: HDB_White_Pole (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16072,7 +16072,7 @@ GameObject:
   - component: {fileID: 1093674184}
   m_Layer: 0
   m_Name: HDB_White_Pole
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17217,7 +17217,7 @@ GameObject:
   - component: {fileID: 1192396479}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (4)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18159,7 +18159,7 @@ GameObject:
   - component: {fileID: 1308863316}
   m_Layer: 0
   m_Name: HDB_White_Parapet (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19641,7 +19641,7 @@ GameObject:
   - component: {fileID: 1479695184}
   m_Layer: 0
   m_Name: HDB_White_Parapet (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22459,7 +22459,7 @@ GameObject:
   - component: {fileID: 1666333362}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23080,7 +23080,7 @@ GameObject:
   - component: {fileID: 1736903100}
   m_Layer: 0
   m_Name: HDB_White_Parapet (1)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24814,7 +24814,7 @@ GameObject:
   - component: {fileID: 1827708514}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (2)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27352,7 +27352,7 @@ GameObject:
   - component: {fileID: 2028438769}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (6)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28881,7 +28881,7 @@ GameObject:
   - component: {fileID: 2122072424}
   m_Layer: 0
   m_Name: HDB_White_Pole (3)
-  m_TagString: Untagged
+  m_TagString: Richochet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
