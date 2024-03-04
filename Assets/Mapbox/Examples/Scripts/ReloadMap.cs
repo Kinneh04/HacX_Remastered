@@ -11,7 +11,7 @@
 	{
 		Camera _camera;
 		Vector3 _cameraStartPos;
-		AbstractMap _map;
+		public AbstractMap _map;
 
 		[SerializeField]
 		ForwardGeocodeUserInput _forwardGeocoder;
@@ -29,7 +29,7 @@
 		{
 			_camera = Camera.main;
 			_cameraStartPos = _camera.transform.position;
-			_map = FindObjectOfType<AbstractMap>();
+			if(!_map)_map = FindObjectOfType<AbstractMap>();
 			if(_map == null)
 			{
 				Debug.LogError("Error: No Abstract Map component found in scene.");

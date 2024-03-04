@@ -50,6 +50,8 @@ namespace Mapbox.Unity.Map
 		protected Vector3 _cachedPosition;
 		protected Quaternion _cachedRotation;
 		protected Vector3 _cachedScale = Vector3.one;
+
+		public bool setupOnce = false;
 		#endregion
 
 		#region Properties
@@ -359,6 +361,8 @@ namespace Mapbox.Unity.Map
 		/// <param name="zoom">Zoom level.</param>
 		public virtual void UpdateMap(Vector2d latLon, float zoom)
 		{
+			if (!setupOnce) SetUpMap();
+
 			if (Application.isEditor && !Application.isPlaying && !IsEditorPreviewEnabled)
 			{
 				return;
@@ -615,8 +619,9 @@ namespace Mapbox.Unity.Map
 		/// This method uses the mapOptions and layer properties to setup the map to be rendered.
 		/// Override <c>SetUpMap</c> to write custom behavior to map setup.
 		/// </summary>
-		protected virtual void SetUpMap()
+		public virtual void SetUpMap()
 		{
+			setupOnce = true;
 			SetPlacementStrategy();
 
 			SetScalingStrategy();

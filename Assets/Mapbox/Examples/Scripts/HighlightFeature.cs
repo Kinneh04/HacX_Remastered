@@ -11,7 +11,22 @@
 
 		MeshRenderer _meshRenderer;
 
-		void Start()
+		public bool isSelected = false;
+
+		public void OnSelectBuilding()
+        {
+			isSelected = true;
+			//_highlightMaterial.color = Color.green;
+			_meshRenderer.material = _highlightMaterial;
+		}
+
+		public void OnDeselectBuilding()
+        {
+			isSelected = false;
+			_highlightMaterial.color = Color.red;
+		}
+
+        void Start()
 		{
 			if (_highlightMaterial == null)
 			{
@@ -29,11 +44,13 @@
 
 		public void OnMouseEnter()
 		{
-			_meshRenderer.sharedMaterial = _highlightMaterial;
+			if (isSelected) return;
+			_meshRenderer.material = _highlightMaterial;
 		}
 
 		public void OnMouseExit()
 		{
+			if (isSelected) return;
 			_meshRenderer.materials = _materials.ToArray();
 		}
 	}
