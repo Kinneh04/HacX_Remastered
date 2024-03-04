@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.IO;
+using TMPro;
+using AnotherFileBrowser.Windows;
+using UnityEngine.Networking;
+using System;
+
 public class EditorSaveManager : MonoBehaviour
 {
 
@@ -20,6 +26,13 @@ public class EditorSaveManager : MonoBehaviour
     public GameObject ScenarioSettingsUI;
     public Scenario SelectedScenario;
 
+    [Header("Exporting And Importing")]
+    public TMP_Text ExportingFeedback;
+    public TMP_Text ImportingFeedback;
+    [TextArea(5,5)]
+    public string loadedJSONFromFile = "";
+    public GameObject ImportingCloseButton, importingFeedbackGO;
+
     public void CloseScenarioSettings()
     {
         ScenarioSettingsUI.SetActive(false);
@@ -30,6 +43,67 @@ public class EditorSaveManager : MonoBehaviour
     {
         SelectedScenario = scenario;
         ScenarioSettingsUI.SetActive(true);
+    }
+    public void ExportScenario()
+    {
+        string JSONData = JsonConvert.SerializeObject(SelectedScenario);
+        string desktopPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
+
+        // Combine desktop path and file name to get the full path
+        string filePath = Path.Combine(desktopPath, SelectedScenario.NameOfScenario + ".json");
+
+        // Write the JSON data to the file
+        File.WriteAllText(filePath, JSONData);
+        ExportingFeedback.text = "JSON file exported to: " + filePath;
+        Debug.Log("JSON data exported to: " + filePath);
+    }
+
+    public void ImportScenario()
+    {
+        var bp = new BrowserProperties();
+        bp.filterIndex = 0;
+        new FileBrowser().OpenFileBrowser(bp, path =>
+        {
+            StartCoroutine(LoadJSONSave(path));
+        });
+
+        IEnumerator LoadJSONSave(string path)
+        {
+            importingFeedbackGO.SetActive(true);
+            using (UnityWebRequest uwr = UnityWebRequest.Get(path))
+            {
+                yield return uwr.SendWebRequest();
+                if(uwr.isNetworkError || uwr.isHttpError)
+                {
+                    ImportingFeedback.text = "An error has occured: " + uwr.error;
+                    ImportingCloseButton.SetActive(true);
+                }
+                else
+                {
+                    loadedJSONFromFile = uwr.downloadHandler.text;
+                    Debug.Log(loadedJSONFromFile);
+
+                  
+
+                    try
+                    {
+
+
+                        Scenario S = new Scenario();
+                        S = JsonConvert.DeserializeObject<Scenario>(loadedJSONFromFile);
+                        CurrentlySavedScenarios.Add(S);
+
+                        ImportingFeedback.text = "Scenario imported successfully! Saved as ";
+                        ImportingCloseButton.SetActive(true);
+                    }
+                    catch(Exception e)
+                    {
+                        ImportingFeedback.text = "Scenario import error: " + e.Message;
+                        ImportingCloseButton.SetActive(true);
+                    }
+                }
+            }
+        }
     }
 
     public void LoadCurrentScene()

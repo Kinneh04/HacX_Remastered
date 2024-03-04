@@ -18,7 +18,6 @@ public class CulpritsManager : MonoBehaviour
     public CinemachineVirtualCamera culpritVCam;
     public Culprit SelectedCulprit;
     public bool isSelectingCulprit;
-
     public bool canSelectCulprit = true;
 
     public PostUIManager postUIManager;
