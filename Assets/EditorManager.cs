@@ -71,6 +71,53 @@ public class EditorManager : MonoBehaviour
     public float Sensitivity = 1.0f;
     public float zoomSpeed = 5f;
 
+    [Header("Stencils")]
+    public List<GameObject> stencils = new();
+
+    public void BuildMapScenario(List<GameObject> BuildingPositions)
+    {
+        Vector3 Pivot = BuildingPositions[0].transform.position;
+        bool Pivotal = false;
+        for (int i = 0; i < BuildingPositions.Count; i++)
+        {
+            if (!Pivotal)
+            {
+                CurrentBuildingsOnEditorDisplay[i].transform.position = Vector3.zero;
+                Pivot = BuildingPositions[i].transform.position;
+                Pivotal = true;
+
+            }
+            else
+            {
+                CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position - Pivot;
+            }
+        }
+    }
+
+
+    // Unused. Who knows if i might use this agin
+    public void CopyMapStencil(List<GameObject> Buildings)
+    {
+        Vector3 Pivot = Buildings[0].transform.position;
+        bool Pivotal = false;
+       foreach(GameObject GO in Buildings)
+        {
+            GameObject GOCopy = Instantiate(GO, GO.transform.position, GO.transform.rotation);
+            GOCopy.transform.localScale = new Vector3(GO.transform.localScale.x, 50, GO.transform.localScale.z);
+            if (!Pivotal)
+            {
+                GOCopy.transform.position = Vector3.zero;
+                Pivotal = true;
+
+            }
+            else
+            {
+                GOCopy.transform.position -= Pivot;
+            }
+            stencils.Add(GO);
+        }
+    }
+
    
     public void OnClickOpenEnvironmentUI()
     {

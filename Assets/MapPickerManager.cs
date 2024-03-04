@@ -30,6 +30,26 @@ public class MapPickerManager : MonoBehaviour
 
     public LineRenderer lineRenderer;
 
+    [Header("Building")]
+    public EditorManager editorManager;
+
+    public void CopyStencil()
+    {
+        foreach (GameObject GO in SelectedBuildings)
+        {
+            GO.GetComponent<HighlightFeature>().OnDeselectBuilding();
+            Destroy(GO.GetComponent<FeatureSelectionDetector>());
+            Destroy(GO.GetComponent<HighlightFeature>());
+        }
+        editorManager.CopyMapStencil(SelectedBuildings);
+    }
+
+    public void BuildMap()
+    {
+        editorManager.BuildMapScenario(SelectedBuildings);
+        CloseMapPicker();
+    }
+
     public void ClearAllBuildings()
     {
         foreach(GameObject GO in SelectedBuildings)
