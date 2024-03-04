@@ -8,7 +8,7 @@ public class DemoBuildingsManager : MonoBehaviour
 
     public float maxInterval;
     public int minFloors, maxFloors;
-    float currentinterval = 1.0f;
+    float currentinterval;
     public void RandomizeAllBuildings()
     {
         foreach(ModularHDB MHDB in modularBuildings)

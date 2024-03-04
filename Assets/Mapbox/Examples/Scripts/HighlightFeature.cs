@@ -24,6 +24,7 @@
         {
 			isSelected = false;
 			_highlightMaterial.color = Color.red;
+			_meshRenderer.materials = _materials.ToArray();
 		}
 
         void Start()

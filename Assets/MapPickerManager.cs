@@ -30,6 +30,17 @@ public class MapPickerManager : MonoBehaviour
 
     public LineRenderer lineRenderer;
 
+    public void ClearAllBuildings()
+    {
+        foreach(GameObject GO in SelectedBuildings)
+        {
+            GO.GetComponent<HighlightFeature>().OnDeselectBuilding();
+        }
+
+        SelectedBuildings.Clear();
+        UpdateTexts();
+    }
+
     public void ToggleBuildingSelect(GameObject GO)
     {
         if (SelectedBuildings.Contains(GO))
