@@ -229,11 +229,12 @@ public class WindowsManager : MonoBehaviour
                         PlacePrecisionMarker();
                     }
                 }
-                else if (SelectedWindows.Contains(CurrentlyHoveredWindow)) return;
-
-                Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
-                //  originalColor = M.color;
-                M.color = HighlightedColor;
+                if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
+                {
+                    Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
+                    //  originalColor = M.color;
+                    M.color = HighlightedColor;
+                }
                
             }
             else
