@@ -158,13 +158,15 @@ public class Ball : MonoBehaviour
         parentShooter.travelling = false;
         parentShooter.shootNext = true;
 
+        ContactPoint contact = other.GetContact(0);
+        Vector3 normal = contact.normal;
+        transform.position = contact.point;
+
+
         if (other.transform.gameObject != targetWindow)
         {
             return;
         }
-        ContactPoint contact = other.GetContact(0);
-        Vector3 normal = contact.normal;
-        transform.position = contact.point;
 
         if (targetWindowPrecision.PrecisionMarker != null 
             && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 

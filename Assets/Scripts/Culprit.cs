@@ -40,6 +40,8 @@ public class Culprit : MonoBehaviour
     public float probability = 0f;
     public float averageProbability = 0f;
     public float currentIteration;
+    public float radius = 0f;
+    public Vector3 initialPosition;
 
     public GameObject Ball;
     Ball currentBall;
@@ -51,6 +53,7 @@ public class Culprit : MonoBehaviour
     public Outline outline;
     private void Awake()
     {
+        initialPosition = transform.position;
         MainGameManager.OnStartGame += OnStart;
         MainGameManager.OnNextWindow += CheckCanNext;
     }
@@ -89,11 +92,22 @@ public class Culprit : MonoBehaviour
         foreach(Ball ball in allBalls)
         {
             ball.trailRenderer.Clear();
+            ball.gameObject.SetActive(false);
         }
+    }
+
+    public void RandomPosition()
+    {
+        radius = 0.5f;
+        Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * radius;
+        randomPosition += initialPosition;
+        transform.localPosition = new Vector3(randomPosition.x, transform.position.y, randomPosition.z);
     }
     public void OnStart(int newVelocity, int newIter)
     {
         ResetVariables();
+        RandomPosition();
+
         currentIteration = newIter;
         MAX_ITERATIONS = DontDestroyOnLoadSettings.Instance.MaxIterationsValue;
 
@@ -175,7 +189,7 @@ public class Culprit : MonoBehaviour
         if (Physics.Raycast(target.transform.position, direction, out hit, maxDistance))
         {
             // Check if the raycast hit the target object
-            if (hit.transform == ShootPosition)
+            if (hit.transform == ShootPosition || hit.transform == transform)
             {
                 // No obstacle between the objects, so the object can see the target
                 return true;
@@ -254,19 +268,24 @@ public class Culprit : MonoBehaviour
     {
         probabilityText.gameObject.SetActive(true);
         probability = 0.0f;
-        if (windowHit.Contains(false))
-        {
-            probabilityText.text = probability.ToString("F1");
-            OnDone?.Invoke(this);
-            return;
-        }
+        //if (windowHit.Contains(false))
+        //{
+        //    probabilityText.text = probability.ToString("F1");
+        //    OnDone?.Invoke(this);
+        //    return;
+        //}
 
-        foreach(Ball ball in balls)
+        foreach (Ball ball in balls)
         {
+            if (ball.impactForce == 0)
+            {
+                probability += 0;
+                continue;
+            }
             probability += (((90 - ball.angleOfImpact) / 90) + (ball.impactSpeed / ball.initialVel)) * 0.5f;
         }
         probability = 100 * (probability / balls.Length);
-        probabilityText.text = probability.ToString("F1") + "%";
+
         probabilities.Add(probability);
         float total = 0;
         for (int i = 0; i < probabilities.Count; i++)
@@ -274,6 +293,9 @@ public class Culprit : MonoBehaviour
             total += probabilities[i];
         }
         averageProbability = total / probabilities.Count;
+
+        probabilityText.text = averageProbability.ToString("F1") + "%";
+
         OnDone?.Invoke(this);
     }
 
@@ -292,8 +314,8 @@ public class Culprit : MonoBehaviour
                 }
             }
         }
-        probability = totalProb / calculations;
-        probabilityText.text = probability.ToString("F1") + "%";
+        averageProbability = totalProb / calculations;
+        probabilityText.text = averageProbability.ToString("F1") + "%";
     }
 
     public float calculateAccForBall(Ball ball)
