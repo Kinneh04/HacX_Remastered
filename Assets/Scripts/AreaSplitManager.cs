@@ -13,6 +13,11 @@ public class AreaSplitManager : MonoBehaviour
     public void RespawnCulprits()
     {
         // if (!mainGameManager) mainGameManager = MainGameManager.instance;
+
+        foreach(GameObject C in SpawnedCulprits)
+        {
+            Destroy(C);
+        }
         SpawnedCulprits.Clear();
         Vector3 boxSize = GetComponent<Renderer>().bounds.size;
         float areaWidth = boxSize.x / NumberOfCulprits;

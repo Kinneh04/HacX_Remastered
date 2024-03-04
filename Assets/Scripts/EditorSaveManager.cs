@@ -159,6 +159,8 @@ public class EditorSaveManager : MonoBehaviour
                 ScenarioPrefab scenarioPrefab = GO.GetComponent<ScenarioPrefab>();
                 scenarioPrefab.NameText.text = scenario.NameOfScenario;
                 scenarioPrefab.OnClickButton.onClick.AddListener(delegate { SelectScenario(scenario); });
+
+                InstantiatedScenarioPrefabs.Add(GO);
             }
         }
         else

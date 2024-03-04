@@ -7,7 +7,7 @@ using TMPro;
 public class ScenarioBuilder : MonoBehaviour
 {
     [Header("Datablocks")]
-    [SerializeField] List<SavableBuildingDetails> ParsedBuildingDatablock;
+    [SerializeField] public List<SavableBuildingDetails> ParsedBuildingDatablock;
     [SerializeField] List<SavableEnvironmentDetails> ParsedEnvDatablock;
     [SerializeField] Scenario SavedScenario;
     [Header("Scenario builder")]

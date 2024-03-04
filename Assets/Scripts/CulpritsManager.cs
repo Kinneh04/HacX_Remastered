@@ -77,6 +77,8 @@ public class CulpritsManager : MonoBehaviour
     public void InitFloors()
     {
         Floors = GameObject.FindObjectsOfType<AreaSplitManager>();
+
+        SpawnedCulprits.Clear();
         for (int i = 0; i < Floors.Length; i++)
         {
             Floors[i].Floor = Floors.Length - i;
