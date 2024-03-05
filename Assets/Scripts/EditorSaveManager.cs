@@ -93,7 +93,7 @@ public class EditorSaveManager : MonoBehaviour
                         S = JsonConvert.DeserializeObject<Scenario>(loadedJSONFromFile);
                         CurrentlySavedScenarios.Add(S);
 
-                        ImportingFeedback.text = "Scenario imported successfully! Saved as ";
+                        ImportingFeedback.text = "Scenario imported successfully! Saved as " + S.NameOfScenario;
                         ImportingCloseButton.SetActive(true);
                     }
                     catch(Exception e)
