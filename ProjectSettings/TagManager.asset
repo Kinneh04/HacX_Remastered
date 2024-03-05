@@ -14,6 +14,7 @@ TagManager:
   - EditorFloor
   - EditorEnvironmentProp
   - Richochet
+  - Selectable
   layers:
   - Default
   - TransparentFX

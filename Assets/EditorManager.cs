@@ -6,6 +6,7 @@ using TMPro;
 using Newtonsoft.Json;
 using UnityEngine.UI.Extensions;
 using Cinemachine;
+using RuntimeHandle;
 
 public class EditorManager : MonoBehaviour
 {
@@ -74,6 +75,45 @@ public class EditorManager : MonoBehaviour
     [Header("Stencils")]
     public List<GameObject> stencils = new();
 
+    [Header("Gizmos")]
+    private GameObject runtimeTransformGameObj;
+    private RuntimeTransformHandle runtimeTransformHandle;
+    private int runtimeTransformLayer = 6;
+    private int runtimeTransformLayerMask;
+
+    [Header("Distance")]
+    public TMP_Text DistanceText;
+    public LineRenderer DistanceLineRenderer;
+    
+
+    public void UpdateDistance()
+    {
+        Vector3 PosA = CurrentBuildingsOnEditorDisplay[0].transform.position;
+        PosA.y = 1;
+        Vector3 PosB = CurrentBuildingsOnEditorDisplay[1].transform.position;
+        PosB.y = 1;
+
+
+        DistanceLineRenderer.SetPosition(0, PosA);
+        DistanceLineRenderer.SetPosition(1, PosB);
+        float D = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
+        DistanceText.text = "Distance: " + D.ToString("F1") + "m";
+    }
+
+    public GameObject HelperInstructions, GizmosInstructions;
+    private void Start()
+    {
+        runtimeTransformGameObj = new GameObject();
+        runtimeTransformHandle = runtimeTransformGameObj.AddComponent<RuntimeTransformHandle>();
+        runtimeTransformGameObj.layer = runtimeTransformLayer;
+        runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
+        runtimeTransformHandle.type = HandleType.POSITION;
+        runtimeTransformHandle.autoScale = true;
+        runtimeTransformHandle.autoScaleFactor = 1f;    
+        runtimeTransformHandle.scaleSnap = new Vector3(0.1f, 0.1f, 0.1f);
+        runtimeTransformGameObj.SetActive(false);
+    }
+
     public void BuildMapScenario(List<GameObject> BuildingPositions)
     {
         Vector3 Pivot = BuildingPositions[0].transform.position;
@@ -141,11 +181,6 @@ public class EditorManager : MonoBehaviour
         EnvironmentUI.SetActive(false);
         MainButtonsUI.SetActive(true);
         canSelect = true;
-    }
-
-    private void Start()
-    {
-     //   ResetToDefaults();
     }
 
     public void ResetToDefaults()
@@ -303,6 +338,9 @@ public class EditorManager : MonoBehaviour
                     //NumFloorSlider.value = CurrentlySelectedBuilding.numFloors;
                     //WidthSlider.value = CurrentlySelectedBuilding.
                 }
+
+                runtimeTransformHandle.target = CurrentlySelectedBuilding.transform;
+                runtimeTransformGameObj.SetActive(true);
             }
         }
     }
@@ -340,6 +378,7 @@ public class EditorManager : MonoBehaviour
         CurrentlySelectedBuilding = null;
         BuildingDetailsUI.SetActive(false);
         MainButtonsUI.SetActive(true);
+        runtimeTransformGameObj.SetActive(false);
     }
 
     public void OverrideNumFloorSlider(int value)
@@ -411,6 +450,7 @@ public class EditorManager : MonoBehaviour
     {
         if (!isInEditMode) return;
 
+        UpdateDistance();
         if(Input.GetMouseButtonDown(0))
         {
             OnSelectBuilding();
@@ -443,17 +483,51 @@ public class EditorManager : MonoBehaviour
             // Adjust the GameObject's position based on the mouse movement
             CameraPerspectives[camIndex].transform.Translate(new Vector3(-mouseX * Sensitivity, -mouseY * Sensitivity, 0) * Time.deltaTime);
         }
-        // Check for left arrow key press
-        if (Input.GetKeyDown(KeyCode.A))
+
+        if (runtimeTransformGameObj.activeSelf)
         {
-            // Move to the previous camera
-            SwitchCamera(-1);
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                runtimeTransformHandle.type = HandleType.POSITION;
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                runtimeTransformHandle.type = HandleType.ROTATION;
+            }
+            //if (Input.GetKeyDown(KeyCode.R))
+            //{
+            //    runtimeTransformHandle.type = HandleType.SCALE;
+            //}
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    runtimeTransformHandle.space = HandleSpace.WORLD;
+                }
+                if (Input.GetKeyDown(KeyCode.L))
+                {
+                    runtimeTransformHandle.space = HandleSpace.LOCAL;
+                }
+            }
+            HelperInstructions.SetActive(false);
+            GizmosInstructions.SetActive(true);
         }
-        // Check for right arrow key press
-        else if (Input.GetKeyDown(KeyCode.D))
+        else
         {
-            // Move to the next camera
-            SwitchCamera(1);
+            // Check for left arrow key press
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                // Move to the previous camera
+                SwitchCamera(-1);
+            }
+            // Check for right arrow key press
+            else if (Input.GetKeyDown(KeyCode.D))
+            {
+                // Move to the next camera
+                SwitchCamera(1);
+            }
+            HelperInstructions.SetActive(true);
+            GizmosInstructions.SetActive(false);
         }
 
         // Check for scroll input
