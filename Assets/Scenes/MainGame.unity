@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 8764127}
   - component: {fileID: 8764126}
   - component: {fileID: 8764125}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 9070640}
   - component: {fileID: 9070639}
   - component: {fileID: 9070638}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (19)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -432,7 +432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 34391181}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BalconyFloor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 52030643}
   - component: {fileID: 52030642}
   - component: {fileID: 52030641}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -747,7 +747,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 54214157}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDBFloorPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -875,7 +875,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 67107202}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThinWindows (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1316,7 +1316,7 @@ GameObject:
   - component: {fileID: 95288762}
   - component: {fileID: 95288764}
   - component: {fileID: 95288763}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_MainBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1743,7 +1743,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 132141369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1914,7 +1914,7 @@ GameObject:
   - component: {fileID: 165811118}
   - component: {fileID: 165811120}
   - component: {fileID: 165811119}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Yellow_Pole (8)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -1998,7 +1998,7 @@ GameObject:
   - component: {fileID: 168265221}
   - component: {fileID: 168265220}
   - component: {fileID: 168265219}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Parapet (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -2131,7 +2131,7 @@ GameObject:
   - component: {fileID: 186977043}
   - component: {fileID: 186977042}
   - component: {fileID: 186977041}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (4)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -2229,7 +2229,7 @@ GameObject:
   - component: {fileID: 194296867}
   - component: {fileID: 194296866}
   - component: {fileID: 194296865}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -2430,7 +2430,7 @@ GameObject:
   - component: {fileID: 196348382}
   - component: {fileID: 196348381}
   - component: {fileID: 196348380}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2527,7 +2527,7 @@ GameObject:
   - component: {fileID: 205492266}
   - component: {fileID: 205492268}
   - component: {fileID: 205492267}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Pole (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -3353,7 +3353,7 @@ GameObject:
   - component: {fileID: 245719446}
   - component: {fileID: 245719445}
   - component: {fileID: 245719444}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -3447,7 +3447,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 252295222}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThickWindows (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3564,7 +3564,7 @@ GameObject:
   - component: {fileID: 275776257}
   - component: {fileID: 275776256}
   - component: {fileID: 275776255}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (4)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -3662,7 +3662,7 @@ GameObject:
   - component: {fileID: 278195596}
   - component: {fileID: 278195595}
   - component: {fileID: 278195594}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4294,7 +4294,7 @@ GameObject:
   - component: {fileID: 329478362}
   - component: {fileID: 329478361}
   - component: {fileID: 329478360}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -4390,7 +4390,7 @@ GameObject:
   - component: {fileID: 333545644}
   - component: {fileID: 333545646}
   - component: {fileID: 333545645}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Yellow_Pole (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -4762,7 +4762,7 @@ GameObject:
   - component: {fileID: 349211949}
   - component: {fileID: 349211948}
   - component: {fileID: 349211947}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -4859,7 +4859,7 @@ GameObject:
   - component: {fileID: 362421743}
   - component: {fileID: 362421742}
   - component: {fileID: 362421741}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Parapet (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -5775,7 +5775,7 @@ GameObject:
   - component: {fileID: 399942351}
   - component: {fileID: 399942353}
   - component: {fileID: 399942352}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Grey_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5957,7 +5957,7 @@ GameObject:
   - component: {fileID: 433197190}
   - component: {fileID: 433197192}
   - component: {fileID: 433197191}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Yellow_Pole (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6242,7 +6242,7 @@ GameObject:
   - component: {fileID: 465117911}
   - component: {fileID: 465117910}
   - component: {fileID: 465117909}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (9)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -6436,7 +6436,7 @@ GameObject:
   - component: {fileID: 473885463}
   - component: {fileID: 473885465}
   - component: {fileID: 473885464}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Yellow_Pole (4)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -6585,7 +6585,7 @@ GameObject:
   - component: {fileID: 502786885}
   - component: {fileID: 502786884}
   - component: {fileID: 502786883}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Grey_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6682,7 +6682,7 @@ GameObject:
   - component: {fileID: 507494928}
   - component: {fileID: 507494927}
   - component: {fileID: 507494926}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -6913,7 +6913,7 @@ GameObject:
   - component: {fileID: 535901979}
   - component: {fileID: 535901978}
   - component: {fileID: 535901977}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7255,7 +7255,7 @@ GameObject:
   - component: {fileID: 544469896}
   - component: {fileID: 544469895}
   - component: {fileID: 544469894}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Parapet (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -7717,7 +7717,7 @@ GameObject:
   - component: {fileID: 562129254}
   - component: {fileID: 562129256}
   - component: {fileID: 562129255}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_LiftBlock
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -7798,7 +7798,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 566546274}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BalconyFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7834,7 +7834,7 @@ GameObject:
   - component: {fileID: 568937931}
   - component: {fileID: 568937933}
   - component: {fileID: 568937932}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Yellow_Pole
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -8668,7 +8668,7 @@ GameObject:
   - component: {fileID: 649659669}
   - component: {fileID: 649659671}
   - component: {fileID: 649659670}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Pole
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -8826,7 +8826,7 @@ GameObject:
   - component: {fileID: 659837248}
   - component: {fileID: 659837247}
   - component: {fileID: 659837246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -9246,7 +9246,7 @@ GameObject:
   - component: {fileID: 685443474}
   - component: {fileID: 685443473}
   - component: {fileID: 685443472}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -9343,7 +9343,7 @@ GameObject:
   - component: {fileID: 687141451}
   - component: {fileID: 687141450}
   - component: {fileID: 687141449}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -9575,7 +9575,7 @@ GameObject:
   - component: {fileID: 699177275}
   - component: {fileID: 699177274}
   - component: {fileID: 699177273}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -9806,7 +9806,7 @@ GameObject:
   - component: {fileID: 703659244}
   - component: {fileID: 703659246}
   - component: {fileID: 703659245}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Pole (3)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -10022,7 +10022,7 @@ GameObject:
   - component: {fileID: 708152376}
   - component: {fileID: 708152375}
   - component: {fileID: 708152374}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -10116,7 +10116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 717894886}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BalconyFloor (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10152,7 +10152,7 @@ GameObject:
   - component: {fileID: 722750357}
   - component: {fileID: 722750359}
   - component: {fileID: 722750358}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_LiftBlock
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -10236,7 +10236,7 @@ GameObject:
   - component: {fileID: 722898444}
   - component: {fileID: 722898443}
   - component: {fileID: 722898442}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -10333,7 +10333,7 @@ GameObject:
   - component: {fileID: 724754645}
   - component: {fileID: 724754644}
   - component: {fileID: 724754643}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10428,7 +10428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 733126426}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11107,7 +11107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 782844425}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThickWindows (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11437,7 +11437,7 @@ GameObject:
   - component: {fileID: 803394239}
   - component: {fileID: 803394238}
   - component: {fileID: 803394237}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (14)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -11630,7 +11630,7 @@ GameObject:
   - component: {fileID: 817456209}
   - component: {fileID: 817456208}
   - component: {fileID: 817456207}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (9)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -11862,7 +11862,7 @@ GameObject:
   - component: {fileID: 834678055}
   - component: {fileID: 834678054}
   - component: {fileID: 834678053}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -12228,7 +12228,7 @@ GameObject:
   - component: {fileID: 839543673}
   - component: {fileID: 839543672}
   - component: {fileID: 839543671}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -12401,7 +12401,7 @@ GameObject:
   - component: {fileID: 854290663}
   - component: {fileID: 854290662}
   - component: {fileID: 854290661}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -12953,7 +12953,7 @@ GameObject:
   - component: {fileID: 881683782}
   - component: {fileID: 881683781}
   - component: {fileID: 881683780}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Parapet (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -13320,7 +13320,7 @@ GameObject:
   - component: {fileID: 909882445}
   - component: {fileID: 909882444}
   - component: {fileID: 909882443}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13418,7 +13418,7 @@ GameObject:
   - component: {fileID: 916646041}
   - component: {fileID: 916646040}
   - component: {fileID: 916646039}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -13515,7 +13515,7 @@ GameObject:
   - component: {fileID: 916760662}
   - component: {fileID: 916760661}
   - component: {fileID: 916760660}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -13741,7 +13741,7 @@ GameObject:
   - component: {fileID: 928125206}
   - component: {fileID: 928125205}
   - component: {fileID: 928125204}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (9)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -13870,7 +13870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 947509322}
   - component: {fileID: 947509323}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ModularTargetHDB
   m_TagString: EditorHDB
   m_Icon: {fileID: 0}
@@ -13920,7 +13920,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 950708923}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThinWindows (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13957,7 +13957,7 @@ GameObject:
   - component: {fileID: 954419074}
   - component: {fileID: 954419073}
   - component: {fileID: 954419072}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (14)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -14323,7 +14323,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 2
+  near clip plane: -13.5
   far clip plane: 5000
   field of view: 60
   orthographic: 1
@@ -14331,7 +14331,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 2147483647
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -14441,7 +14441,7 @@ GameObject:
   - component: {fileID: 994429415}
   - component: {fileID: 994429414}
   - component: {fileID: 994429413}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -14903,7 +14903,7 @@ GameObject:
   - component: {fileID: 1007548022}
   - component: {fileID: 1007548021}
   - component: {fileID: 1007548020}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15533,7 +15533,7 @@ GameObject:
   - component: {fileID: 1038773059}
   - component: {fileID: 1038773061}
   - component: {fileID: 1038773060}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_MainBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15617,7 +15617,7 @@ GameObject:
   - component: {fileID: 1039750966}
   - component: {fileID: 1039750965}
   - component: {fileID: 1039750964}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15715,7 +15715,7 @@ GameObject:
   - component: {fileID: 1040505361}
   - component: {fileID: 1040505360}
   - component: {fileID: 1040505359}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15875,7 +15875,7 @@ GameObject:
   - component: {fileID: 1051541854}
   - component: {fileID: 1051541856}
   - component: {fileID: 1051541855}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Pole (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -16137,21 +16137,33 @@ MonoBehaviour:
     CamName: 'Overview : Ortho : Transformable'
     perspective: 1
     transformable: 1
+    RenderedLayers:
+      serializedVersion: 2
+      m_Bits: 383
   - vCam: {fileID: 752577820}
     virtualCamera: {fileID: 1178186007}
     CamName: 'Culprit : Ortho'
     perspective: 1
     transformable: 1
+    RenderedLayers:
+      serializedVersion: 2
+      m_Bits: 255
   - vCam: {fileID: 542497659}
     virtualCamera: {fileID: 643816850}
     CamName: 'Left : Persp'
     perspective: 0
     transformable: 0
+    RenderedLayers:
+      serializedVersion: 2
+      m_Bits: 2147483647
   - vCam: {fileID: 942490469}
     virtualCamera: {fileID: 1012396674}
     CamName: 'Right : Persp'
     perspective: 0
     transformable: 0
+    RenderedLayers:
+      serializedVersion: 2
+      m_Bits: 2147483647
   CulpritCameraIndex: 1
   CurrentCameraText: {fileID: 1932005670}
   mainCam: {fileID: 963194227}
@@ -16168,6 +16180,9 @@ MonoBehaviour:
     CamName: 
     perspective: 1
     transformable: 0
+    RenderedLayers:
+      serializedVersion: 2
+      m_Bits: 0
 --- !u!1 &1093674182
 GameObject:
   m_ObjectHideFlags: 0
@@ -16179,7 +16194,7 @@ GameObject:
   - component: {fileID: 1093674183}
   - component: {fileID: 1093674185}
   - component: {fileID: 1093674184}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Pole
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -16365,7 +16380,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 20
-    NearClipPlane: 2
+    NearClipPlane: -13.5
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
@@ -16408,7 +16423,7 @@ GameObject:
   - component: {fileID: 1117892947}
   - component: {fileID: 1117892946}
   - component: {fileID: 1117892945}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Grey_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16752,7 +16767,7 @@ GameObject:
   - component: {fileID: 1144512851}
   - component: {fileID: 1144512850}
   - component: {fileID: 1144512849}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16959,7 +16974,7 @@ GameObject:
   - component: {fileID: 1158171625}
   - component: {fileID: 1158171627}
   - component: {fileID: 1158171626}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Grey_Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17041,7 +17056,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1160119625}
   - component: {fileID: 1160119624}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ModularCulpritHDB
   m_TagString: EditorHDB
   m_Icon: {fileID: 0}
@@ -17324,7 +17339,7 @@ GameObject:
   - component: {fileID: 1192396478}
   - component: {fileID: 1192396480}
   - component: {fileID: 1192396479}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Yellow_Pole (4)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -17543,7 +17558,7 @@ GameObject:
   - component: {fileID: 1237612019}
   - component: {fileID: 1237612018}
   - component: {fileID: 1237612017}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (14)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -18093,7 +18108,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1290411781}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThickWindows (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18266,7 +18281,7 @@ GameObject:
   - component: {fileID: 1308863318}
   - component: {fileID: 1308863317}
   - component: {fileID: 1308863316}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -18643,7 +18658,7 @@ GameObject:
   - component: {fileID: 1349971960}
   - component: {fileID: 1349971959}
   - component: {fileID: 1349971958}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -18951,7 +18966,7 @@ GameObject:
   - component: {fileID: 1375421932}
   - component: {fileID: 1375421931}
   - component: {fileID: 1375421930}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -19413,7 +19428,7 @@ GameObject:
   - component: {fileID: 1411805226}
   - component: {fileID: 1411805225}
   - component: {fileID: 1411805224}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -19510,7 +19525,7 @@ GameObject:
   - component: {fileID: 1424279007}
   - component: {fileID: 1424279006}
   - component: {fileID: 1424279005}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -19604,7 +19619,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1451685417}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19651,7 +19666,7 @@ GameObject:
   - component: {fileID: 1467820114}
   - component: {fileID: 1467820113}
   - component: {fileID: 1467820112}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -19748,7 +19763,7 @@ GameObject:
   - component: {fileID: 1479695186}
   - component: {fileID: 1479695185}
   - component: {fileID: 1479695184}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -20245,7 +20260,7 @@ GameObject:
   - component: {fileID: 1504960964}
   - component: {fileID: 1504960963}
   - component: {fileID: 1504960962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -20922,7 +20937,7 @@ GameObject:
   - component: {fileID: 1564320614}
   - component: {fileID: 1564320613}
   - component: {fileID: 1564320612}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (9)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -22566,7 +22581,7 @@ GameObject:
   - component: {fileID: 1666333361}
   - component: {fileID: 1666333363}
   - component: {fileID: 1666333362}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Yellow_Pole
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -22685,7 +22700,7 @@ GameObject:
   - component: {fileID: 1693783878}
   - component: {fileID: 1693783880}
   - component: {fileID: 1693783879}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Yellow_Pole (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22943,7 +22958,7 @@ GameObject:
   - component: {fileID: 1720068273}
   - component: {fileID: 1720068272}
   - component: {fileID: 1720068271}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23187,7 +23202,7 @@ GameObject:
   - component: {fileID: 1736903102}
   - component: {fileID: 1736903101}
   - component: {fileID: 1736903100}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -23741,7 +23756,7 @@ GameObject:
   - component: {fileID: 1782598755}
   - component: {fileID: 1782598754}
   - component: {fileID: 1782598753}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24015,6 +24030,10 @@ PrefabInstance:
     - target: {fileID: 4787422746501831966, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: m_Name
       value: CulpritSpawnArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 4787422746501831966, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831966, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: m_IsActive
@@ -24381,7 +24400,7 @@ GameObject:
   - component: {fileID: 1792518346}
   - component: {fileID: 1792518345}
   - component: {fileID: 1792518344}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -24850,7 +24869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1813129488}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ThinWindows (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24884,7 +24903,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1816187342}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BalconyFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24921,7 +24940,7 @@ GameObject:
   - component: {fileID: 1827708513}
   - component: {fileID: 1827708515}
   - component: {fileID: 1827708514}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Yellow_Pole (2)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -25467,7 +25486,7 @@ GameObject:
   - component: {fileID: 1884127918}
   - component: {fileID: 1884127917}
   - component: {fileID: 1884127916}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (19)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -25700,7 +25719,7 @@ GameObject:
   - component: {fileID: 1894956158}
   - component: {fileID: 1894956157}
   - component: {fileID: 1894956156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -25797,7 +25816,7 @@ GameObject:
   - component: {fileID: 1908875395}
   - component: {fileID: 1908875394}
   - component: {fileID: 1908875393}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (4)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -26274,7 +26293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1949197792}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThickWindows (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26716,7 +26735,7 @@ GameObject:
   - component: {fileID: 1970493771}
   - component: {fileID: 1970493770}
   - component: {fileID: 1970493769}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -26810,7 +26829,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1977651853}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThinWindows (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26965,7 +26984,7 @@ GameObject:
   - component: {fileID: 2000340292}
   - component: {fileID: 2000340291}
   - component: {fileID: 2000340290}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (14)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -27155,7 +27174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2010697735}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HDB_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27202,7 +27221,7 @@ GameObject:
   - component: {fileID: 2012561194}
   - component: {fileID: 2012561193}
   - component: {fileID: 2012561192}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27363,7 +27382,7 @@ GameObject:
   - component: {fileID: 2023718595}
   - component: {fileID: 2023718594}
   - component: {fileID: 2023718593}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hitzone
   m_TagString: Hitzone
   m_Icon: {fileID: 0}
@@ -27459,7 +27478,7 @@ GameObject:
   - component: {fileID: 2028438768}
   - component: {fileID: 2028438770}
   - component: {fileID: 2028438769}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_Yellow_Pole (6)
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -27678,7 +27697,7 @@ GameObject:
   - component: {fileID: 2044218143}
   - component: {fileID: 2044218142}
   - component: {fileID: 2044218141}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: WindowPane (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27908,7 +27927,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054990483}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDBFloorPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27982,8 +28001,8 @@ MonoBehaviour:
     NameOfScenario: 
     DistanceBetweenBuildings: 0
   Buildings:
-  - {fileID: 1160119625}
   - {fileID: 947509322}
+  - {fileID: 1160119625}
   NameOfScenario: {fileID: 81328299}
   ScenarioDetails: {fileID: 1626240299}
 --- !u!1 &2063522160
@@ -27998,7 +28017,7 @@ GameObject:
   - component: {fileID: 2063522164}
   - component: {fileID: 2063522163}
   - component: {fileID: 2063522162}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28891,7 +28910,7 @@ GameObject:
   - component: {fileID: 2119297365}
   - component: {fileID: 2119297364}
   - component: {fileID: 2119297363}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WindowPane (4)
   m_TagString: Window
   m_Icon: {fileID: 0}
@@ -28988,7 +29007,7 @@ GameObject:
   - component: {fileID: 2122072423}
   - component: {fileID: 2122072425}
   - component: {fileID: 2122072424}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HDB_White_Pole (3)
   m_TagString: Richochet
   m_Icon: {fileID: 0}

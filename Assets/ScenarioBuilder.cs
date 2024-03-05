@@ -21,11 +21,10 @@ public class ScenarioBuilder : MonoBehaviour
         {
 
             // Change the angle of the building
-            Vector3 OriginalBuildingPosition = Buildings[i].transform.position;
-            Quaternion OriginalBuildingRotation = Buildings[i].transform.rotation;
-            float angle = ParsedBuildingDatablock[i].SavedAngleInDegrees;
-            Quaternion newRotation = Quaternion.Euler(0f, angle, 0f);
-            Buildings[i].transform.rotation = OriginalBuildingRotation * newRotation;
+            Vector3 OriginalBuildingPosition = new Vector3(ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
+            Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotX, ParsedBuildingDatablock[i].RotY + 90, ParsedBuildingDatablock[i].RotZ);
+            Buildings[i].transform.rotation = newRotation;
+            Buildings[i].transform.position = OriginalBuildingPosition;
 
             //TODO: Change the floors and width of the current building
 
@@ -42,8 +41,8 @@ public class ScenarioBuilder : MonoBehaviour
         }
         // First building is always the target building with the distance applied to.
         Vector3 position = Buildings[0].transform.position;
-        position.z = Buildings[1].position.x - SavedScenario.DistanceBetweenBuildings;
-        Buildings[0].position = position;
+        //position.z = Buildings[1].position.x - SavedScenario.DistanceBetweenBuildings;
+        //Buildings[0].position = position;
         NameOfScenario.text = "Loaded: " + SavedScenario.NameOfScenario;
         ScenarioDetails.text = "Distance: " + SavedScenario.DistanceBetweenBuildings.ToString() + "m";
     }

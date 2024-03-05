@@ -32,7 +32,11 @@ public class CameraManager : MonoBehaviour
     public GameObject PostUI, FreecamUI;
 
     public VCam currentlyUsingCamera;
-    
+
+    private void Start()
+    {
+        ForceCameraToIndex(0);
+    }
 
     public void ForceCameraToIndex(int index)
     {
@@ -66,6 +70,7 @@ public class CameraManager : MonoBehaviour
     public void ChangeCurrentCameraPerspective()
     {
          mainCam.orthographic = vCamList[vCamIndex].perspective == VCam.Pers.Orthographic;
+        mainCam.cullingMask = vCamList[vCamIndex].RenderedLayers;
 
     }
 
@@ -222,4 +227,6 @@ public class VCam
     }
     public Pers perspective = Pers.Orthographic;
     public bool transformable;
+
+    public LayerMask RenderedLayers;
 }
