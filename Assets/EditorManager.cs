@@ -82,6 +82,7 @@ public class EditorManager : MonoBehaviour
     private int runtimeTransformLayerMask;
 
     [Header("Distance")]
+    float currentDistance;
     public TMP_Text DistanceText;
     public LineRenderer DistanceLineRenderer;
     
@@ -96,8 +97,9 @@ public class EditorManager : MonoBehaviour
 
         DistanceLineRenderer.SetPosition(0, PosA);
         DistanceLineRenderer.SetPosition(1, PosB);
-        float D = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
-        DistanceText.text = "Distance: " + D.ToString("F1") + "m";
+        currentDistance = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
+        
+        DistanceText.text = "Distance: " + currentDistance.ToString("F1") + "m";
     }
 
     public GameObject HelperInstructions, GizmosInstructions;
@@ -109,7 +111,7 @@ public class EditorManager : MonoBehaviour
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
         runtimeTransformHandle.type = HandleType.POSITION;
         runtimeTransformHandle.autoScale = true;
-        runtimeTransformHandle.autoScaleFactor = 1f;    
+        runtimeTransformHandle.autoScaleFactor = 2f;    
         runtimeTransformHandle.scaleSnap = new Vector3(0.1f, 0.1f, 0.1f);
         runtimeTransformGameObj.SetActive(false);
     }
@@ -185,13 +187,21 @@ public class EditorManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
+        int i = 0;
+        float rot = 0;
         foreach(CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
         {
+            Vector3 Distance = new Vector3(i, 0, 0);
+            Vector3 rota = new Vector3(0, rot, 0);
             OverrideBuildingFloors(CB, DefaultFloorCount);
-            OverrideBuildingWidth(CB, DefaultBuildingWidth);
-            OverrideBuildingRotation(CB, 0);
+            OverrideBuildingTransforms(CB, Distance, rota);
+           
+            i -= 40;
+            rot += 180;
+
+            CB.GetComponent<ModularHDB>().RefreshFloors();
         }
-        OverrideBuildingDistance(defaultDistanceFromBuildings);
+     
     }
 
     public void OnChangeAngleOfCurrentBuilding()
@@ -238,13 +248,42 @@ public class EditorManager : MonoBehaviour
         OnChangeAngleOfCurrentBuilding();
         OnSaveBuildingDetails();
     }
-    public void OverrideBuildingDistance(float dist)
+    public void OverrideBuildingTransforms(int buildingIndex, Vector3? position = null, Vector3? rotation = null)
     {
-        DistanceBetweenBuildingsSlider.value = dist;
-        OnChangeDistanceBetweenBuildings();
-     //   OnSaveBuildingDetails();
+        CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
+
+        if (position != null)
+        {
+            CurrentlySelectedBuilding.transform.position = position.Value;
+        }
+
+        if (rotation != null)
+        {
+            Quaternion quaternionRotation = Quaternion.Euler(rotation.Value);
+            CurrentlySelectedBuilding.transform.rotation = quaternionRotation;
+        }
+    }
+    public void OverrideBuildingTransforms(CustomBuilding CB, Vector3? position = null, Vector3? rotation = null)
+    {
+        CurrentlySelectedBuilding = CB;
+
+        if (position != null)
+        {
+            CurrentlySelectedBuilding.transform.position = position.Value;
+        }
+
+        if (rotation != null)
+        {
+            Quaternion quaternionRotation = Quaternion.Euler(rotation.Value);
+            CurrentlySelectedBuilding.transform.rotation = quaternionRotation;
+        }
     }
 
+    public void RefreshCurrentBuildingFloors(int buildingIndex)
+    {
+        CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
+        CurrentlySelectedBuilding.GetComponent<ModularHDB>().RefreshFloors();
+    }
     public void OverrideBuildingFloors(int buildingIndex, int newFloors )
     {
         CurrentlySelectedBuilding = CurrentBuildingsOnEditorDisplay[buildingIndex];
@@ -272,15 +311,6 @@ public class EditorManager : MonoBehaviour
         WidthSlider.value = newWidth;
         OnChangeSelectedBuildingWidth();
         OnSaveBuildingDetails();
-    }
-
-    public void OnChangeDistanceBetweenBuildings()
-    {
-        DistanceBetweenBuildingsValueText.text = DistanceBetweenBuildingsSlider.value.ToString() + "m";
-        Vector3 pos = CurrentBuildingsOnEditorDisplay[0].transform.position;
-        pos.x = DistanceBetweenBuildingsSlider.value + CurrentBuildingsOnEditorDisplay[1].transform.position.x;
-        CurrentBuildingsOnEditorDisplay[0].transform.position = pos;
-
     }
     public void GoToEditorMenu()
     {
@@ -408,9 +438,17 @@ public class EditorManager : MonoBehaviour
             {
                 savedBuildingType = building.typeofBuilding,
                 SavedNumFloors = building.numFloors,
-                SavedWidthInMetres = building.WidthInMetres,
-                SavedAngleInDegrees = (int)building.AddedAngle
-            };
+                PosX = building.transform.position.x,
+                PosY = building.transform.position.y,
+                PosZ = building.transform.position.z,
+
+                // Quaternion to vector3, then put into RotX...
+
+                RotX = building.transform.rotation.eulerAngles.x,
+                RotY = building.transform.rotation.eulerAngles.y,
+                RotZ = building.transform.rotation.eulerAngles.z
+
+        };
             buildingDataBlock.Add(buildingData);
         }
         PreviewSavedJsonString = JsonConvert.SerializeObject(buildingDataBlock);
@@ -438,8 +476,8 @@ public class EditorManager : MonoBehaviour
             JsonSave = PreviewSavedJsonString,
             EnvironmentJSON = env,
             NameOfScenario = ScenarioNameInput.text,
-            DistanceBetweenBuildings = DistanceBetweenBuildingsSlider.value
-            
+            DistanceBetweenBuildings = currentDistance
+
         };
         editorSave.CurrentlySavedScenarios.Add(newScenario);
         PopupUIManager.Instance.ShowPopup("Success", "Scenario saved successfully!");
@@ -597,6 +635,8 @@ public class SavableBuildingDetails
 {
     public int SavedNumFloors, SavedWidthInMetres, SavedAngleInDegrees;
     public CustomBuilding.BuildingType savedBuildingType;
+    public float PosX, PosY, PosZ;
+    public float RotX, RotY, RotZ;
 }
 
 [System.Serializable]

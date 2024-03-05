@@ -117,12 +117,16 @@ public class EditorSaveManager : MonoBehaviour
 
         for(int i = 0; i < BuildingDatablock.Count; i++)
         {
+            
             editorManager.OverrideBuildingFloors(i, BuildingDatablock[i].SavedNumFloors);
-            editorManager.OverrideBuildingWidth(i, BuildingDatablock[i].SavedWidthInMetres);
-            editorManager.OverrideBuildingRotation(i, BuildingDatablock[i].SavedAngleInDegrees);
+            editorManager.OverrideBuildingTransforms(i, new Vector3(BuildingDatablock[i].PosX, BuildingDatablock[i].PosY, BuildingDatablock[i].PosZ), new Vector3(BuildingDatablock[i].RotX, BuildingDatablock[i].RotY, BuildingDatablock[i].RotZ));
+            //  editorManager.OverrideBuildingWidth(i, BuildingDatablock[i].SavedWidthInMetres);
+            //  editorManager.OverrideBuildingRotation(i, BuildingDatablock[i].SavedAngleInDegrees);
+
+            editorManager.RefreshCurrentBuildingFloors(i);
         }
 
-        editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);
+      //  editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);
 
         CloseScenarioSettings();
         ScenarioListUI.SetActive(false);

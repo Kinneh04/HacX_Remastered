@@ -18,6 +18,11 @@ public class ModularHDB : MonoBehaviour
         ChangeFloors(numfloors);
     }
 
+    public void RefreshFloors()
+    {
+        ChangeFloors(numfloors);
+    }
+
     public void ChangeFloors(int num)
     {
         numfloors = num;
