@@ -30,7 +30,7 @@ public class Culprit : MonoBehaviour
 
     public Ball[] balls;
     public List<Ball> allBalls = new();
-    public List<GameObject> windows = new();
+    public List<Precise_Window> windows = new();
     public List<bool> windowHit = new();
     public List<int> iterations = new();
     public List<float> probabilities = new();
@@ -42,6 +42,8 @@ public class Culprit : MonoBehaviour
     public float currentIteration;
     public float radius = 0f;
     public Vector3 initialPosition;
+
+    WindowsManager wManager;
 
     public GameObject Ball;
     Ball currentBall;
@@ -59,6 +61,8 @@ public class Culprit : MonoBehaviour
         initialPosition = transform.position;
         MainGameManager.OnStartGame += OnStart;
         MainGameManager.OnNextWindow += CheckCanNext;
+
+        wManager = WindowsManager.Instance;
     }
 
     private void Start()
@@ -117,9 +121,9 @@ public class Culprit : MonoBehaviour
 
         foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
         {
-            if (PW.PrecisionMarker != null)
-                windows.Add(PW.PrecisionMarker);
-            else windows.Add(PW.WindowGO);
+            ///if (PW.PrecisionMarker != null)
+            windows.Add(PW);
+            //else windows.Add(PW.WindowGO);
         }
         //windows = WindowsManager.Instance.PreciseWindows;
         balls = new Ball[windows.Count];
@@ -135,7 +139,12 @@ public class Culprit : MonoBehaviour
             allBalls.Add(balls[i]);
             balls[i].gameObject.SetActive(false);
         }
-        if (!CanSeeObject(windows[currentTarget]))
+        GameObject tar;
+        if (windows[currentTarget].RicochetMarker != null)
+            tar = windows[currentTarget].RicochetMarker;
+        else
+            tar = windows[currentTarget].PrecisionMarker;
+        if (!CanSeeObject(tar))
         {
             OnCantHit?.Invoke(gameObject, currentTarget);
             finishedCurrent = true;
@@ -162,10 +171,16 @@ public class Culprit : MonoBehaviour
         if (currentTarget + 1 <= windows.Count - 1)
         {
             currentTarget++;
-            if (!CanSeeObject(windows[currentTarget]))
+            GameObject tar;
+            if (windows[currentTarget].RicochetMarker != null)
+                tar = windows[currentTarget].RicochetMarker;
+            else
+                tar = windows[currentTarget].PrecisionMarker;
+            if (!CanSeeObject(tar))
             {
                 OnCantHit?.Invoke(gameObject, currentTarget);
                 finishedCurrent = true;
+                Debug.Log(this.name);
                 return;
             }
             finishedCurrent = false;
@@ -183,6 +198,8 @@ public class Culprit : MonoBehaviour
 
     public bool CanSeeObject(GameObject target)
     {
+        if (target == null)
+            target = windows[currentTarget].PrecisionMarker;
         Vector3 origin = ShootPosition.position;
         Vector3 direction = origin - target.transform.position;
 
@@ -229,14 +246,29 @@ public class Culprit : MonoBehaviour
         }
 
         // binary search
-        if (currentBall.transform.position.y > windows[currentTarget].transform.position.y)
+        if(!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
         {
-            launchAngleMax = angle;
+            if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y || currentBall.currDist > currentBall.initDist)
+            {
+                launchAngleMax = angle;
+            }
+            else if (currentBall.transform.position.y < windows[currentTarget].RicochetMarker.transform.position.y || currentBall.currDist < currentBall.initDist)
+            {
+                launchAngleMin = angle;
+            }
         }
-        else if (currentBall.transform.position.y < windows[currentTarget].transform.position.y)
+        else
         {
-            launchAngleMin = angle;
+            if (currentBall.transform.position.y > windows[currentTarget].PrecisionMarker.transform.position.y)
+            {
+                launchAngleMax = angle;
+            }
+            else if (currentBall.transform.position.y < windows[currentTarget].PrecisionMarker.transform.position.y)
+            {
+                launchAngleMin = angle;
+            }
         }
+
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
@@ -251,16 +283,18 @@ public class Culprit : MonoBehaviour
     public void FireProjectileAt(int windowIndex)
     {
         launchAngleMax = -90f;
-
-        Vector3 dir = windows[windowIndex].transform.position - ShootPosition.position;
-
+        Vector3 dir;
+        if (windows[windowIndex].RicochetMarker != null)
+            dir = windows[windowIndex].RicochetMarker.transform.position - ShootPosition.position;
+        else
+            dir = windows[windowIndex].PrecisionMarker.transform.position - ShootPosition.position;
         targetRotation = Quaternion.LookRotation(dir);
 
         angle = transform.rotation.eulerAngles.x;
         launchAngleMin = angle;
         ShootPosition.rotation = targetRotation;
 
-        currentBall.Shoot(WindowsManager.Instance.PreciseWindows[windowIndex], windowIndex);
+        currentBall.Shoot(windows[windowIndex], windowIndex);
 
         travelling = true;
         shootNext = false;

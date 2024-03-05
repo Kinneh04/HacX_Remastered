@@ -121,6 +121,7 @@ public class WindowsManager : MonoBehaviour
     public void OnRemovePrecision()
     {
         if (CurrentlySelectedPreciseWindow.PrecisionMarker != null) Destroy(CurrentlySelectedPreciseWindow.PrecisionMarker);
+        if (CurrentlySelectedPreciseWindow.RicochetMarker != null) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
         PreciseWindows.Remove(CurrentlySelectedPreciseWindow);
         DeselectWindow(CurrentlySelectedWIndow);
        // RemoveFromPreciseWindows(CurrentlySelectedPreciseWindow.WindowGO);
@@ -190,17 +191,23 @@ public class WindowsManager : MonoBehaviour
         OnUpdateConfidenceScale();        
     }
 
-    public void PlaceRicochetMarker()
+    public void PlaceRicochetMarker(Vector3 normal)
     {
         if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
         GameObject GO = Instantiate(RicochetMarkerPrefab, RicochetMarkerHighlighter.transform.position, Quaternion.identity);
         GO.transform.localScale = RicochetMarkerPrefab.transform.localScale;
+        //GO.GetComponent<Precise_Window>().CalculateRequiredAngleofIncidence();
         CurrentlySelectedPreciseWindow.RicochetMarker = GO;
+        CurrentlySelectedPreciseWindow.ricochetNormal = normal;
         OnUpdateConfidenceScale();
+
     }
     public void OnUpdateConfidenceScale()
     {
         CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
+        //Vector3 newScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
+        //CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = newScale;
+        //CurrentlySelectedPreciseWindow.RicochetMarker.transform.localScale = newScale;
     }
 
     private void Update()
@@ -270,7 +277,7 @@ public class WindowsManager : MonoBehaviour
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        PlaceRicochetMarker();
+                        PlaceRicochetMarker(hit.normal);
                     }
                 }
             }
@@ -298,4 +305,19 @@ public class Precise_Window
     public GameObject PrecisionMarker, WindowGO;
 
     public GameObject RicochetMarker;
+    public Vector3 ricochetNormal;
+    public float reflectionAngle = 0;
+    public float estimatedAngleOfIncidence = 0;
+
+    public void CalculateRequiredAngleofIncidence()
+    {
+        if(RicochetMarker == null)
+        {
+            Debug.Log("no ricochet point");
+            return;
+        }
+        Vector3 reflectVector = Vector3.Reflect(PrecisionMarker.transform.position - RicochetMarker.transform.position, ricochetNormal);
+        reflectionAngle = Vector3.Angle(ricochetNormal, reflectVector);
+        estimatedAngleOfIncidence = reflectionAngle;
+    }
 }

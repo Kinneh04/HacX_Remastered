@@ -42,6 +42,7 @@ public class CameraOrbit : MonoBehaviour
             Camera.main.orthographic = !Camera.main.orthographic; // Toggle orthographic view
         }
 
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         //float forwardInput = Input.GetAxis("Forward");

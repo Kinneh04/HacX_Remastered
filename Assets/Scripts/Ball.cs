@@ -12,6 +12,8 @@ public class Ball : MonoBehaviour
     public float dragCoefficient = 0.1f;
     public float volume = 0;
     public float initialVel = 70f; // m/s
+    public float COR = 0.85f; // coefficent of restitution (0-1)
+    public float bounceForce;
     private float force;
 
     public float r;
@@ -23,6 +25,13 @@ public class Ball : MonoBehaviour
     public GameObject targetWindow;
     public Precise_Window targetWindowPrecision;
     public TrailRenderer trailRenderer;
+
+    public bool hitFirstPoint = false;
+
+    public float initDist = 0;
+    public float currDist = 0;
+    Vector2 culpritxz = Vector2.zero;
+    bool stop = false;
 
     [Header("CalcProbability")]
     public float distanceFromCenter = 0f;
@@ -41,6 +50,7 @@ public class Ball : MonoBehaviour
         isLaunched = false;
 
         dragCoefficient = DontDestroyOnLoadSettings.Instance.dragCoefficient;
+        COR = DontDestroyOnLoadSettings.Instance.coefficientOfRestitution;
         density = DontDestroyOnLoadSettings.Instance.density;
         initialVel = DontDestroyOnLoadSettings.Instance.minVelocity;
         transform.localScale = new Vector3(DontDestroyOnLoadSettings.Instance.diameter
@@ -67,11 +77,20 @@ public class Ball : MonoBehaviour
 
     public void Shoot(Precise_Window PreciseTarget, int targetIndex)
     {
+        if (targetWindowPrecision.RicochetMarker != null)
+        {
+            culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
+            Vector2 ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
+            initDist = Vector2.Distance(culpritxz, ricochetxz);
+        }
+
+        stop = false;
         GameObject target = PreciseTarget.WindowGO;
         targetWindowPrecision = PreciseTarget;
         transform.position = parentShooter.ShootPosition.position;
         trailRenderer.Clear();
         rbody.isKinematic = false;
+        hitFirstPoint = false;
         isLaunched = true;
         targetWindow = target;
         this.target = targetIndex;
@@ -86,6 +105,8 @@ public class Ball : MonoBehaviour
         //Vector3 forceApplied = new Vector3(0, yComponent, zComponent);
 
         rbody.AddForce(facingDirection * force, ForceMode.Impulse);
+
+        //bounceForce = rbody.velocity.magnitude * Mathf.Clamp01(COR) * rbody.mass;
     }
 
     // Update is called once per frame
@@ -96,12 +117,50 @@ public class Ball : MonoBehaviour
             // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime(Time.deltaTime);
             vel = rbody.velocity;
+
+           
         }
         else
         {
             //rbody.isKinematic = true;
             //parentShooter.travelling = false;
             //parentShooter.shootNext = true;
+        }
+    }
+    private void LateUpdate()
+    {
+        if (rbody.isKinematic)
+            return;
+
+        if (initDist == 0)
+            return;
+
+        if (hitFirstPoint)
+            return;
+        if (targetWindowPrecision.RicochetMarker != null)
+        {
+
+            Vector2 ballxz = new Vector2(transform.position.x, transform.position.z);
+            currDist = Vector2.Distance(culpritxz, ballxz);
+
+            if (currDist > initDist)
+            {
+                if (!hitFirstPoint)
+                {
+
+                    //hitFirstPoint = false;
+                    rbody.isKinematic = true;
+                    parentShooter.travelling = false;
+                    parentShooter.shootNext = true;
+                    return;
+
+                }
+
+            }
+            else
+            {
+
+            }
         }
     }
 
@@ -112,13 +171,7 @@ public class Ball : MonoBehaviour
 
     void SimulateInRealTime(float dt)
     {
-        //Vector3 direction = -rbody.velocity.normalized;
-        //float velocity = rbody.velocity.magnitude;
-        //var forceAmount = (p * velocity * velocity * dragCoefficient * area) * 0.5f;
-        //rbody.AddForce(direction * forceAmount);
-
-
-
+        // calculate drag and add force in opposing direction
         Vector3 dragForce = -0.5f * (p * rbody.velocity.sqrMagnitude * dragCoefficient * area * rbody.velocity.normalized);
         rbody.AddForce(dragForce, ForceMode.Force);
 
@@ -126,6 +179,9 @@ public class Ball : MonoBehaviour
         //Vector3 relativeVelocity = rbody.velocity - SettingsMenu.instance.GetWindDirection() * SettingsMenu.instance.GetWindSpeed();
         //Vector3 dragForce = -0.5f * p * dragCoefficient * area * relativeVelocity.sqrMagnitude * relativeVelocity.normalized;
         //rbody.AddForce(dragForce, ForceMode.Force);
+       
+
+        
     }
 
     public void Simulate()
@@ -138,35 +194,51 @@ public class Ball : MonoBehaviour
         dragCoefficient = newValue;
     }
 
-    //public void SetTarget(int tar)
-    //{
-    //    target = tar;
-    //    if (target==0)
-    //    {
-    //        TrailRenderer window_1 = gameObject.GetComponent<TrailRenderer>();
-    //        window_1.material = window1;
-    //    }
-    //    else
-    //    {
-    //        TrailRenderer window_2 = gameObject.GetComponent<TrailRenderer>();
-    //        window_2.material = window2;
-    //    }
-    //}
-    private void OnCollisionEnter(Collision other)
+    public void CalculateBounce(Collision collision)
+    {
+
+        ContactPoint contact = collision.GetContact(0);
+
+        // Calculate reflection vector based on incoming direction and surface normal
+        Vector3 reflectionDirection = Vector3.Reflect(vel, contact.normal);
+
+        transform.position = contact.point;
+
+        // Apply force considering COR
+        rbody.velocity = reflectionDirection * Mathf.Clamp01(COR);
+    }
+    public void ResetBall(Collision other)
     {
         rbody.isKinematic = true;
         parentShooter.travelling = false;
         parentShooter.shootNext = true;
 
         ContactPoint contact = other.GetContact(0);
-        Vector3 normal = contact.normal;
         transform.position = contact.point;
-
-
-        if (other.transform.gameObject != targetWindow)
+    }
+    private void OnCollisionEnter(Collision other)
+    {
+        if(!hitFirstPoint && targetWindowPrecision.RicochetMarker != null)
         {
-            return;
+            if (targetWindowPrecision.RicochetMarker != null
+          && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.RicochetMarker.transform.position) > 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x
+          )
+            {
+                hitFirstPoint = false;
+                ResetBall(other);
+                return;
+            }
+            else
+            {
+                hitFirstPoint = true;
+
+                // apply reflection bounce
+                CalculateBounce(other);
+                return;
+            }
         }
+
+        ResetBall(other);
 
         if (targetWindowPrecision.PrecisionMarker != null 
             && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
@@ -174,8 +246,16 @@ public class Ball : MonoBehaviour
         {
             return;
         }
+        else
+        {
+            // return if havent hit first point or is not the target window
+            if (other.transform.gameObject != targetWindow || (!hitFirstPoint && targetWindowPrecision.RicochetMarker != null))
+            {
+                return;
+            }
+        }
 
-
+        Vector3 normal = other.GetContact(0).normal;
         parentShooter.windowHit[target] = true;
         parentShooter.TotalBallsHit++;
         // values to calc accuracy
