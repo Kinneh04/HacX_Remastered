@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 1042981208265664719}
   - component: {fileID: 1042981208265664717}
   - component: {fileID: 1042981208265664716}
+  - component: {fileID: 6504712391728369324}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole
   m_TagString: Untagged
@@ -240,6 +241,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6504712391728369324
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981208265664718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0.00000047683716}
 --- !u!1 &1042981208297432016
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,6 +820,7 @@ GameObject:
   - component: {fileID: 1042981208411491209}
   - component: {fileID: 1042981208411491215}
   - component: {fileID: 1042981208411491214}
+  - component: {fileID: 3465343476446690604}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (8)
   m_TagString: Untagged
@@ -878,6 +893,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3465343476446690604
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981208411491208}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 0.99999994, z: 1.0000002}
+  m_Center: {x: 0, y: -0.00000023841858, z: 0}
 --- !u!1 &1042981208419479294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,6 +1800,7 @@ GameObject:
   - component: {fileID: 1042981208722887662}
   - component: {fileID: 1042981208722887660}
   - component: {fileID: 1042981208722887663}
+  - component: {fileID: 4438824144371752280}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (6)
   m_TagString: Untagged
@@ -1844,6 +1873,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4438824144371752280
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981208722887657}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0.0000019073486, y: 0, z: 0.0000038146973}
 --- !u!1 &1042981208728245152
 GameObject:
   m_ObjectHideFlags: 0
@@ -3077,6 +3119,7 @@ GameObject:
   - component: {fileID: 1042981209193684958}
   - component: {fileID: 1042981209193684956}
   - component: {fileID: 1042981209193684959}
+  - component: {fileID: 5299591754300568765}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (2)
   m_TagString: Untagged
@@ -3149,6 +3192,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5299591754300568765
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981209193684953}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0.00000047683716}
 --- !u!1 &1042981209237316250
 GameObject:
   m_ObjectHideFlags: 0
@@ -3522,6 +3578,7 @@ GameObject:
   - component: {fileID: 1042981209566910388}
   - component: {fileID: 1042981209566910394}
   - component: {fileID: 1042981209566910389}
+  - component: {fileID: 3500197675359282157}
   m_Layer: 0
   m_Name: HDB_Yellow_Pole (4)
   m_TagString: Untagged
@@ -3594,6 +3651,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3500197675359282157
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981209566910391}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0.0000076293945, y: 0, z: 0.00000047683716}
 --- !u!1 &1042981209578895906
 GameObject:
   m_ObjectHideFlags: 0
@@ -4127,6 +4197,7 @@ GameObject:
   - component: {fileID: 1042981209988798719}
   - component: {fileID: 1042981209988798717}
   - component: {fileID: 1042981209988798716}
+  - component: {fileID: 8658243471608120431}
   m_Layer: 0
   m_Name: HDB_White_Pole
   m_TagString: Untagged
@@ -4199,6 +4270,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8658243471608120431
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981209988798718}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 1, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0.00000023841858}
 --- !u!1 &1042981210051231572
 GameObject:
   m_ObjectHideFlags: 0
@@ -4343,6 +4427,7 @@ GameObject:
   - component: {fileID: 1042981210100323501}
   - component: {fileID: 1042981210100323475}
   - component: {fileID: 1042981210100323474}
+  - component: {fileID: 2928284280700874005}
   m_Layer: 0
   m_Name: HDB_MainBlock
   m_TagString: Untagged
@@ -4415,6 +4500,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2928284280700874005
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1042981210100323500}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000002, y: 0.99999994, z: 1.0000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1042981210217004329
 GameObject:
   m_ObjectHideFlags: 0
