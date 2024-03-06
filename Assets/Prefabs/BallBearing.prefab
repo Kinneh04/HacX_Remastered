@@ -137,7 +137,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -167,13 +167,22 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.039659917
+        value: 0.028778076
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.08631897
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
@@ -232,6 +241,8 @@ MonoBehaviour:
   dragCoefficient: 0.1
   volume: 0
   initialVel: 70
+  COR: 0.85
+  bounceForce: 0
   r: 0
   area: 0
   targetWindow: {fileID: 0}
@@ -242,7 +253,14 @@ MonoBehaviour:
     breakingStress: 18
     PrecisionMarker: {fileID: 0}
     WindowGO: {fileID: 0}
+    RicochetMarker: {fileID: 0}
+    ricochetNormal: {x: 0, y: 0, z: 0}
+    reflectionAngle: 0
+    estimatedAngleOfIncidence: 0
   trailRenderer: {fileID: 0}
+  hitFirstPoint: 0
+  initDist: 0
+  currDist: 0
   distanceFromCenter: 0
   angleOfImpact: 0
   impactSpeed: 0

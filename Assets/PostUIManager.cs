@@ -164,6 +164,8 @@ public class PostUIManager : MonoBehaviour
                     c.gameObject.SetActive(false);
             }
         }
+
+        ChangeAccLimitSlider.interactable = !ShowAllCulpritsToggle.isOn;
     }
 
     public void OnToggleTracers()
