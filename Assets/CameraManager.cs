@@ -58,6 +58,16 @@ public class CameraManager : MonoBehaviour
     public void SwitchToFreecam(bool toggle)
     {
         freecamMode = toggle;
+
+        FreecamUI.SetActive(toggle);
+        if (!WindowsManager.Instance.isPrecisionMode) // if user is putting ricochet mark
+        {
+            PostUI.SetActive(!toggle);
+        }
+        else
+        {
+            mainCam.transform.position = mainCam.transform.position + (mainCam.transform.forward * mainCam.nearClipPlane);
+        }
         freeCam.transform.position = mainCam.transform.position;
         freeCam.transform.rotation = mainCam.transform.rotation;
 
@@ -68,15 +78,6 @@ public class CameraManager : MonoBehaviour
         freeCam.gameObject.SetActive(toggle);
         mainCam.orthographic = !toggle;
 
-        if(!WindowsManager.Instance.isPrecisionMode)
-        {
-            PostUI.SetActive(!toggle);
-        }
-        else
-        {
-
-        }
-        FreecamUI.SetActive(toggle);
         if (!toggle) ForceCameraToIndex(0);
     }
 
