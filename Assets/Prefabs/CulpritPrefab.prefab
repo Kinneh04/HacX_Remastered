@@ -108,7 +108,7 @@ MonoBehaviour:
   currentIteration: 0
   radius: 0
   initialPosition: {x: 0, y: 0, z: 0}
-  LayerMask:
+  layerMask:
     serializedVersion: 2
     m_Bits: 128
   Ball: {fileID: 1454201081097711204, guid: 5021eba2666ee3046934484a821fe73c, type: 3}
