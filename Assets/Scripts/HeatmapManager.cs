@@ -7,6 +7,7 @@ public class HeatmapManager : MonoBehaviour
 {
     public MainGameManager mainGameManager;
     public List<float> accs = new();
+    public float AdditionalAccuracy = 0.0f;
     public void UpdateHeatmap()
     {
         mainGameManager.SortCulpritsList();
@@ -19,15 +20,15 @@ public class HeatmapManager : MonoBehaviour
             if (currentCulprit.probability != 0f)
             {
                 // Found the next culprit with a probability != 0
-                min = currentCulprit.probability;
+                min = currentCulprit.probability * (1 + AdditionalAccuracy);
 
                 break; // Break the loop since we found the next culprit
             }
         }
 
         float max = mainGameManager.CulpritsDone[0].probability;
-
-        foreach(Culprit C in mainGameManager.CulpritsDone)
+        if (min > max) min = max * 0.99f;
+        foreach (Culprit C in mainGameManager.CulpritsDone)
         {
             float normalizedAccuracy = Mathf.InverseLerp(min, max, C.probability);
             float clampedNormalizedAccuracy = Mathf.Clamp01(normalizedAccuracy);
@@ -35,6 +36,13 @@ public class HeatmapManager : MonoBehaviour
             Color heatmapColor = Color.Lerp(Color.red, Color.green, clampedNormalizedAccuracy);
             C.culpritMeshRenderer.material.color = heatmapColor;
         }
+
+    }
+
+    public void OnChangeHeatmapPrecision(float newPrecision)
+    {
+        AdditionalAccuracy = newPrecision;
+        UpdateHeatmap();
     }
 
     public void DisableHeatmap()

@@ -13,6 +13,7 @@ public class PostUIManager : MonoBehaviour
 
     [Header("Sliders")]
     public Slider ChangeAccLimitSlider;
+    public Slider HeatmapPrecisionSlider;
 
     [Header("Managers")]
     public HeatmapManager heatmapManager;
@@ -22,6 +23,7 @@ public class PostUIManager : MonoBehaviour
     [Header("Values")]
     public float AccuracyLimit;
     public TMP_Text AccuracyLimitValueText;
+    public TMP_Text HeatmapPrecisionText;
 
     public List<int> WindowIndexesSelected = new();
 
@@ -29,6 +31,12 @@ public class PostUIManager : MonoBehaviour
     public GameObject WindowSelectionTogglePrefab;
     public Transform WindowSelectionPrefabParent;
     // TODO: Assign these and instantiate them;
+
+    public void OnChangeHeatmapPrecision()
+    {
+        HeatmapPrecisionText.text = (HeatmapPrecisionSlider.value * 100).ToString("F2") + "%";
+        heatmapManager.OnChangeHeatmapPrecision(HeatmapPrecisionSlider.value);
+    }
 
     public void InstantiateWindowToggles()
     {
