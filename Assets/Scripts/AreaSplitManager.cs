@@ -11,6 +11,9 @@ public class AreaSplitManager : MonoBehaviour
     public int Floor = 0;
     
     public CulpritsManager culpritManager;
+    public Transform Parent;
+
+    public bool inverse = false;
     public void RespawnCulprits()
     {
         // if (!mainGameManager) mainGameManager = MainGameManager.instance;
@@ -31,7 +34,14 @@ public class AreaSplitManager : MonoBehaviour
 
             if (!CheckCollision(spawnPosition))
             {
-                GameObject GO = Instantiate(CulpritPrefab, spawnPosition, Quaternion.identity);
+                GameObject GO = Instantiate(CulpritPrefab, spawnPosition, transform.rotation);
+
+                GO.transform.SetParent(Parent);
+                if(inverse)
+                {
+                    GO.transform.Rotate(0, 180, 0);
+                }
+               // GO.transform.rotation = transform.rotation;
                 culpritManager.AddCulprit(GO.GetComponent<Culprit>());
                 GO.name = "Culprit " + culpritManager.SpawnedCulprits.Count;
                 Culprit culprit = GO.GetComponent<Culprit>();

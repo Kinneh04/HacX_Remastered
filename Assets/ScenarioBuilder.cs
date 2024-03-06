@@ -15,12 +15,28 @@ public class ScenarioBuilder : MonoBehaviour
     [Header("UI")]
     public TMP_Text NameOfScenario;
     public TMP_Text ScenarioDetails;
-    private void BuildScenario()
-    {
-        for(int i = 0; i < ParsedBuildingDatablock.Count; i++)
-        {
+    public CulpritsManager culpritsManager;
+    public GameObject BuildingScenarioScreen;
 
-            // Change the angle of the building
+    public IEnumerator buildSCenarioCoroutine()
+    {
+        for (int i = 0; i < ParsedBuildingDatablock.Count; i++)
+        {
+           //Change floors of buildings
+            int numFloors = ParsedBuildingDatablock[i].SavedNumFloors;
+            Buildings[i].GetComponent<ModularHDB>().ChangeFloors(numFloors);
+
+        }
+        yield return new WaitForSeconds(0.5f);
+        // Add Culprits into the buildings
+        CulpritsManager culpritsManager = FindObjectOfType<CulpritsManager>();
+        culpritsManager.NumCulpritsPerRow = DontDestroyOnLoadSettings.Instance.NumCulpritsPerRowValue;
+        culpritsManager.InitFloors();
+
+        for (int i = 0; i < ParsedBuildingDatablock.Count; i++)
+        {
+            //Change transforms of buildings
+
             Vector3 OriginalBuildingPosition = new Vector3(ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
             ParsedBuildingDatablock[i].RotY += 90;
             if (ParsedBuildingDatablock[i].RotY < 0) ParsedBuildingDatablock[i].RotY *= -1;
@@ -28,29 +44,31 @@ public class ScenarioBuilder : MonoBehaviour
             Buildings[i].transform.rotation = newRotation;
             Buildings[i].transform.position = OriginalBuildingPosition;
 
-            //TODO: Change the floors and width of the current building
+        }
 
-            int numFloors = ParsedBuildingDatablock[i].SavedNumFloors;
-            Buildings[i].GetComponent<ModularHDB>().ChangeFloors(numFloors);
-            //int width = ParsedBuildingDatablock[i].SavedWidthInMetres;
-        }
-        if(ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
-        for(int i = 0; i < ParsedEnvDatablock.Count; i++)
-        {
-            GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
-            GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosX, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosZ);
-            GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
-        }
+        if (ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
+            for (int i = 0; i < ParsedEnvDatablock.Count; i++)
+            {
+                // Add environmentals
+                GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
+                GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosX, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosZ);
+                GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
+            }
+
         // First building is always the target building with the distance applied to.
         Vector3 position = Buildings[0].transform.position;
-        //position.z = Buildings[1].position.x - SavedScenario.DistanceBetweenBuildings;
-        //Buildings[0].position = position;
         NameOfScenario.text = "Loaded: " + SavedScenario.NameOfScenario;
         ScenarioDetails.text = "Distance: " + SavedScenario.DistanceBetweenBuildings.ToString() + "m";
+        BuildingScenarioScreen.SetActive(false);
+    }
+    private void BuildScenario()
+    {
+        StartCoroutine(buildSCenarioCoroutine());
     }
 
     public void ParseScenario(Scenario scenario)
     {
+        BuildingScenarioScreen.SetActive(true);
         SavedScenario = scenario;
         ParsedBuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SavedScenario.JsonSave);
         ParsedEnvDatablock = JsonConvert.DeserializeObject<List<SavableEnvironmentDetails>>(SavedScenario.EnvironmentJSON);

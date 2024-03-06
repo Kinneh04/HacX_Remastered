@@ -51,7 +51,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     {
         CulpritsManager culpritsManager = FindObjectOfType<CulpritsManager>();
         culpritsManager.NumCulpritsPerRow = NumCulpritsPerRowValue;
-        culpritsManager.InitFloors();
+       // culpritsManager.InitFloors();
     }
     public static DontDestroyOnLoadSettings Instance
     {
@@ -103,7 +103,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
         LoadBuilding();
         yield return new WaitForSeconds(0.2f);
         // Call the method to load settings into the main game
-        LoadSettingsIntoMainGame();
+       // LoadSettingsIntoMainGame();
 
     }
 

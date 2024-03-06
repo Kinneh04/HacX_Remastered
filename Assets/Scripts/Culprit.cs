@@ -60,7 +60,6 @@ public class Culprit : MonoBehaviour
     public int totalBallsThrown, TotalBallsHit;
     private void Awake()
     {
-        initialPosition = transform.position;
         MainGameManager.OnStartGame += OnStart;
         MainGameManager.OnNextWindow += CheckCanNext;
 
@@ -70,6 +69,8 @@ public class Culprit : MonoBehaviour
     private void Start()
     {
         outline = GetComponent<Outline>();
+
+        initialPosition = transform.position;
     }
 
     private void OnDestroy()
@@ -111,7 +112,7 @@ public class Culprit : MonoBehaviour
     {
         Vector3 randomPosition = UnityEngine.Random.insideUnitSphere * radius;
         randomPosition += initialPosition;
-        transform.localPosition = new Vector3(randomPosition.x, transform.position.y, randomPosition.z);
+        transform.position = new Vector3(randomPosition.x, transform.position.y, randomPosition.z);
     }
     public void OnStart(int newVelocity, int newIter)
     {

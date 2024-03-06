@@ -30,6 +30,9 @@ public class CulpritsManager : MonoBehaviour
     public TMP_Text FloorText;
     public TMP_Text ColumnText, OverallAccuracyText, TotalBallsFiredText, BallsHitText, BallsMissedText, MtHRatioText;
 
+    [Header("LookAt")]
+    public Transform TargetBuilding;
+
     private void Start()
     {
         InitFloors();
@@ -89,7 +92,8 @@ public class CulpritsManager : MonoBehaviour
     }
     public void InitFloors()
     {
-        Floors = GameObject.FindObjectsOfType<AreaSplitManager>();
+
+        AreaSplitManager[] Floors = GameObject.FindObjectsOfType<AreaSplitManager>();
 
         SpawnedCulprits.Clear();
         for (int i = 0; i < Floors.Length; i++)
@@ -98,7 +102,7 @@ public class CulpritsManager : MonoBehaviour
             Floors[i].CulpritPrefab = CulpritPrefab;
             Floors[i].culpritManager = this;
             Floors[i].NumberOfCulprits = NumCulpritsPerRow;
-            Floors[i].RespawnCulprits();
+            Floors[i].RespawnCulprits(); 
         }
     }
 

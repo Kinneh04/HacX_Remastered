@@ -148,8 +148,11 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 			public void AddRigidbodyTo(VectorEntity VE)
 			{
 				Rigidbody RB = VE.GameObject.AddComponent<Rigidbody>();
-				RB.isKinematic = true;
-				RB.useGravity = false;
+				if (RB)
+				{
+					RB.isKinematic = true;
+					RB.useGravity = false;
+				}
 			//	RB.WakeUp();
 			}
 		}

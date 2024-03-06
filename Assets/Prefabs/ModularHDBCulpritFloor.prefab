@@ -4549,6 +4549,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 1042981208997382707}
     m_Modifications:
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: Parent
+      value: 
+      objectReference: {fileID: 1042981208256214706}
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: inverse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: CulpritPrefab
+      value: 
+      objectReference: {fileID: 243429592876162824, guid: 08d3d1e92d4a9364d8b333da71906823, type: 3}
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: numberOfAreas
       value: 15
       objectReference: {fileID: 0}
@@ -4634,6 +4646,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1042981208997382707}
     m_Modifications:
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: Parent
+      value: 
+      objectReference: {fileID: 1042981208256214706}
+    - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
+      propertyPath: CulpritPrefab
+      value: 
+      objectReference: {fileID: 243429592876162824, guid: 08d3d1e92d4a9364d8b333da71906823, type: 3}
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: numberOfAreas
       value: 15
