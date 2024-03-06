@@ -4940,6 +4940,7 @@ GameObject:
   - component: {fileID: 333545644}
   - component: {fileID: 333545646}
   - component: {fileID: 333545645}
+  - component: {fileID: 333545647}
   m_Layer: 8
   m_Name: HDB_Yellow_Pole (2)
   m_TagString: Richochet
@@ -5012,6 +5013,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 333545643}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &333545647
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333545643}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: 0.00000667572, y: 0.000000029802322, z: 6.9849193e-10}
 --- !u!1 &336577744
 GameObject:
   m_ObjectHideFlags: 0
@@ -8778,6 +8792,7 @@ GameObject:
   - component: {fileID: 562129254}
   - component: {fileID: 562129256}
   - component: {fileID: 562129255}
+  - component: {fileID: 562129257}
   m_Layer: 8
   m_Name: HDB_LiftBlock
   m_TagString: Richochet
@@ -8850,6 +8865,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562129253}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &562129257
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562129253}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 0.99999994, z: 1.0000005}
+  m_Center: {x: -0.0000011920929, y: 0, z: -0.00000047683716}
 --- !u!1 &566546273
 GameObject:
   m_ObjectHideFlags: 0
@@ -8895,6 +8923,7 @@ GameObject:
   - component: {fileID: 568937931}
   - component: {fileID: 568937933}
   - component: {fileID: 568937932}
+  - component: {fileID: 568937934}
   m_Layer: 8
   m_Name: HDB_Yellow_Pole
   m_TagString: Richochet
@@ -8967,6 +8996,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568937930}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &568937934
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568937930}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: 0.0000019073486, y: 0.000000059604645, z: 0.000000003259629}
 --- !u!1 &606619805
 GameObject:
   m_ObjectHideFlags: 0
@@ -9729,6 +9771,7 @@ GameObject:
   - component: {fileID: 649659669}
   - component: {fileID: 649659671}
   - component: {fileID: 649659670}
+  - component: {fileID: 649659672}
   m_Layer: 8
   m_Name: HDB_White_Pole
   m_TagString: Richochet
@@ -9801,6 +9844,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649659668}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &649659672
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 649659668}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: -0.0000038146973, y: 0.000000059604645, z: 0}
 --- !u!1 &650321721
 GameObject:
   m_ObjectHideFlags: 0
@@ -17867,6 +17923,7 @@ GameObject:
   - component: {fileID: 1038773059}
   - component: {fileID: 1038773061}
   - component: {fileID: 1038773060}
+  - component: {fileID: 1038773062}
   m_Layer: 8
   m_Name: HDB_MainBlock
   m_TagString: Untagged
@@ -17939,6 +17996,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1038773058}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1038773062
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038773058}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1.0000001, z: 1.0000005}
+  m_Center: {x: 0.000000029802322, y: 0.000000059604645, z: 0}
 --- !u!1 &1039750962
 GameObject:
   m_ObjectHideFlags: 0
@@ -18776,6 +18846,7 @@ MonoBehaviour:
   moveSpeed: 15
   lookSpeed: 15
   scrollSpeed: 15
+  isDragging: 0
   PostUI: {fileID: 161550616}
   FreecamUI: {fileID: 19772623}
   currentlyUsingCamera:
@@ -19985,6 +20056,7 @@ GameObject:
   - component: {fileID: 1192396478}
   - component: {fileID: 1192396480}
   - component: {fileID: 1192396479}
+  - component: {fileID: 1192396481}
   m_Layer: 8
   m_Name: HDB_Yellow_Pole (4)
   m_TagString: Richochet
@@ -20057,6 +20129,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1192396477}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1192396481
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192396477}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: 0.000015258789, y: 0.000000029802322, z: -0.0000000018626451}
 --- !u!1 &1192526298
 GameObject:
   m_ObjectHideFlags: 0
@@ -21401,6 +21486,7 @@ GameObject:
   - component: {fileID: 1308863318}
   - component: {fileID: 1308863317}
   - component: {fileID: 1308863316}
+  - component: {fileID: 1308863319}
   m_Layer: 8
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
@@ -21486,6 +21572,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1308863314}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1308863319
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1308863314}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000004, y: 1, z: 1.0000006}
+  m_Center: {x: 0, y: 0.00000047683716, z: -0.0000076293945}
 --- !u!1 &1309681766
 GameObject:
   m_ObjectHideFlags: 0
@@ -26983,6 +27082,7 @@ GameObject:
   - component: {fileID: 1736903102}
   - component: {fileID: 1736903101}
   - component: {fileID: 1736903100}
+  - component: {fileID: 1736903103}
   m_Layer: 8
   m_Name: HDB_White_Parapet (1)
   m_TagString: Richochet
@@ -27068,6 +27168,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1736903098}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &1736903103
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1736903098}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000004, y: 1, z: 1.0000006}
+  m_Center: {x: 0, y: 0.00000047683716, z: -0.0000076293945}
 --- !u!1 &1738957715
 GameObject:
   m_ObjectHideFlags: 0
@@ -33591,6 +33704,7 @@ GameObject:
   - component: {fileID: 2122072423}
   - component: {fileID: 2122072425}
   - component: {fileID: 2122072424}
+  - component: {fileID: 2122072426}
   m_Layer: 8
   m_Name: HDB_White_Pole (3)
   m_TagString: Richochet
@@ -33663,6 +33777,19 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2122072422}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &2122072426
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122072422}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: 0.000019073486, y: 0.000000059604645, z: -1.1641532e-10}
 --- !u!1 &2126205836
 GameObject:
   m_ObjectHideFlags: 0
