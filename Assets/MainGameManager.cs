@@ -121,6 +121,12 @@ public class MainGameManager : MonoBehaviour
 
     public void StartSimulation()
     {
+        if (WindowsManager.Instance.PreciseWindows.Count <= 0)
+        {
+            PopupUIManager.Instance.ShowPopup("Error!", " Simulation cannot start. Please select at least one window.");
+            return;
+        }
+        PreSimUI.SetActive(false);
         for (int i = 0; i < WindowsManager.Instance.SelectedWindows.Count; i++)
         {
             ListOfHitList.Add(new List<GameObject>());
@@ -159,7 +165,7 @@ public class MainGameManager : MonoBehaviour
             MD_Time.text = "Time: " + currentTime;
             MD_TargetFloors.text = "Target building floors: " + scenarioBuilder.ParsedBuildingDatablock[0].SavedNumFloors.ToString();
             MD_CulpritFloors.text = "Culprit building floors: " + scenarioBuilder.ParsedBuildingDatablock[1].SavedNumFloors.ToString();
-            MD_Distance.text = "Distance: " + S.DistanceBetweenBuildings.ToString() + "m";
+            MD_Distance.text = "Distance: " + S.DistanceBetweenBuildings.ToString("F1") + "m";
             // Get the desktop path
             string desktopPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
 

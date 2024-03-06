@@ -41,6 +41,7 @@ public class PopupUIManager : MonoBehaviour
 
         popUpButton.onClick.RemoveAllListeners();
         popUpButton.onClick.AddListener(delegate { PopUpWindow.SetActive(false); });
+        if (delegateAction != null)
         popUpButton.onClick.AddListener(delegateAction);
         
     }

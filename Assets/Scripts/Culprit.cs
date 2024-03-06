@@ -113,6 +113,7 @@ public class Culprit : MonoBehaviour
     }
     public void OnStart(int newVelocity, int newIter)
     {
+      
         ResetVariables();
         RandomPosition();
 
