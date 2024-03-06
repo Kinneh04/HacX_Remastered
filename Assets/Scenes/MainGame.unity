@@ -2883,6 +2883,9 @@ MonoBehaviour:
     PrecisionMarker: {fileID: 0}
     WindowGO: {fileID: 0}
     RicochetMarker: {fileID: 0}
+    ricochetNormal: {x: 0, y: 0, z: 0}
+    reflectionAngle: 0
+    estimatedAngleOfIncidence: 0
   CurrentlySelectedRicochetWindow:
     windowThickness: 10
     windowLength: 2500
@@ -2891,6 +2894,9 @@ MonoBehaviour:
     PrecisionMarker: {fileID: 0}
     WindowGO: {fileID: 0}
     RicochetMarker: {fileID: 0}
+    ricochetNormal: {x: 0, y: 0, z: 0}
+    reflectionAngle: 0
+    estimatedAngleOfIncidence: 0
   StartButton: {fileID: 790769466}
   WindowCounter: {fileID: 1635474516}
   MainVCamera: {fileID: 1114312052}
@@ -16350,7 +16356,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1114312053}
   - component: {fileID: 1114312052}
-  - component: {fileID: 1114312054}
   m_Layer: 0
   m_Name: VCamOverview
   m_TagString: Untagged
@@ -16412,23 +16417,6 @@ Transform:
   m_Father: {fileID: 399466573}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1114312054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1114312051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f509e36d9ffd974a94861d4e087e1d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 10
-  rotationSpeed: 10
-  zoomSpeed: 10
-  isDragging: 0
-  vcam: {fileID: 0}
 --- !u!1 &1117892943
 GameObject:
   m_ObjectHideFlags: 0
