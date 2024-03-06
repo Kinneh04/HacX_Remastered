@@ -74,15 +74,25 @@ public class MapPickerManager : MonoBehaviour
 
     public void DeselectBuilding(GameObject GO)
     {
-        SelectedBuildings.Remove(GO);
-        GO.GetComponent<HighlightFeature>().OnDeselectBuilding();
+        HighlightFeature HF = GO.GetComponent<HighlightFeature>();
+      //  HF.mapPicker = this;
+        if (HF.isSelected)
+        {
+            SelectedBuildings.Remove(GO);
+            HF.OnDeselectBuilding();
+        }
     }
 
     public void SelectBuilding(GameObject GO)
     {
-        if (SelectedBuildings.Count == 2) return;
-        SelectedBuildings.Add(GO);
-        GO.GetComponent<HighlightFeature>().OnSelectBuilding();
+        HighlightFeature HF = GO.GetComponent<HighlightFeature>();
+    //    HF.mapPicker = this;
+        if (!HF.isSelected)
+        {
+            if (SelectedBuildings.Count == 2) return;
+            SelectedBuildings.Add(GO);
+        }
+        HF.OnSelectBuilding();
 
     }
 

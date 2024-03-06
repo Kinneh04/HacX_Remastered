@@ -111,7 +111,9 @@ public class EditorManager : MonoBehaviour
         runtimeTransformLayerMask = 1 << runtimeTransformLayer; //Layer number represented by a single bit in the 32-bit integer using bit shift
         runtimeTransformHandle.type = HandleType.POSITION;
         runtimeTransformHandle.autoScale = true;
-        runtimeTransformHandle.autoScaleFactor = 2f;    
+        runtimeTransformHandle.autoScaleFactor = 1f;
+        runtimeTransformHandle.rotationSnap = 5f;
+        runtimeTransformHandle.positionSnap = new Vector3(0.1f, 0.1f, 0.1f);
         runtimeTransformHandle.scaleSnap = new Vector3(0.1f, 0.1f, 0.1f);
         runtimeTransformGameObj.SetActive(false);
     }

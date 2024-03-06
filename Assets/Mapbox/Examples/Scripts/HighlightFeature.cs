@@ -15,6 +15,8 @@
 
 		public List<GameObject> IntersectingObjects = new();
 
+		public MapPickerManager mapPicker;
+
         public void OnTriggerEnter(Collider other)
         {
 			if (!IntersectingObjects.Contains( other.gameObject))
@@ -97,10 +99,14 @@
 
 		public void OnSelectBuilding()
         {
-			isSelected = true;
-			//_highlightMaterial.color = Color.green;
-			_meshRenderer.material = _highlightMaterial;
-			SelectIntersecting();
+			if (isSelected) DeSelectIntersecting();
+			else
+			{
+				isSelected = true;
+				//_highlightMaterial.color = Color.green;
+				_meshRenderer.material = _highlightMaterial;
+				SelectIntersecting();
+			}
 		}
 
 		public void OnDeselectBuilding()
@@ -108,6 +114,7 @@
 			isSelected = false;
 			_highlightMaterial.color = Color.red;
 			_meshRenderer.materials = _materials.ToArray();
+			if(mapPicker.SelectedBuildings.Contains(gameObject)) mapPicker.SelectedBuildings.Remove(gameObject);
 			DeSelectIntersecting();
 		}
 
@@ -125,6 +132,7 @@
 			{
 				_materials.Add(item);
 			}
+			mapPicker = GameObject.FindObjectOfType<MapPickerManager>();
 		}
 
 		public void OnMouseEnter()
