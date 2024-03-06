@@ -104,6 +104,13 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 					_colliders.Clear();
 				}
 			}
+
+			public void AddRigidbodyTo(VectorEntity VE)
+			{
+				Rigidbody RB = VE.GameObject.AddComponent<Rigidbody>();
+				RB.isKinematic = true;
+				RB.useGravity = false;
+			}
 		}
 
 		public class MeshColliderStrategy : IColliderStrategy
@@ -123,8 +130,12 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				}
 				else
 				{
-					_colliders.Add(ve.GameObject, ve.GameObject.AddComponent<MeshCollider>());
+					MeshCollider MC = ve.GameObject.AddComponent<MeshCollider>();
+					_colliders.Add(ve.GameObject,MC);
+					MC.convex = true;
+					MC.isTrigger = true;
 				}
+				AddRigidbodyTo(ve);
 			}
 			public void Reset()
 			{
@@ -132,6 +143,14 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 				{
 					_colliders.Clear();
 				}
+			}
+
+			public void AddRigidbodyTo(VectorEntity VE)
+			{
+				Rigidbody RB = VE.GameObject.AddComponent<Rigidbody>();
+				RB.isKinematic = true;
+				RB.useGravity = false;
+			//	RB.WakeUp();
 			}
 		}
 
@@ -164,11 +183,21 @@ namespace Mapbox.Unity.MeshGeneration.Modifiers
 					_colliders.Clear();
 				}
 			}
+
+			public void AddRigidbodyTo(VectorEntity VE)
+			{
+				Rigidbody RB = VE.GameObject.AddComponent<Rigidbody>();
+				RB.isKinematic = true;
+				RB.useGravity = false;
+			}
 		}
+
+	
 
 		public interface IColliderStrategy
 		{
 			void AddColliderTo(VectorEntity ve);
+			void AddRigidbodyTo(VectorEntity VE);
 			void Reset();
 		}
 	}

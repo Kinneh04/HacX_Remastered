@@ -22,8 +22,9 @@ public class ScenarioBuilder : MonoBehaviour
 
             // Change the angle of the building
             Vector3 OriginalBuildingPosition = new Vector3(ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
-            Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotX, ParsedBuildingDatablock[i].RotY + 90, ParsedBuildingDatablock[i].RotZ);
-            if (newRotation.y < 0) newRotation.y *= -1;
+            ParsedBuildingDatablock[i].RotY += 90;
+            if (ParsedBuildingDatablock[i].RotY < 0) ParsedBuildingDatablock[i].RotY *= -1;
+            Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotX, ParsedBuildingDatablock[i].RotY, ParsedBuildingDatablock[i].RotZ);
             Buildings[i].transform.rotation = newRotation;
             Buildings[i].transform.position = OriginalBuildingPosition;
 

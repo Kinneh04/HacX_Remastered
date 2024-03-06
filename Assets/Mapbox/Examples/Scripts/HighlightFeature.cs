@@ -13,11 +13,93 @@
 
 		public bool isSelected = false;
 
+		public List<GameObject> IntersectingObjects = new();
+
+        public void OnTriggerEnter(Collider other)
+        {
+			if (!IntersectingObjects.Contains( other.gameObject))
+			{
+				IntersectingObjects.Add( other.gameObject);
+			}
+		}
+
+        private void OnTriggerStay(Collider other)
+        {
+			if (!IntersectingObjects.Contains( other.gameObject))
+			{
+				IntersectingObjects.Add( other.gameObject);
+			}
+		}
+        public void OnCollisionEnter(Collision collision)
+        {
+            if(!IntersectingObjects.Contains(collision.gameObject))
+            {
+				IntersectingObjects.Add(collision.gameObject);
+            }
+        }
+
+        public void OnCollisionStay(Collision collision)
+        {
+			if (!IntersectingObjects.Contains(collision.gameObject))
+			{
+				IntersectingObjects.Add(collision.gameObject);
+			}
+		}
+
+        public void SelectIntersecting()
+        {
+
+			foreach(GameObject C in IntersectingObjects)
+            {
+				HighlightFeature f = C.GetComponent<HighlightFeature>();
+				if (!f.isSelected) f.OnSelectBuilding();
+            }
+
+			//List<Transform> OverlappingTransforms = new();
+			//Collider[] allColliders = Physics.OverlapBox(transform.position, transform.localScale);
+			//foreach (Collider otherCollider in allColliders)
+			//{
+			//	HighlightFeature h = otherCollider.GetComponent<HighlightFeature>();
+			//	if (!h.isSelected)
+			//	{
+			//		OverlappingTransforms.Add(otherCollider.transform);
+
+			//		h.OnSelectBuilding() ;
+					
+			//	}
+			//}
+		}
+
+		public void DeSelectIntersecting()
+		{
+
+			foreach (GameObject C in IntersectingObjects)
+			{
+				HighlightFeature f = C.GetComponent<HighlightFeature>();
+				if (f.isSelected) f.OnDeselectBuilding();
+			}
+			//List<Transform> OverlappingTransforms = new();
+			//Collider[] allColliders = Physics.OverlapBox(transform.position, transform.localScale / 2);
+			//foreach (Collider otherCollider in allColliders)
+			//{
+			//	HighlightFeature h = otherCollider.GetComponent<HighlightFeature>();
+			//	if (h.isSelected)
+			//	{
+			//		OverlappingTransforms.Add(otherCollider.transform);
+			//		if (otherCollider.gameObject != gameObject)
+			//		{
+			//			h.OnDeselectBuilding();
+			//		}
+			//	}
+			//}
+		}
+
 		public void OnSelectBuilding()
         {
 			isSelected = true;
 			//_highlightMaterial.color = Color.green;
 			_meshRenderer.material = _highlightMaterial;
+			SelectIntersecting();
 		}
 
 		public void OnDeselectBuilding()
@@ -25,6 +107,7 @@
 			isSelected = false;
 			_highlightMaterial.color = Color.red;
 			_meshRenderer.materials = _materials.ToArray();
+			DeSelectIntersecting();
 		}
 
         void Start()
