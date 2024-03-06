@@ -146,7 +146,7 @@ public class Ball : MonoBehaviour
 
             if (currDist > initDist)
             {
-                transform.position = new Vector3(ricochetxz.x, transform.position.y, ricochetxz.y);
+                //transform.position = new Vector3(ricochetxz.x, transform.position.y, ricochetxz.y);
                 if (!hitFirstPoint)
                 {
                     //hitFirstPoint = false;
@@ -278,8 +278,8 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            Debug.Log(parentShooter.name);
             parentShooter.finishedCurrent = true;
+            Culprit.OnCantHit.Invoke(parentShooter.gameObject, target);
         }
     }
 

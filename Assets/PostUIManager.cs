@@ -198,9 +198,9 @@ public class PostUIManager : MonoBehaviour
         if (ShowHeatmapToggle.isOn) heatmapManager.UpdateHeatmap();
         else heatmapManager.DisableHeatmap();
 
-        if (showMostLikelyCulpritToggle.isOn)
-        {
-            mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.cyan;
-        }
+        //if (showMostLikelyCulpritToggle.isOn)
+        //{
+        //    mainGameManager.CulpritsDone[0].culpritMeshRenderer.material.color = Color.cyan;
+        //}
     }
 }

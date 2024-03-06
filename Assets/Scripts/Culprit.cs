@@ -124,9 +124,7 @@ public class Culprit : MonoBehaviour
 
         foreach(Precise_Window PW in WindowsManager.Instance.PreciseWindows)
         {
-            ///if (PW.PrecisionMarker != null)
             windows.Add(PW);
-            //else windows.Add(PW.WindowGO);
         }
         //windows = WindowsManager.Instance.PreciseWindows;
         balls = new Ball[windows.Count];
@@ -149,8 +147,8 @@ public class Culprit : MonoBehaviour
             tar = windows[currentTarget].PrecisionMarker;
         if (!CanSeeObject(tar))
         {
-            OnCantHit?.Invoke(gameObject, currentTarget);
             finishedCurrent = true;
+            OnCantHit?.Invoke(gameObject, currentTarget);
             return;
         }
         balls[currentTarget].gameObject.SetActive(true);
@@ -180,8 +178,8 @@ public class Culprit : MonoBehaviour
                 tar = windows[currentTarget].PrecisionMarker;
             if (!CanSeeObject(tar))
             {
-                OnCantHit?.Invoke(gameObject, currentTarget);
                 finishedCurrent = true;
+                OnCantHit?.Invoke(gameObject, currentTarget);
                 return;
             }
             finishedCurrent = false;
@@ -286,11 +284,11 @@ public class Culprit : MonoBehaviour
         // binary search
         if(!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
         {
-            if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y || currentBall.currDist > currentBall.initDist)
+            if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y)
             {
                 launchAngleMax = angle;
             }
-            else if (currentBall.transform.position.y < windows[currentTarget].RicochetMarker.transform.position.y || currentBall.currDist < currentBall.initDist)
+            else if (currentBall.transform.position.y < windows[currentTarget].RicochetMarker.transform.position.y)
             {
                 launchAngleMin = angle;
             }
