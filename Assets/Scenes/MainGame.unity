@@ -2824,7 +2824,7 @@ GameObject:
   - component: {fileID: 196348380}
   m_Layer: 8
   m_Name: WindowPane (14)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4138,7 +4138,7 @@ GameObject:
   - component: {fileID: 278195594}
   m_Layer: 8
   m_Name: WindowPane (4)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18183,7 +18183,7 @@ GameObject:
   - component: {fileID: 1039750964}
   m_Layer: 8
   m_Name: WindowPane (9)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19651,7 +19651,7 @@ GameObject:
   - component: {fileID: 1144512849}
   m_Layer: 8
   m_Name: WindowPane (4)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24189,7 +24189,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 20
-    NearClipPlane: 2
+    NearClipPlane: 0.01
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
@@ -27027,7 +27027,7 @@ GameObject:
   - component: {fileID: 1720068271}
   m_Layer: 8
   m_Name: WindowPane (14)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -32934,7 +32934,7 @@ GameObject:
   - component: {fileID: 2063522162}
   m_Layer: 8
   m_Name: WindowPane (19)
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
