@@ -31,6 +31,7 @@ public class Ball : MonoBehaviour
     public float initDist = 0;
     public float currDist = 0;
     Vector2 culpritxz = Vector2.zero;
+    Vector2 ricochetxz = Vector2.zero;
     bool stop = false;
 
     [Header("CalcProbability")]
@@ -80,7 +81,7 @@ public class Ball : MonoBehaviour
         if (targetWindowPrecision.RicochetMarker != null)
         {
             culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
-            Vector2 ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
+            ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
             initDist = Vector2.Distance(culpritxz, ricochetxz);
         }
 
@@ -145,21 +146,20 @@ public class Ball : MonoBehaviour
 
             if (currDist > initDist)
             {
+                transform.position = new Vector3(ricochetxz.x, transform.position.y, ricochetxz.y);
                 if (!hitFirstPoint)
                 {
-
                     //hitFirstPoint = false;
+                    
                     rbody.isKinematic = true;
                     parentShooter.travelling = false;
                     parentShooter.shootNext = true;
                     return;
-
                 }
-
             }
             else
             {
-
+                
             }
         }
     }
