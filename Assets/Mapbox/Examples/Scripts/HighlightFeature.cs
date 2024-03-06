@@ -52,7 +52,8 @@
 			foreach(GameObject C in IntersectingObjects)
             {
 				HighlightFeature f = C.GetComponent<HighlightFeature>();
-				if (!f.isSelected) f.OnSelectBuilding();
+				
+				if (f&&!f.isSelected) f.OnSelectBuilding();
             }
 
 			//List<Transform> OverlappingTransforms = new();
@@ -76,7 +77,7 @@
 			foreach (GameObject C in IntersectingObjects)
 			{
 				HighlightFeature f = C.GetComponent<HighlightFeature>();
-				if (f.isSelected) f.OnDeselectBuilding();
+				if (f&&f.isSelected) f.OnDeselectBuilding();
 			}
 			//List<Transform> OverlappingTransforms = new();
 			//Collider[] allColliders = Physics.OverlapBox(transform.position, transform.localScale / 2);
