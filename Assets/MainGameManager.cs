@@ -106,6 +106,18 @@ public class MainGameManager : MonoBehaviour
     }
 
 
+    public void RefreshScene()
+    {
+        //int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        //// Load the current scene again
+        //SceneManager.LoadScene(currentSceneIndex);
+
+        //StartCoroutine(DontDestroyOnLoadSettings.Instance.LoadSettingsCoroutine());
+
+        DontDestroyOnLoadSettings.Instance.StartGame();
+    }
+
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
