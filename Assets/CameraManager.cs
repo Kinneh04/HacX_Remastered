@@ -29,6 +29,9 @@ public class CameraManager : MonoBehaviour
     public float lookSpeed = 2f;
     public float scrollSpeed = 5f;
 
+    public bool isDragging = false;
+    private Vector3 lastMousePosition;
+
     public GameObject PostUI, FreecamUI;
 
     public VCam currentlyUsingCamera;
@@ -55,14 +58,24 @@ public class CameraManager : MonoBehaviour
     public void SwitchToFreecam(bool toggle)
     {
         freecamMode = toggle;
-        foreach(VCam cam in vCamList)
+        freeCam.transform.position = mainCam.transform.position;
+        freeCam.transform.rotation = mainCam.transform.rotation;
+
+        foreach (VCam cam in vCamList)
         {
-            cam.vCam.SetActive(false) ;
+            cam.vCam.SetActive(false);
         }
         freeCam.gameObject.SetActive(toggle);
         mainCam.orthographic = !toggle;
 
-        PostUI.SetActive(!toggle);
+        if(!WindowsManager.Instance.isPrecisionMode)
+        {
+            PostUI.SetActive(!toggle);
+        }
+        else
+        {
+
+        }
         FreecamUI.SetActive(toggle);
         if (!toggle) ForceCameraToIndex(0);
     }
@@ -166,7 +179,7 @@ public class CameraManager : MonoBehaviour
         }
         else if(freecamMode)
         {
-            HandleLookAround();
+            //HandleLookAround();
 
             HandleMovement();
             HandleScroll();
@@ -181,6 +194,10 @@ public class CameraManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(2))
                 SwitchToFreecam(!freecamMode);
+
+            if (!freecamMode)
+                return;
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
@@ -189,27 +206,61 @@ public class CameraManager : MonoBehaviour
             Time.timeScale = 1.0f;
     }
 
+    //private void HandleMovement()
+    //{
+    //    float horizontal = Input.GetAxis("Horizontal");
+    //    float vertical = Input.GetAxis("Vertical");
+
+    //    Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
+    //    Vector3 moveAmount = moveDirection * moveSpeed * Time.deltaTime;
+    //    freeCam.transform.Translate(moveAmount, Space.Self);
+    //}
+
     private void HandleMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        //if (Input.GetMouseButton(1)) // Right mouse button
+        //{
+        //    // Get mouse input
+        //    float mouseX = Input.GetAxis("Mouse X");
+        //    float mouseY = Input.GetAxis("Mouse Y");
 
-        Vector3 moveDirection = new Vector3(horizontal, 0f, vertical).normalized;
-        Vector3 moveAmount = moveDirection * moveSpeed * Time.deltaTime;
-        freeCam.transform.Translate(moveAmount, Space.Self);
-    }
-
-    private void HandleLookAround()
-    {
-        if (Input.GetMouseButton(1)) // Right mouse button
+        //    // Rotate the camera based on mouse input
+        //    transform.Rotate(Vector3.up * mouseX * lookSpeed, Space.World);
+        //    transform.Rotate(Vector3.left * mouseY * lookSpeed, Space.Self);
+        //}
+        if (Input.GetMouseButtonDown(1)) // Check for right mouse button press
         {
-            // Get mouse input
-            float mouseX = Input.GetAxis("Mouse X");
-            float mouseY = Input.GetAxis("Mouse Y");
+            isDragging = true;
 
-            // Rotate the camera based on mouse input
-            transform.Rotate(Vector3.up * mouseX * lookSpeed, Space.World);
-            transform.Rotate(Vector3.left * mouseY * lookSpeed, Space.Self);
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(1)) // Check for right mouse button release
+        {
+            isDragging = false;
+        }
+
+
+        if (isDragging)
+        {
+
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+
+            freeCam.transform.Translate(Vector3.right * horizontalInput * 10 * Time.deltaTime);
+            freeCam.transform.Translate(Vector3.forward * verticalInput * 10 * Time.deltaTime);
+
+            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition;
+            lastMousePosition = Input.mousePosition;
+
+            // Rotate the camera around its own axes, simulating free rotation
+            freeCam.transform.Rotate(Vector3.up, deltaMousePosition.x * 10 * Time.deltaTime);
+            freeCam.transform.Rotate(Vector3.right, -deltaMousePosition.y * 10 * Time.deltaTime);
+            Vector3 currentRotation = freeCam.transform.localEulerAngles;
+            currentRotation.z = 0;
+            freeCam.transform.localEulerAngles = currentRotation;
+            // Optional: Add zoom functionality (scroll wheel)
+            //float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
+            //transform.Translate(Vector3.forward * scrollWheel * 10 * Time.deltaTime);
         }
     }
 
