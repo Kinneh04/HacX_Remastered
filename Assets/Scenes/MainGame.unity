@@ -18841,6 +18841,9 @@ MonoBehaviour:
   CulpritCameraIndex: 1
   CurrentCameraText: {fileID: 1932005670}
   mainCam: {fileID: 963194227}
+  FreecamLayermask:
+    serializedVersion: 2
+    m_Bits: 2147483647
   freecamMode: 0
   freeCam: {fileID: 1556710095}
   moveSpeed: 15
@@ -18858,6 +18861,8 @@ MonoBehaviour:
     RenderedLayers:
       serializedVersion: 2
       m_Bits: 0
+  _panSpeed: 20
+  _zoomSpeed: 50
 --- !u!1 &1079811683
 GameObject:
   m_ObjectHideFlags: 0
@@ -23973,6 +23978,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1556710094}
   - component: {fileID: 1556710095}
+  - component: {fileID: 1556710096}
   m_Layer: 0
   m_Name: Freecam
   m_TagString: Untagged
@@ -24034,6 +24040,23 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 811770307}
+--- !u!114 &1556710096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556710093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 807a38a1be51e10499658ecd3f16b0a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 10
+  fastMovementSpeed: 100
+  freeLookSensitivity: 3
+  zoomSensitivity: 10
+  fastZoomSensitivity: 50
 --- !u!1 &1560576292
 GameObject:
   m_ObjectHideFlags: 0
@@ -27300,17 +27323,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1745107576}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 0.00034529547, w: 0.99999994}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 339265855}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.04}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.0139, y: 17}
+  m_AnchoredPosition: {x: 5.013916, y: 17}
   m_SizeDelta: {x: 637.4095, y: 203.3806}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1745107578
@@ -27340,10 +27363,9 @@ MonoBehaviour:
     [RMB]
     to pan camera
 
-    [Scrollwheel] to change camera speed
+    [Shift] to Speed up
 
-    <color=red>[E]</color>
-    to exit freecam'
+    <color=red>[E]</color> to exit freecam'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
   m_sharedMaterial: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}

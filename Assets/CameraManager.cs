@@ -22,6 +22,7 @@ public class CameraManager : MonoBehaviour
     public Camera mainCam;
 
     [Header("FreeCamPersp")]
+    public LayerMask FreecamLayermask;
     public bool freecamMode = false;
     public CinemachineVirtualCamera freeCam;
 
@@ -35,6 +36,16 @@ public class CameraManager : MonoBehaviour
     public GameObject PostUI, FreecamUI;
 
     public VCam currentlyUsingCamera;
+    Quaternion _originalRotation;
+    Vector3 _origin;
+    Vector3 _delta;
+
+
+    [SerializeField]
+    float _panSpeed = 20f;
+
+    [SerializeField]
+    float _zoomSpeed = 50f;
 
     private void Start()
     {
@@ -79,6 +90,10 @@ public class CameraManager : MonoBehaviour
         mainCam.orthographic = !toggle;
 
         if (!toggle) ForceCameraToIndex(0);
+        else
+        {
+            mainCam.cullingMask = FreecamLayermask;
+        }
     }
 
     public void ChangeCurrentCameraPerspective()
@@ -182,8 +197,8 @@ public class CameraManager : MonoBehaviour
         {
             //HandleLookAround();
 
-            HandleMovement();
-            HandleScroll();
+          //  HandleMovement();
+         //   HandleScroll();
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -229,39 +244,12 @@ public class CameraManager : MonoBehaviour
         //    transform.Rotate(Vector3.up * mouseX * lookSpeed, Space.World);
         //    transform.Rotate(Vector3.left * mouseY * lookSpeed, Space.Self);
         //}
-        if (Input.GetMouseButtonDown(1)) // Check for right mouse button press
+        var x = Input.GetAxis("Horizontal");
+        var z = Input.GetAxis("Vertical");
+        var y = Input.GetAxis("Mouse ScrollWheel") * _zoomSpeed;
+        if (!(Mathf.Approximately(x, 0) && Mathf.Approximately(y, 0) && Mathf.Approximately(z, 0)))
         {
-            isDragging = true;
-
-            lastMousePosition = Input.mousePosition;
-        }
-        else if (Input.GetMouseButtonUp(1)) // Check for right mouse button release
-        {
-            isDragging = false;
-        }
-
-
-        if (isDragging)
-        {
-
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("Vertical");
-
-            freeCam.transform.Translate(Vector3.right * horizontalInput * 10 * Time.deltaTime);
-            freeCam.transform.Translate(Vector3.forward * verticalInput * 10 * Time.deltaTime);
-
-            Vector3 deltaMousePosition = Input.mousePosition - lastMousePosition;
-            lastMousePosition = Input.mousePosition;
-
-            // Rotate the camera around its own axes, simulating free rotation
-            freeCam.transform.Rotate(Vector3.up, deltaMousePosition.x * 10 * Time.deltaTime);
-            freeCam.transform.Rotate(Vector3.right, -deltaMousePosition.y * 10 * Time.deltaTime);
-            Vector3 currentRotation = freeCam.transform.localEulerAngles;
-            currentRotation.z = 0;
-            freeCam.transform.localEulerAngles = currentRotation;
-            // Optional: Add zoom functionality (scroll wheel)
-            //float scrollWheel = Input.GetAxis("Mouse ScrollWheel");
-            //transform.Translate(Vector3.forward * scrollWheel * 10 * Time.deltaTime);
+            transform.localPosition += transform.forward * y + (_originalRotation * new Vector3(x * _panSpeed, 0, z * _panSpeed));
         }
     }
 
