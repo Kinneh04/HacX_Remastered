@@ -278,6 +278,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
+            Debug.Log(parentShooter.name);
             parentShooter.finishedCurrent = true;
         }
     }

@@ -182,7 +182,6 @@ public class Culprit : MonoBehaviour
             {
                 OnCantHit?.Invoke(gameObject, currentTarget);
                 finishedCurrent = true;
-                Debug.Log(this.name);
                 return;
             }
             finishedCurrent = false;
@@ -226,7 +225,7 @@ public class Culprit : MonoBehaviour
             {
                 // Raycast hit something else, so the object cannot see the target
                 pointSeeCulprit = false;
-                Debug.Log(this.name + " | " + hit.transform.gameObject.name);
+                //Debug.Log(this.name + " | " + hit.transform.gameObject.name);
             }
         }
         else
@@ -240,7 +239,7 @@ public class Culprit : MonoBehaviour
         direction = target.transform.position - origin;
 
         //maxDistance = Vector3.Distance(origin, target.transform.position);
-
+        //hit everything but culprit layer
         if (Physics.Raycast(origin, direction, out hit, maxDistance, ~layerMask))
         {
             // Check if the raycast hit the target object
@@ -253,7 +252,7 @@ public class Culprit : MonoBehaviour
             {
                 // Raycast hit something else, so the object cannot see the target
                 culpritSeePoint = false;
-                Debug.Log(this.name + " | " + hit.transform.gameObject.name);
+                //Debug.Log(this.name + " | " + hit.transform.gameObject.name);
             }
         }
         else
@@ -275,10 +274,12 @@ public class Culprit : MonoBehaviour
         if (done || !shootNext || windowHit[currentTarget] || finishedCurrent)
             return;
 
-        if (iterations[currentTarget] == MAX_ITERATIONS)
+        if (iterations[currentTarget] >= MAX_ITERATIONS)
         {
-            OnCantHit?.Invoke(gameObject, currentTarget);
             finishedCurrent = true;
+            OnCantHit?.Invoke(gameObject, currentTarget);
+            //Debug.Log(gameObject.name + " " + iterations[currentTarget] + " " + MAX_ITERATIONS);
+
             return;
         }
 
