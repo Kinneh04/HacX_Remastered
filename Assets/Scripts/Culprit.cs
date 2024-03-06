@@ -43,6 +43,8 @@ public class Culprit : MonoBehaviour
     public float radius = 0f;
     public Vector3 initialPosition;
 
+    public LayerMask layerMask;
+
     WindowsManager wManager;
 
     public GameObject Ball;
@@ -149,7 +151,6 @@ public class Culprit : MonoBehaviour
         {
             OnCantHit?.Invoke(gameObject, currentTarget);
             finishedCurrent = true;
-            Debug.Log(this.name);
             return;
         }
         balls[currentTarget].gameObject.SetActive(true);
@@ -197,10 +198,15 @@ public class Culprit : MonoBehaviour
         }
     }
 
-    public bool CanSeeObject(GameObject target)
+    public bool CanSeeObject(GameObject target) // check both ways because of how colliders work
     {
         if (target == null)
             target = windows[currentTarget].PrecisionMarker;
+
+        bool pointSeeCulprit = false;
+        bool culpritSeePoint = false;
+
+        // check to see if the point can see culprit
         Vector3 origin = ShootPosition.position;
         Vector3 direction = origin - target.transform.position;
 
@@ -214,19 +220,49 @@ public class Culprit : MonoBehaviour
             if (hit.transform == ShootPosition || hit.transform == transform)
             {
                 // No obstacle between the objects, so the object can see the target
-                return true;
+                pointSeeCulprit = true;
             }
             else
             {
                 // Raycast hit something else, so the object cannot see the target
-                return false;
+                pointSeeCulprit = false;
+                Debug.Log(this.name + " | " + hit.transform.gameObject.name);
             }
         }
         else
         {
             // Raycast didn't hit anything within the max distance, so the object can potentially see the target
-            return true;
+            pointSeeCulprit = true;
         }
+
+        // check to see if the culprit can see point
+        //origin = ShootPosition.position;
+        direction = target.transform.position - origin;
+
+        //maxDistance = Vector3.Distance(origin, target.transform.position);
+
+        if (Physics.Raycast(origin, direction, out hit, maxDistance, ~layerMask))
+        {
+            // Check if the raycast hit the target object
+            if (hit.transform == target.transform)
+            {
+                // No obstacle between the objects, so the object can see the target
+                culpritSeePoint = true;
+            }
+            else
+            {
+                // Raycast hit something else, so the object cannot see the target
+                culpritSeePoint = false;
+                Debug.Log(this.name + " | " + hit.transform.gameObject.name);
+            }
+        }
+        else
+        {
+            // Raycast didn't hit anything within the max distance, so the object can potentially see the target
+            culpritSeePoint = true;
+        }
+
+        return pointSeeCulprit && culpritSeePoint;
     }
     private void Update()
     {
