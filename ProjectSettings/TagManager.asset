@@ -16,6 +16,7 @@ TagManager:
   - Richochet
   - Selectable
   - Roof
+  - Precision
   layers:
   - Default
   - TransparentFX
