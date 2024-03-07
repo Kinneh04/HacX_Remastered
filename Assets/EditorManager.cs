@@ -133,7 +133,7 @@ public class EditorManager : MonoBehaviour
             }
             else
             {
-                CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position - Pivot;
+                CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position + Pivot;
             }
         }
     }

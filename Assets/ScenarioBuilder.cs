@@ -38,9 +38,9 @@ public class ScenarioBuilder : MonoBehaviour
             //Change transforms of buildings
 
             Vector3 OriginalBuildingPosition = new Vector3(ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
-            ParsedBuildingDatablock[i].RotY += 90;
-            if (ParsedBuildingDatablock[i].RotY < 0) ParsedBuildingDatablock[i].RotY *= -1;
-            Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotX, ParsedBuildingDatablock[i].RotY, ParsedBuildingDatablock[i].RotZ);
+            ParsedBuildingDatablock[i].RotY += 270;
+           // if (ParsedBuildingDatablock[i].RotY < 0) ParsedBuildingDatablock[i].RotY *= -1;
+            Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotZ, ParsedBuildingDatablock[i].RotY, ParsedBuildingDatablock[i].RotX);
             Buildings[i].transform.rotation = newRotation;
             Buildings[i].transform.position = OriginalBuildingPosition;
 

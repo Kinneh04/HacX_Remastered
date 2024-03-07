@@ -33,6 +33,15 @@ public class MapPickerManager : MonoBehaviour
     [Header("Building")]
     public EditorManager editorManager;
 
+    public void EraseCollisionLists()
+    {
+        HighlightFeature[] highlights = GameObject.FindObjectsOfType<HighlightFeature>();
+        foreach(HighlightFeature f in highlights)
+        {
+            f.IntersectingObjects.Clear();
+        }
+    }
+
     public void CopyStencil()
     {
         foreach (GameObject GO in SelectedBuildings)
@@ -54,7 +63,7 @@ public class MapPickerManager : MonoBehaviour
     {
         foreach(GameObject GO in SelectedBuildings)
         {
-            GO.GetComponent<HighlightFeature>().OnDeselectBuilding();
+            GO.GetComponent<HighlightFeature>().OnDeselectBuilding(false);
         }
 
         SelectedBuildings.Clear();

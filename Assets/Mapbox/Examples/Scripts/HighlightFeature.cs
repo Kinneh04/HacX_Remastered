@@ -117,12 +117,12 @@
 			}
 		}
 
-		public void OnDeselectBuilding()
+		public void OnDeselectBuilding(bool rid = true)
         {
 			isSelected = false;
 			_highlightMaterial.color = Color.red;
 			_meshRenderer.materials = _materials.ToArray();
-			if(mapPicker.SelectedBuildings.Contains(gameObject)) mapPicker.SelectedBuildings.Remove(gameObject);
+			if(mapPicker.SelectedBuildings.Contains(gameObject) && rid) mapPicker.SelectedBuildings.Remove(gameObject);
 			DeSelectIntersecting();
 		}
 

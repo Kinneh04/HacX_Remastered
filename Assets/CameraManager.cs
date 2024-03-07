@@ -73,7 +73,7 @@ public class CameraManager : MonoBehaviour
         FreecamUI.SetActive(toggle);
         if (!WindowsManager.Instance.isPrecisionMode) // if user is putting ricochet mark
         {
-            PostUI.SetActive(!toggle);
+         //   PostUI.SetActive(!toggle);
         }
         else
         {
