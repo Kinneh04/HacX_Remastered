@@ -16,8 +16,8 @@ public class MainGameManager : MonoBehaviour
     public static event Action OnNextWindow;
     public static Action<int> OnNextIteration = delegate { };
 
-    public List<List<GameObject>> ListOfHitList = new();
-    public List<List<GameObject>> ListOfNoHitList = new();
+    public List<HitList> ListOfHitList = new();
+    public List<HitList> ListOfNoHitList = new();
     public List<Culprit> CulpritsDone = new();
 
     public List<List<float>> ListOfProbabilityList = new();
@@ -131,6 +131,12 @@ public class MainGameManager : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void Reiterate()
+    {
+        PostSimUI.SetActive(false);
+   //     StartSimulation();
+    }
+
     public void StartSimulation()
     {
         if (WindowsManager.Instance.PreciseWindows.Count <= 0)
@@ -141,8 +147,14 @@ public class MainGameManager : MonoBehaviour
         PreSimUI.SetActive(false);
         for (int i = 0; i < WindowsManager.Instance.SelectedWindows.Count; i++)
         {
-            ListOfHitList.Add(new List<GameObject>());
-            ListOfNoHitList.Add(new List<GameObject>());
+            ListOfHitList.Add(new HitList()
+            {
+                Hit = new()
+            });
+            ListOfNoHitList.Add(new HitList()
+            {
+                Hit = new()
+            });
         }
         simState = SimulationState.SIMULATE;
         OnStartGame?.Invoke(startVel, currentIteration);
@@ -203,19 +215,19 @@ public class MainGameManager : MonoBehaviour
 
     public void HandleCantHit(GameObject culprit, int target)
     {
-        ListOfNoHitList[target].Add(culprit);
+        ListOfNoHitList[target].Hit.Add(culprit);
         StartNextWindow(target);
     }
 
     public void HandleHit(GameObject ball, int target)
     {
-        ListOfHitList[target].Add(ball);
+        ListOfHitList[target].Hit.Add(ball);
         StartNextWindow(target);
     }
 
     public void StartNextWindow(int target)
     {
-        if (ListOfNoHitList[target].Count + ListOfHitList[target].Count == culpritsManager.SpawnedCulprits.Count)
+        if (ListOfNoHitList[target].Hit.Count + ListOfHitList[target].Hit.Count == culpritsManager.SpawnedCulprits.Count)
         {
             OnNextWindow?.Invoke();
         }
@@ -366,4 +378,9 @@ public class MainGameManager : MonoBehaviour
             }
         }
     }
+}
+[System.Serializable]
+public class HitList
+{
+    public List<GameObject> Hit;
 }

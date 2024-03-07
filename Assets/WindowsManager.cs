@@ -191,6 +191,12 @@ public class WindowsManager : MonoBehaviour
         OnUpdateConfidenceScale();        
     }
 
+    public void ClearRicochetMarker()
+    {
+        if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
+        CurrentlySelectedPreciseWindow.RicochetMarker = null;
+    }
+
     public void PlaceRicochetMarker(Vector3 normal)
     {
         if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);

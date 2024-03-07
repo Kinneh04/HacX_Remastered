@@ -25,6 +25,14 @@
 			}
 		}
 
+        public void OnTriggerExit(Collider other)
+        {
+            if(IntersectingObjects.Contains(other.gameObject))
+            {
+				IntersectingObjects.Remove(other.gameObject);
+            }
+        }
+
         private void OnTriggerStay(Collider other)
         {
 			if (!IntersectingObjects.Contains( other.gameObject))
