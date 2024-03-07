@@ -277,7 +277,8 @@ public class WindowsManager : MonoBehaviour
 
                     if (Input.GetMouseButtonDown(0))
                     {
-                        PlaceRicochetMarker(hit.normal);
+                        if(hit.transform.tag != "Precision")
+                            PlaceRicochetMarker(hit.normal);
                     }
                 }
             }

@@ -265,7 +265,7 @@ public class Culprit : MonoBehaviour
     private void Update()
     {
         
-          outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
+         outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
 
         if (!currentBall || !currentBallRb.isKinematic)
             return;
@@ -283,28 +283,47 @@ public class Culprit : MonoBehaviour
         }
 
         // binary search
-        if(!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
+        if(currentBall.forceLower)
         {
-            if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y)
+            launchAngleMax = angle;
+        }
+        else // for ricochet
+        {
+            if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                launchAngleMax = angle;
+                if (currentBall.transform.position.y - windows[currentTarget].RicochetMarker.transform.position.y > 0.5 * currentBall.transform.localScale.x)
+                {
+                    launchAngleMax = angle;
+                }
+                else if (windows[currentTarget].RicochetMarker.transform.position.y - currentBall.transform.position.y > 0.5 * currentBall.transform.localScale.x)
+                {
+                    launchAngleMin = angle;
+                }
+                else
+                {
+                    if (currentBall.currDist > currentBall.initDist)
+                    {
+                        launchAngleMax = angle;
+                    }
+                    else if (currentBall.currDist < currentBall.initDist)
+                    {
+                        launchAngleMin = angle;
+                    }
+                }
             }
-            else if (currentBall.transform.position.y < windows[currentTarget].RicochetMarker.transform.position.y)
+            else// for just window
             {
-                launchAngleMin = angle;
+                if (currentBall.transform.position.y > windows[currentTarget].PrecisionMarker.transform.position.y)
+                {
+                    launchAngleMax = angle;
+                }
+                else if (currentBall.transform.position.y < windows[currentTarget].PrecisionMarker.transform.position.y)
+                {
+                    launchAngleMin = angle;
+                }
             }
         }
-        else
-        {
-            if (currentBall.transform.position.y > windows[currentTarget].PrecisionMarker.transform.position.y)
-            {
-                launchAngleMax = angle;
-            }
-            else if (currentBall.transform.position.y < windows[currentTarget].PrecisionMarker.transform.position.y)
-            {
-                launchAngleMin = angle;
-            }
-        }
+        
 
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;

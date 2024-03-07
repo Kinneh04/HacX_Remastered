@@ -15,6 +15,7 @@ TagManager:
   - EditorEnvironmentProp
   - Richochet
   - Selectable
+  - Roof
   layers:
   - Default
   - TransparentFX

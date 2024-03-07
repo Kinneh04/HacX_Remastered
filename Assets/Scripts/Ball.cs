@@ -33,7 +33,8 @@ public class Ball : MonoBehaviour
     Vector2 culpritxz = Vector2.zero;
     Vector2 ricochetxz = Vector2.zero;
     bool stop = false;
-
+    ContactPoint contact;
+    public bool forceLower = false;
     [Header("CalcProbability")]
     public float distanceFromCenter = 0f;
     public float angleOfImpact = 0f;
@@ -84,7 +85,7 @@ public class Ball : MonoBehaviour
             ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
             initDist = Vector2.Distance(culpritxz, ricochetxz);
         }
-
+        forceLower = false;
         stop = false;
         GameObject target = PreciseTarget.WindowGO;
         targetWindowPrecision = PreciseTarget;
@@ -194,38 +195,45 @@ public class Ball : MonoBehaviour
         dragCoefficient = newValue;
     }
 
-    public void CalculateBounce(Collision collision)
+    public void CalculateBounce(ContactPoint contact)
     {
-
-        ContactPoint contact = collision.GetContact(0);
+        Vector3 randomOffset = Random.insideUnitSphere * 0.01f;
 
         // Calculate reflection vector based on incoming direction and surface normal
-        Vector3 reflectionDirection = Vector3.Reflect(vel, contact.normal);
+        Vector3 reflectionDirection = Vector3.Reflect(vel, contact.normal) + randomOffset;
 
         transform.position = contact.point;
 
         // Apply force considering COR
         rbody.velocity = reflectionDirection * Mathf.Clamp01(COR);
     }
-    public void ResetBall(Collision other)
+    public void ResetBall(ContactPoint contact)
     {
         rbody.isKinematic = true;
         parentShooter.travelling = false;
         parentShooter.shootNext = true;
-
-        ContactPoint contact = other.GetContact(0);
-        transform.position = contact.point;
     }
     private void OnCollisionEnter(Collision other)
     {
-        if(!hitFirstPoint && targetWindowPrecision.RicochetMarker != null)
+
+        contact = other.GetContact(0);
+        transform.position = contact.point;
+
+        if (other.transform.tag == "Roof")
+        {
+            ResetBall(contact);
+            forceLower = true;
+            return;
+        }
+
+        if (!hitFirstPoint && targetWindowPrecision.RicochetMarker != null)
         {
             if (targetWindowPrecision.RicochetMarker != null
-          && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.RicochetMarker.transform.position) > 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x
+          && Vector3.Distance(contact.point, targetWindowPrecision.RicochetMarker.transform.position) > 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x
           )
             {
                 hitFirstPoint = false;
-                ResetBall(other);
+                ResetBall(contact);
                 return;
             }
             else
@@ -233,15 +241,15 @@ public class Ball : MonoBehaviour
                 hitFirstPoint = true;
 
                 // apply reflection bounce
-                CalculateBounce(other);
+                CalculateBounce(contact);
                 return;
             }
         }
 
-        ResetBall(other);
+        ResetBall(contact);
 
         if (targetWindowPrecision.PrecisionMarker != null 
-            && Vector3.Distance(other.contacts[0].point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
+            && Vector3.Distance(contact.point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
             )
         {
             return;
@@ -255,7 +263,7 @@ public class Ball : MonoBehaviour
             }
         }
 
-        Vector3 normal = other.GetContact(0).normal;
+        Vector3 normal = contact.normal;
         parentShooter.windowHit[target] = true;
         parentShooter.TotalBallsHit++;
         // values to calc accuracy
