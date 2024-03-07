@@ -1070,7 +1070,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 40
   m_Viewport: {fileID: 0}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 2127258689}
@@ -16834,6 +16834,7 @@ MonoBehaviour:
   HDBFloorPivot: {fileID: 2054990483}
   floorHeightAdjustment: 3.61
   InstantiatedFloors: []
+  instantiateOnStart: 0
 --- !u!1 &950708922
 GameObject:
   m_ObjectHideFlags: 0
@@ -20697,6 +20698,7 @@ MonoBehaviour:
   HDBFloorPivot: {fileID: 54214157}
   floorHeightAdjustment: 3.61
   InstantiatedFloors: []
+  instantiateOnStart: 0
 --- !u!4 &1160119625
 Transform:
   m_ObjectHideFlags: 0
@@ -27077,7 +27079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -49.475826, y: 486.4845}
+  m_AnchoredPosition: {x: -49.475826, y: -423}
   m_SizeDelta: {x: 557.3416, y: 1834.6327}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1662861201
