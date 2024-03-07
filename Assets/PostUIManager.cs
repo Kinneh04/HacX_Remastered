@@ -26,6 +26,7 @@ public class PostUIManager : MonoBehaviour
     public TMP_Text HeatmapPrecisionText;
 
     public List<int> WindowIndexesSelected = new();
+    public List<WindowToggle> windowsToggles = new();
 
     [Header("Windows")]
     public GameObject WindowSelectionTogglePrefab;
@@ -38,6 +39,15 @@ public class PostUIManager : MonoBehaviour
         heatmapManager.OnChangeHeatmapPrecision(HeatmapPrecisionSlider.value);
     }
 
+    public void OnClearAllWindows()
+    {
+        foreach(WindowToggle WT in windowsToggles)
+        {
+            WT.toggle.isOn = false;
+            OnSelectWindow(WT.windowSelectedIndex, WT.toggle);
+        }
+    }
+
     public void InstantiateWindowToggles()
     {
         int PWIndex = 0;
@@ -46,6 +56,7 @@ public class PostUIManager : MonoBehaviour
             GameObject GO = Instantiate(WindowSelectionTogglePrefab);
             GO.transform.SetParent(WindowSelectionPrefabParent, false);
             WindowToggle WT = GO.GetComponent<WindowToggle>();
+            windowsToggles.Add(WT);
             WT.WindowText.text = "Window " + (PWIndex+1).ToString();
             WT.windowSelectedIndex = PWIndex;
             WT.toggle.onValueChanged.AddListener(delegate { OnSelectWindow(WT.windowSelectedIndex, GO.GetComponent<Toggle>()); });
@@ -178,11 +189,15 @@ public class PostUIManager : MonoBehaviour
 
     public void OnToggleTracers()
     {
-        List<GameObject> BallObjects = mainGameManager.ListOfHitList[0];
-        foreach(GameObject GO in BallObjects)
+        foreach(HitList HList in mainGameManager.ListOfHitList)
         {
-            GO.GetComponent<TrailRenderer>().enabled = ShowTracersToggle.isOn;
+            foreach (GameObject GO in HList.Hit)
+            {
+                GO.GetComponent<TrailRenderer>().enabled = ShowTracersToggle.isOn;
+            }
         }
+     
+      
     }
 
     public void OnToggleAccuracy()
