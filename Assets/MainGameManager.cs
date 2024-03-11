@@ -328,6 +328,7 @@ public class MainGameManager : MonoBehaviour
         PostSimUI.SetActive(true);
         cameraManager.OnEndSimulation();
         postUIManager.OnEndSimulation();
+        culpritsManager.OnEndSimulation();
     }
 
 

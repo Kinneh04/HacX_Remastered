@@ -18,7 +18,7 @@ public class CulpritsManager : MonoBehaviour
     public CinemachineVirtualCamera culpritVCam;
     public Culprit SelectedCulprit;
     public bool isSelectingCulprit;
-    public bool canSelectCulprit = true;
+    public bool canSelectCulprit = false;
 
     public PostUIManager postUIManager;
     public CameraManager cameraManager;
@@ -159,6 +159,11 @@ public class CulpritsManager : MonoBehaviour
         mainGameManager.CulpritsDone.AddRange(cleanedList);
 
         
+    }
+
+    public void OnEndSimulation()
+    {
+        canSelectCulprit = true;
     }
 
     public void ClearCulprits()

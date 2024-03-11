@@ -3456,6 +3456,9 @@ MonoBehaviour:
   PrecisionMarkerSettingsUI: {fileID: 1190635780}
   ConfidenceSlider: {fileID: 756468537}
   raycaster: {fileID: 0}
+  raycastLayers:
+    serializedVersion: 2
+    m_Bits: 640
 --- !u!1 &224689211
 GameObject:
   m_ObjectHideFlags: 0
@@ -17382,7 +17385,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -13.5
+  near clip plane: -1
   far clip plane: 5000
   field of view: 60
   orthographic: 1
@@ -20133,7 +20136,7 @@ MonoBehaviour:
   m_Lens:
     FieldOfView: 60
     OrthographicSize: 20
-    NearClipPlane: -13.5
+    NearClipPlane: -1
     FarClipPlane: 5000
     Dutch: 0
     ModeOverride: 0
@@ -24422,8 +24425,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479695182}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -5.6000004, z: -4.85}
-  m_LocalScale: {x: 56.5, y: 1.25, z: 0.333}
+  m_LocalPosition: {x: 2.8218, y: -5.6000004, z: -4.85}
+  m_LocalScale: {x: 62.144352, y: 1.25, z: 0.333}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1816187342}

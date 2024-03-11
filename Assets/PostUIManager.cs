@@ -33,6 +33,7 @@ public class PostUIManager : MonoBehaviour
     public Transform WindowSelectionPrefabParent;
     // TODO: Assign these and instantiate them;
 
+
     public void OnClearOutliersButton()
     {
         culpritsManager.RemoveOutliers();
@@ -155,11 +156,6 @@ public class PostUIManager : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    public void exportData()
-    {
-
     }
 
     public void OnChangeAccuracyLimitSlider()

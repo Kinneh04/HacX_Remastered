@@ -54,6 +54,9 @@ public class WindowsManager : MonoBehaviour
 
     public GraphicRaycaster raycaster;
 
+    [Header("Layers")]
+    public LayerMask raycastLayers;
+
     private void Start()
     {
         OriginalCamPosition = MainVCamera.transform.position;
@@ -239,7 +242,7 @@ public class WindowsManager : MonoBehaviour
         PrecisionMarkerHighlighter.SetActive(false);
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, raycastLayers))
         {
             // Check if the hit object has the tag "window"
             if (hit.collider.CompareTag("Window"))

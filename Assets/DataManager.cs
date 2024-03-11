@@ -63,8 +63,19 @@ public class DataManager : MonoBehaviour
 
         return JSONBlock;
     }
+
+    public bool checkForValidNamingConvention()
+    {
+        if(string.IsNullOrEmpty(NameinputField.text))
+        {
+            PopupUIManager.Instance.ShowPopup("Error!", "Please enter a valid name for the file!");
+            return false;
+        }
+        return true;
+    }
     public void OnClickExportToCSV()
     {
+        if (!checkForValidNamingConvention()) return;
         List<JsonCulpritData> culpritData = ExportCulpritData();
 
         // Specify the path for the CSV file
@@ -74,14 +85,20 @@ public class DataManager : MonoBehaviour
         // Create a new StreamWriter
         using (StreamWriter writer = new StreamWriter(filePath))
         {
-            // Write the header line
-            writer.WriteLine("ExactCulpritPosX,ExactCulpritPosY,ExactCulpritPosZ,culpritAccuracy,WindowHits,Floor,Column,TotalBallsFired,BallsHit,BallsMissed,MissedToHitRatio");
+            List<string> preciseWindow = new();
+            for(int i = 0; i < WindowsManager.Instance.PreciseWindows.Count;i++)
+            {
+                preciseWindow.Add("Window " + (i+1).ToString());
+            }
+
+            string  windowhit = string.Join(",",preciseWindow);
+            writer.WriteLine($"ExactCulpritPosX,ExactCulpritPosY,ExactCulpritPosZ,culpritAccuracy,{windowhit},Floor,Column,TotalBallsFired,BallsHit,BallsMissed,MissedToHitRatio");
 
             // Write data rows
             foreach (var CD in culpritData)
             {
                 // Convert List<bool> to string and join the values with ","
-                string windowHitsString = string.Join(" - ", CD.WindowHits);
+                string windowHitsString = string.Join(",", CD.WindowHits);
 
                 // Write the data line
                 writer.WriteLine($"{CD.ExactCulpritPosX},{CD.ExactCulpritPosY},{CD.ExactCulpritPosZ},{CD.culpritAccuracy},{windowHitsString},{CD.Floor}, {CD.Column},{CD.TotalBallsFired},{CD.BallsHit}, {CD.BallsMissed},{CD.MissedToHitRatio}");
@@ -138,6 +155,7 @@ public class DataManager : MonoBehaviour
     
     public void OnClickExportSingularCulpritDataToCSV()
     {
+        if (!checkForValidNamingConvention()) return;
         JsonCulpritData CD = ExportSingularCulpritData(culpritsManager.SelectedCulprit);
         // Specify the path for the CSV file
         string desktopPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
