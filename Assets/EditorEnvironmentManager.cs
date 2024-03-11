@@ -71,6 +71,8 @@ public class EditorEnvironmentManager : MonoBehaviour
         if (www.result != UnityWebRequest.Result.Success)
         {
             Debug.Log("WWW ERROR: " + www.error);
+
+            PopupUIManager.Instance.ShowPopup("Error!", www.error);
         }
         else
         {
