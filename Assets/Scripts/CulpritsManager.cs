@@ -123,6 +123,42 @@ public class CulpritsManager : MonoBehaviour
         }
     }
 
+    public void RemoveOutliers()
+    {
+        List<Culprit> cleanedList = new List<Culprit>();
+
+        for (int i = 0; i < mainGameManager.CulpritsDone.Count - 1; i++)
+        {
+            float currentFloat = mainGameManager.CulpritsDone[i].probability;
+            float nextFloat = mainGameManager.CulpritsDone[i + 1].probability;
+
+            // Check the difference between the current float and the next one
+            if (Mathf.Abs(nextFloat - currentFloat) <= 20.0f)
+            {
+                // Add the current float to the cleaned list
+                cleanedList.Add(mainGameManager.CulpritsDone[i]);
+            }
+            else
+            {
+                // Skip the current float and any below it
+                // as they are considered outliers
+                while (i < mainGameManager.CulpritsDone.Count - 1 && Mathf.Abs(nextFloat - currentFloat) > 20.0f)
+                {
+                    i++;
+                    currentFloat = mainGameManager.CulpritsDone[i].probability;
+                    nextFloat = mainGameManager.CulpritsDone[i + 1].probability;
+                }
+            }
+        }
+
+        // Add the last float in the original list as it won't be considered an outlier
+        cleanedList.Add(mainGameManager.CulpritsDone[mainGameManager.CulpritsDone.Count - 1]);
+
+        // Update the original list with the cleaned list
+        mainGameManager.CulpritsDone.Clear();
+        mainGameManager.CulpritsDone.AddRange(cleanedList);
+    }
+
     public void ClearCulprits()
     {
         foreach(Culprit c in SpawnedCulprits)
