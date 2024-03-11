@@ -32,6 +32,7 @@ public class EditorEnvironmentManager : MonoBehaviour
     public Transform ParentPlatform;
     public GameObject ModelViewScreen, ImportScreen;
     public TMP_InputField CustomPropNameInput;
+    public EditorManager editorManager;
     
     public void ClearAllProps()
     {
@@ -206,6 +207,8 @@ public class EditorEnvironmentManager : MonoBehaviour
         Color originalColor = prefab.TiedProp.GetComponent<EnvironmentalPrefab>().outline.OutlineColor;
         originalColor.a = 1;
         prefab.TiedProp.GetComponent<EnvironmentalPrefab>().outline.OutlineColor = originalColor;
+        editorManager.runtimeTransformGameObj.SetActive(true);
+        editorManager.runtimeTransformHandle.target = prefab.TiedProp.transform;
     }
 
     public void OnClickAddCustomProp()
@@ -324,6 +327,7 @@ public class EditorEnvironmentManager : MonoBehaviour
 
     public void DeleteTiedProp(GameObject GO, GameObject self, bool removeFromList = true)
     {
+        editorManager.runtimeTransformGameObj.SetActive(false);
         Destroy(GO);
         if(removeFromList)
         InstantiatedPropButtons.Remove(self);

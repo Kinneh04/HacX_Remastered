@@ -77,8 +77,8 @@ public class EditorManager : MonoBehaviour
     public List<GameObject> stencils = new();
 
     [Header("Gizmos")]
-    private GameObject runtimeTransformGameObj;
-    private RuntimeTransformHandle runtimeTransformHandle;
+    public GameObject runtimeTransformGameObj;
+    public RuntimeTransformHandle runtimeTransformHandle;
     private int runtimeTransformLayer = 6;
     private int runtimeTransformLayerMask;
 
@@ -204,6 +204,7 @@ public class EditorManager : MonoBehaviour
         MainButtonsUI.SetActive(true);
         canSelect = true;
         isEnvironmentalMode = false;
+        runtimeTransformGameObj.SetActive(false);
     }
 
     public void ResetToDefaults()
