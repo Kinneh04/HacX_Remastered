@@ -81,7 +81,7 @@ public class DataManager : MonoBehaviour
             foreach (var CD in culpritData)
             {
                 // Convert List<bool> to string and join the values with ","
-                string windowHitsString = string.Join(",", CD.WindowHits);
+                string windowHitsString = string.Join(" - ", CD.WindowHits);
 
                 // Write the data line
                 writer.WriteLine($"{CD.ExactCulpritPosX},{CD.ExactCulpritPosY},{CD.ExactCulpritPosZ},{CD.culpritAccuracy},{windowHitsString},{CD.Floor}, {CD.Column},{CD.TotalBallsFired},{CD.BallsHit}, {CD.BallsMissed},{CD.MissedToHitRatio}");
