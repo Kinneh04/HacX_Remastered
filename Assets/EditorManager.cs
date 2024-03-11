@@ -461,7 +461,11 @@ public class EditorManager : MonoBehaviour
 
     public void SaveNewBuildingPreset(bool Override = false)
     {
-
+        if(string.IsNullOrEmpty(ScenarioNameInput.text))
+        {
+            PopupUIManager.Instance.ShowPopup("Error!", "Save name cannot be blank!");
+            return;
+        }
         if (!Override && editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override))
         {
             OverrideSaveUI.SetActive(true);

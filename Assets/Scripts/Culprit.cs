@@ -265,7 +265,7 @@ public class Culprit : MonoBehaviour
     private void Update()
     {
         
-         outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
+       if(outline.OutlineColor.a > 0.1f)  outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
 
         if (!currentBall || !currentBallRb.isKinematic)
             return;

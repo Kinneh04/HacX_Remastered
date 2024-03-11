@@ -187,6 +187,12 @@ public class EditorSaveManager : MonoBehaviour
     private void OnRefreshScenarioList()
     {
 
+        foreach(GameObject GO in InstantiatedScenarioPrefabs)
+        {
+            Destroy(GO);
+        }
+        InstantiatedScenarioPrefabs.Clear();
+
         if (CurrentlySavedScenarios.Count > 0)
         {
             NoScenariosText.SetActive(false);
