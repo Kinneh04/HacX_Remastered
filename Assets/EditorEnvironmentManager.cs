@@ -16,6 +16,8 @@ public class EditorEnvironmentManager : MonoBehaviour
     public Transform PropNamePrefabParent;
 
     public List<GameObject> InstantiatedPropButtons, InstantiatedProps;
+
+    public Transform EditorParentTransform;
     
     public void ClearAllProps()
     {
@@ -50,6 +52,7 @@ public class EditorEnvironmentManager : MonoBehaviour
         InstantiatedProps.Add(NewProp);
 
         NewProp.GetComponent<EnvironmentalPrefab>().propIndex = itemIndex;
+        NewProp.transform.SetParent(EditorParentTransform);
 
     }
 

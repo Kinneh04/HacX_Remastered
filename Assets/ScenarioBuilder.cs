@@ -51,8 +51,9 @@ public class ScenarioBuilder : MonoBehaviour
             {
                 // Add environmentals
                 GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
-                GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosX, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosZ);
+                GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosZ, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosY);
                 GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
+                GO.transform.localScale = new Vector3(ParsedEnvDatablock[i].ScaleX, ParsedEnvDatablock[i].ScaleY, ParsedEnvDatablock[i].ScaleZ);
             }
 
         // First building is always the target building with the distance applied to.

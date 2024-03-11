@@ -33,6 +33,47 @@ public class EditorSaveManager : MonoBehaviour
     public string loadedJSONFromFile = "";
     public GameObject ImportingCloseButton, importingFeedbackGO;
 
+    public void DeleteCurrentlyselectedScenario()
+    {
+        CurrentlySavedScenarios.Remove(SelectedScenario);
+        OnRefreshScenarioList();
+        CloseScenarioSettings();
+    }
+
+    public bool AlreadyHasSaveWithName(string name, bool forceDelete = false)
+    {
+        foreach(Scenario S in CurrentlySavedScenarios)
+        {
+            if (S.NameOfScenario == name)
+            {
+                if (forceDelete) CurrentlySavedScenarios.Remove(S);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void Awake()
+    {
+        LoadCurrentScenariosFromPlayerPrefs();
+    }
+
+    private void OnDestroy()
+    {
+        SaveCurrentScenariosToPlayerPrefs();
+    }
+
+    public void SaveCurrentScenariosToPlayerPrefs()
+    {
+        string JSONSave = JsonConvert.SerializeObject(CurrentlySavedScenarios);
+        PlayerPrefs.SetString("SavedScenarios", JSONSave);
+    }
+
+    public void LoadCurrentScenariosFromPlayerPrefs()
+    {
+        CurrentlySavedScenarios = JsonConvert.DeserializeObject<List<Scenario>>(PlayerPrefs.GetString("SavedScenarios"));
+    }
+
     public void CloseScenarioSettings()
     {
         ScenarioSettingsUI.SetActive(false);
@@ -130,13 +171,6 @@ public class EditorSaveManager : MonoBehaviour
 
         CloseScenarioSettings();
         ScenarioListUI.SetActive(false);
-    }
-
-    public void DeleteCurrentScene()
-    {
-        CurrentlySavedScenarios.Remove(SelectedScenario);
-        CloseScenarioSettings();
-        OnRefreshScenarioList();
     }
 
     public void OnOpenScenarioList()

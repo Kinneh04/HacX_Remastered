@@ -14519,8 +14519,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1077282814}
         m_TargetAssemblyTypeName: CameraManager, Assembly-CSharp
-        m_MethodName: SwitchToFreecam
-        m_Mode: 6
+        m_MethodName: OnClickToggleFreecam
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -28417,7 +28417,8 @@ MonoBehaviour:
 
     [Shift] to Speed up
 
-    <color=red>[E]</color> to exit freecam'
+    <color=red>[E] or [Toggle button]</color>
+    to exit freecam'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
   m_sharedMaterial: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
@@ -33303,7 +33304,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: FREECAM MODE
+  m_text: TOGGLE FREECAM
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
   m_sharedMaterial: {fileID: -7962991420170901458, guid: daa364c72bc44ff48a5e7c3a96af8569, type: 2}
@@ -34644,8 +34645,8 @@ RectTransform:
   m_Father: {fileID: 781835832}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.46966654, y: 1}
+  m_AnchorMin: {x: 0.49573058, y: 0}
+  m_AnchorMax: {x: 0.9653971, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -35138,8 +35139,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2105453698}
   m_HandleRect: {fileID: 2105453697}
   m_Direction: 0
-  m_Value: -0.0000009409644
-  m_Size: 0.46966654
+  m_Value: 0.9347525
+  m_Size: 0.4696665
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

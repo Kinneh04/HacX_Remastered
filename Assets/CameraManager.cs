@@ -66,9 +66,15 @@ public class CameraManager : MonoBehaviour
         ChangeCurrentCameraPerspective();
     }
 
+    public void OnClickToggleFreecam()
+    {
+        SwitchToFreecam(!freecamMode);
+    }
+
     public void SwitchToFreecam(bool toggle)
     {
         freecamMode = toggle;
+
 
         FreecamUI.SetActive(toggle);
         if (!WindowsManager.Instance.isPrecisionMode) // if user is putting ricochet mark
@@ -89,7 +95,10 @@ public class CameraManager : MonoBehaviour
         freeCam.gameObject.SetActive(toggle);
         mainCam.orthographic = !toggle;
 
-        if (!toggle) ForceCameraToIndex(0);
+        if (!toggle)
+        {
+            ForceCameraToIndex(0);
+        }
         else
         {
             mainCam.cullingMask = FreecamLayermask;

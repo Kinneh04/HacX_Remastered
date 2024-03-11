@@ -257,7 +257,7 @@ public class WindowsManager : MonoBehaviour
                         PlacePrecisionMarker();
                     }
                 }
-                if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
+                if (!SelectedWindows.Contains(CurrentlyHoveredWindow) && canSelectWindow)
                 {
                     Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
                     //  originalColor = M.color;

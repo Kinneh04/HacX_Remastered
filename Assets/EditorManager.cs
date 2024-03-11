@@ -63,6 +63,7 @@ public class EditorManager : MonoBehaviour
 
     [Header("Environment")]
     public GameObject EnvironmentUI;
+    public bool isEnvironmentalMode;
     public EditorEnvironmentManager editorEnvironmentManager;
 
     [Header("Cameras")]
@@ -85,6 +86,10 @@ public class EditorManager : MonoBehaviour
     float currentDistance;
     public TMP_Text DistanceText;
     public LineRenderer DistanceLineRenderer;
+
+    [Header("OverrideSave")]
+    public GameObject OverrideSaveUI;
+    public TMP_Text NameOfSaveText;
     
 
     public void UpdateDistance()
@@ -118,24 +123,36 @@ public class EditorManager : MonoBehaviour
         runtimeTransformGameObj.SetActive(false);
     }
 
-    public void BuildMapScenario(List<GameObject> BuildingPositions)
+    public void BuildMapScenario(List<GameObject> BuildingPositions, float calculatedDistance)
     {
-        Vector3 Pivot = BuildingPositions[0].transform.position;
-        bool Pivotal = false;
-        for (int i = 0; i < BuildingPositions.Count; i++)
+        Vector3 Pivot = -BuildingPositions[0].transform.position;
+        CurrentBuildingsOnEditorDisplay[0].transform.position = Vector3.zero;
+        for(int i = 1; i < BuildingPositions.Count; i++)
         {
-            if (!Pivotal)
-            {
-                CurrentBuildingsOnEditorDisplay[i].transform.position = Vector3.zero;
-                Pivot = BuildingPositions[i].transform.position;
-                Pivotal = true;
-
-            }
-            else
-            {
-                CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position + Pivot;
-            }
+            CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position + Pivot;
         }
+
+
+//        Vector3 Pivot = BuildingPositions[0].transform.position;
+//        bool Pivotal = false;
+//        for (int i = 0; i < BuildingPositions.Count; i++)
+//        {
+//            if (!Pivotal)
+//            {
+//                CurrentBuildingsOnEditorDisplay[i].transform.position = Vector3.zero;
+
+//               // Pivot = BuildingPositions[i].transform.position;
+//                Pivotal = true;
+
+//            }
+//            else
+//            {
+//                CurrentBuildingsOnEditorDisplay[i].transform.position = BuildingPositions[i].transform.position + Pivot;
+//                Vector3 CurrentBuildingPosition = CurrentBuildingsOnEditorDisplay[i].transform.position;
+//                CurrentBuildingPosition.x = -calculatedDistance;
+//                CurrentBuildingsOnEditorDisplay[i].transform.position = CurrentBuildingPosition;
+//;            }
+//        }
     }
 
 
@@ -168,6 +185,7 @@ public class EditorManager : MonoBehaviour
         EnvironmentUI.SetActive(true);
         MainButtonsUI.SetActive(false);
         canSelect = false;
+        isEnvironmentalMode = true;
     }
     void SwitchCamera(int direction)
     {
@@ -185,6 +203,7 @@ public class EditorManager : MonoBehaviour
         EnvironmentUI.SetActive(false);
         MainButtonsUI.SetActive(true);
         canSelect = true;
+        isEnvironmentalMode = false;
     }
 
     public void ResetToDefaults()
@@ -323,14 +342,17 @@ public class EditorManager : MonoBehaviour
     }
     public void ExitFromEditorMenu()
     {
-        isInEditMode = false;
-        EditorUI.SetActive(false);
-        MainMenuObjects.SetActive(true);
-        EditorObjects.SetActive(false);
 
         CameraPerspectives[camIndex].SetActive(false);
         camIndex = 0;
         CameraPerspectives[camIndex].SetActive(true);
+
+        isInEditMode = false;
+        EditorUI.SetActive(false);
+        MainMenuObjects.SetActive(true);
+        EditorObjects.SetActive(false);
+        runtimeTransformGameObj.SetActive(false);
+
     }
     public void ToggleEditMode(bool t)
     {
@@ -345,10 +367,10 @@ public class EditorManager : MonoBehaviour
         RaycastHit hit;
 
         // Perform the raycast
-        if (Physics.Raycast(ray, out hit) && canSelect)
+        if (Physics.Raycast(ray, out hit))
         {
             // Check if the hit object has the tag "window"
-            if (hit.collider.CompareTag("EditorHDB"))
+            if (hit.collider.CompareTag("EditorHDB") && canSelect)
             {
                 if (CurrentlySelectedBuilding == hit.collider.GetComponent<CustomBuilding>()) return;
                 CurrentlySelectedBuilding = hit.collider.GetComponent<CustomBuilding>();
@@ -356,13 +378,13 @@ public class EditorManager : MonoBehaviour
                 {
                     BuildingDetailsUI.SetActive(true);
                     MainButtonsUI.SetActive(false);
-                    TitleMenu.text =  "Selected building: " +CurrentlySelectedBuilding.typeofBuilding.ToString();
+                    TitleMenu.text = "Selected building: " + CurrentlySelectedBuilding.typeofBuilding.ToString();
 
                     if (CurrentlySelectedBuilding.typeofBuilding == CustomBuilding.BuildingType.Target)
                         TargetBuildingMaterial.color = Color.white;
                     else if (CurrentlySelectedBuilding.typeofBuilding == CustomBuilding.BuildingType.Culprit)
                         CulpritBuildingMaterial.color = Color.white;
-                        OverrideNumFloorSlider(CurrentlySelectedBuilding.numFloors);
+                    OverrideNumFloorSlider(CurrentlySelectedBuilding.numFloors);
                     OverrideWidthSlider(CurrentlySelectedBuilding.WidthInMetres);
                     OverrideAngleSlider(CurrentlySelectedBuilding.AddedAngle);
                     SavedFloors = CurrentlySelectedBuilding.numFloors;
@@ -372,6 +394,12 @@ public class EditorManager : MonoBehaviour
                 }
 
                 runtimeTransformHandle.target = CurrentlySelectedBuilding.transform;
+                runtimeTransformGameObj.SetActive(true);
+            }
+            else if (hit.collider.CompareTag("EditorEnvironmentProp") && isEnvironmentalMode)
+            {
+                runtimeTransformHandle.target = hit.collider.transform;
+                
                 runtimeTransformGameObj.SetActive(true);
             }
         }
@@ -431,8 +459,19 @@ public class EditorManager : MonoBehaviour
         AngleValue.text = newAngle.ToString() + "°";
     }
 
-    public void SaveNewBuildingPreset()
+    public void SaveNewBuildingPreset(bool Override = false)
     {
+
+        if (!Override && editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override))
+        {
+            OverrideSaveUI.SetActive(true);
+            NameOfSaveText.text = ScenarioNameInput.text;
+            return;
+        }
+        else if(Override)
+        {
+            editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override);
+        }
         List<SavableBuildingDetails> buildingDataBlock = new();
         foreach(CustomBuilding building in CurrentBuildingsOnEditorDisplay)
         {
@@ -467,7 +506,10 @@ public class EditorManager : MonoBehaviour
                 PosZ = GO.transform.position.z,
                 RotX = GO.transform.rotation.x,
                 RotY = GO.transform.rotation.y,
-                RotZ = GO.transform.rotation.z
+                RotZ = GO.transform.rotation.z,
+                ScaleX = GO.transform.localScale.x,
+                ScaleY = GO.transform.localScale.y,
+                ScaleZ = GO.transform.localScale.z
             };
             EnvironmentDatablock.Add(savableEnv);
         }
@@ -534,10 +576,10 @@ public class EditorManager : MonoBehaviour
             {
                 runtimeTransformHandle.type = HandleType.ROTATION;
             }
-            //if (Input.GetKeyDown(KeyCode.R))
-            //{
-            //    runtimeTransformHandle.type = HandleType.SCALE;
-            //}
+            if (Input.GetKeyDown(KeyCode.R) && isEnvironmentalMode)
+            {
+                runtimeTransformHandle.type = HandleType.SCALE;
+            }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 if (Input.GetKeyDown(KeyCode.G))
@@ -647,5 +689,6 @@ public class SavableEnvironmentDetails
     public int savedItemIndex;
     public float PosX, PosY, PosZ;
     public float RotX, RotY, RotZ;
+    public float ScaleX, ScaleY, ScaleZ;
 }
 

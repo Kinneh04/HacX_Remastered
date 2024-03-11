@@ -32,6 +32,7 @@ public class MapPickerManager : MonoBehaviour
 
     [Header("Building")]
     public EditorManager editorManager;
+    public float distanceCalculated;
 
     public void EraseCollisionLists()
     {
@@ -55,7 +56,18 @@ public class MapPickerManager : MonoBehaviour
 
     public void BuildMap()
     {
-        editorManager.BuildMapScenario(SelectedBuildings);
+
+        for (int i = 0; i < SelectedBuildings.Count - 1; i++)
+        {
+            if (SelectedBuildings[i].transform.position.z > SelectedBuildings[i + 1].transform.position.z)
+            {
+                // Swap elements
+                GameObject temp = SelectedBuildings[i];
+                SelectedBuildings[i] = SelectedBuildings[i + 1];
+                SelectedBuildings[i + 1] = temp;
+            }
+        }
+        editorManager.BuildMapScenario(SelectedBuildings, distanceCalculated);
         CloseMapPicker();
     }
 
@@ -102,7 +114,6 @@ public class MapPickerManager : MonoBehaviour
             SelectedBuildings.Add(GO);
         }
         HF.OnSelectBuilding();
-
     }
 
     public void UpdateTexts()
@@ -118,8 +129,8 @@ public class MapPickerManager : MonoBehaviour
 
     public void DisplayTrail()
     {
-        float distanceCalculated = Vector3.Distance(SelectedBuildings[0].transform.position, SelectedBuildings[1].transform.position);
-        DistanceCalculatedText.text = "Calculated distance: " + (distanceCalculated * DistanceScaleFactor).ToString("F2") + "m";
+        distanceCalculated = Vector3.Distance(SelectedBuildings[0].transform.position, SelectedBuildings[1].transform.position);
+        DistanceCalculatedText.text = "Estimated distance: " + (distanceCalculated * DistanceScaleFactor).ToString("F2") + "m";
         lineRenderer.enabled = true;
         lineRenderer.SetPosition(0, SelectedBuildings[0].transform.position);
         lineRenderer.SetPosition(1, SelectedBuildings[1].transform.position);
