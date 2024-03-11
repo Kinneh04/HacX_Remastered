@@ -157,6 +157,8 @@ public class CulpritsManager : MonoBehaviour
         // Update the original list with the cleaned list
         mainGameManager.CulpritsDone.Clear();
         mainGameManager.CulpritsDone.AddRange(cleanedList);
+
+        
     }
 
     public void ClearCulprits()

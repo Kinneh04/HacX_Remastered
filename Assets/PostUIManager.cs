@@ -33,6 +33,13 @@ public class PostUIManager : MonoBehaviour
     public Transform WindowSelectionPrefabParent;
     // TODO: Assign these and instantiate them;
 
+    public void OnClearOutliersButton()
+    {
+        culpritsManager.RemoveOutliers();
+        heatmapManager.UpdateHeatmap();
+
+    }
+
     public void OnChangeHeatmapPrecision()
     {
         HeatmapPrecisionText.text = (HeatmapPrecisionSlider.value * 100).ToString("F2") + "%";
@@ -146,6 +153,7 @@ public class PostUIManager : MonoBehaviour
 
     public void ReplayScenario()
     {
+        Time.timeScale = 1.0f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

@@ -40,22 +40,25 @@ public class DataManager : MonoBehaviour
       //  FeedbackText.text = "Processing...";
         foreach (Culprit c in culpritsManager.SpawnedCulprits)
         {
-            JsonCulpritData JSD = new JsonCulpritData()
+            if (c.averageProbability != float.NaN && c.averageProbability != 0)
             {
-                ExactCulpritPosX = c.transform.position.x,
-                ExactCulpritPosY = c.transform.position.y,
-                ExactCulpritPosZ = c.transform.position.z,
-                culpritAccuracy = c.averageProbability,
-                WindowHits = c.windowHit,
-                Floor = c.floor,
-                Column = c.column,
-                TotalBallsFired = c.totalBallsThrown,
-                BallsHit = c.TotalBallsHit,
-                BallsMissed = c.TotalBallsHit - c.TotalBallsHit,
-                MissedToHitRatio = (float)c.TotalBallsHit / (c.totalBallsThrown - c.TotalBallsHit)
-            };
+                JsonCulpritData JSD = new JsonCulpritData()
+                {
+                    ExactCulpritPosX = c.transform.position.x,
+                    ExactCulpritPosY = c.transform.position.y,
+                    ExactCulpritPosZ = c.transform.position.z,
+                    culpritAccuracy = c.averageProbability,
+                    WindowHits = c.windowHit,
+                    Floor = c.floor,
+                    Column = c.column,
+                    TotalBallsFired = c.totalBallsThrown,
+                    BallsHit = c.TotalBallsHit,
+                    BallsMissed = c.TotalBallsHit - c.TotalBallsHit,
+                    MissedToHitRatio = (float)c.TotalBallsHit / (c.totalBallsThrown - c.TotalBallsHit)
+                };
 
-            JSONBlock.Add(JSD);
+                JSONBlock.Add(JSD);
+            }
         }
 
         return JSONBlock;

@@ -71,11 +71,11 @@ public class CameraManager : MonoBehaviour
         SwitchToFreecam(!freecamMode);
     }
 
-    public void SwitchToFreecam(bool toggle)
+    public void SwitchToFreecam(bool toggle, bool EnableUI = true)
     {
         freecamMode = toggle;
 
-
+        if(EnableUI)
         FreecamUI.SetActive(toggle);
         if (!WindowsManager.Instance.isPrecisionMode) // if user is putting ricochet mark
         {
@@ -218,7 +218,7 @@ public class CameraManager : MonoBehaviour
         if(WindowsManager.Instance.isPrecisionMode)
         {
             if (Input.GetMouseButtonDown(2))
-                SwitchToFreecam(!freecamMode);
+                SwitchToFreecam(!freecamMode, false);
 
             if (!freecamMode)
                 return;

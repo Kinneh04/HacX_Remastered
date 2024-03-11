@@ -324,7 +324,7 @@ public class Culprit : MonoBehaviour
             }
         }
         
-
+        
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
