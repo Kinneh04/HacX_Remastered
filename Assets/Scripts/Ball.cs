@@ -41,7 +41,10 @@ public class Ball : MonoBehaviour
     public float impactSpeed = 0f;
     public float impactForce = 0f;
     public float pressureApplied = 0f;
+    public bool collided = false;
 
+    public Vector3 prevPos;
+    public Plane ricochetPlane;
     Culprit parentShooter;
     void Awake()
     {
@@ -79,12 +82,18 @@ public class Ball : MonoBehaviour
 
     public void Shoot(Precise_Window PreciseTarget, int targetIndex)
     {
+        prevPos = Vector3.zero;
         if (targetWindowPrecision.RicochetMarker != null)
         {
             culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
             ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
             initDist = Vector2.Distance(culpritxz, ricochetxz);
+            
+            Vector3 planeNormal = -parentShooter.ShootPosition.forward;
+            Vector3 planePoint = targetWindowPrecision.RicochetMarker.transform.position + (parentShooter.ShootPosition.forward * targetWindowPrecision.RicochetMarker.transform.localScale.x * 0.4f);
+            ricochetPlane = new Plane(planeNormal, planePoint);
         }
+        collided = false;
         forceLower = false;
         stop = false;
         GameObject target = PreciseTarget.WindowGO;
@@ -120,47 +129,49 @@ public class Ball : MonoBehaviour
             SimulateInRealTime(Time.deltaTime);
             vel = rbody.velocity;
 
-           
+
+
+            if (targetWindowPrecision.RicochetMarker != null)
+            {
+                CheckRicochet();
+            }
+            prevPos = transform.position;
         }
-        else
-        {
-            //rbody.isKinematic = true;
-            //parentShooter.travelling = false;
-            //parentShooter.shootNext = true;
-        }
+
     }
-    private void LateUpdate()
+
+    void CheckRicochet()
     {
-        if (rbody.isKinematic)
-            return;
-
-        if (initDist == 0)
-            return;
-
         if (hitFirstPoint)
             return;
-        if (targetWindowPrecision.RicochetMarker != null)
+
+        if (prevPos == transform.position || prevPos == Vector3.zero)
+            return;
+
+        Vector3 movement = transform.position - prevPos;
+
+
+        Vector2 ballxz = new Vector2(transform.position.x, transform.position.z);
+
+        currDist = Vector2.Distance(culpritxz, ballxz);
+
+        float distance;
+        if (currDist > initDist)
         {
 
-            Vector2 ballxz = new Vector2(transform.position.x, transform.position.z);
-            currDist = Vector2.Distance(culpritxz, ballxz);
+            if (ricochetPlane.Raycast(new(prevPos, movement), out distance))
+            {
 
-            if (currDist > initDist)
-            {
-                //transform.position = new Vector3(ricochetxz.x, transform.position.y, ricochetxz.y);
-                if (!hitFirstPoint)
-                {
-                    //hitFirstPoint = false;
-                    
-                    rbody.isKinematic = true;
-                    parentShooter.travelling = false;
-                    parentShooter.shootNext = true;
-                    return;
-                }
-            }
-            else
-            {
-                
+                Vector3 intersectionPoint = prevPos + movement.normalized * distance;
+
+                rbody.isKinematic = true;
+
+                parentShooter.shootNext = true;
+                transform.position = intersectionPoint;
+                //Debug.Log(parentShooter.name + " " + transform.position + " " + prevPos);
+
+                prevPos = Vector3.zero;
+                return;
             }
         }
     }
@@ -184,9 +195,9 @@ public class Ball : MonoBehaviour
 
         
     }
-
-    public void Simulate()
+    private void LateUpdate()
     {
+        
 
     }
 
@@ -197,12 +208,12 @@ public class Ball : MonoBehaviour
 
     public void CalculateBounce(ContactPoint contact)
     {
-        Vector3 randomOffset = Random.insideUnitSphere * 0.01f;
+        Vector3 randomOffset = Vector3.zero;// Random.insideUnitSphere * 0.01f;
 
         // Calculate reflection vector based on incoming direction and surface normal
         Vector3 reflectionDirection = Vector3.Reflect(vel, contact.normal) + randomOffset;
 
-        transform.position = contact.point;
+        //transform.position = contact.point;
 
         // Apply force considering COR
         rbody.velocity = reflectionDirection * Mathf.Clamp01(COR);
@@ -210,33 +221,33 @@ public class Ball : MonoBehaviour
     public void ResetBall(ContactPoint contact)
     {
         rbody.isKinematic = true;
-        parentShooter.travelling = false;
         parentShooter.shootNext = true;
     }
     private void OnCollisionEnter(Collision other)
     {
-
         contact = other.GetContact(0);
         transform.position = contact.point;
 
-        if (other.transform.tag == "Roof")
+        if (other.transform.tag == "Roof") // if hit roof lower angle
         {
             ResetBall(contact);
             forceLower = true;
             return;
         }
 
-        if (!hitFirstPoint && targetWindowPrecision.RicochetMarker != null)
+        if (targetWindowPrecision.RicochetMarker != null)
         {
+            // if hit ricochet point
             if (targetWindowPrecision.RicochetMarker != null
           && Vector3.Distance(contact.point, targetWindowPrecision.RicochetMarker.transform.position) > 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x
           )
             {
+                // not within range
                 hitFirstPoint = false;
                 ResetBall(contact);
                 return;
             }
-            else
+            else // within range
             {
                 hitFirstPoint = true;
 
@@ -245,9 +256,14 @@ public class Ball : MonoBehaviour
                 return;
             }
         }
+        else
+        {
+            ResetBall(contact);
+        }
 
-        ResetBall(contact);
 
+
+        // see if hit window
         if (targetWindowPrecision.PrecisionMarker != null 
             && Vector3.Distance(contact.point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x 
             )

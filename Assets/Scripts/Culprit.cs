@@ -81,7 +81,7 @@ public class Culprit : MonoBehaviour
     public void ResetVariables()
     {
         currentTarget = 0;
-        travelling = false;
+
         below = true;
         hit = false;
 
@@ -267,6 +267,7 @@ public class Culprit : MonoBehaviour
         
        if(outline.OutlineColor.a > 0.1f)  outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
 
+
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 
@@ -291,24 +292,31 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                if (currentBall.transform.position.y - windows[currentTarget].RicochetMarker.transform.position.y > 0.5 * currentBall.transform.localScale.x)
+                if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y)
                 {
+
                     launchAngleMax = angle;
+
                 }
-                else if (windows[currentTarget].RicochetMarker.transform.position.y - currentBall.transform.position.y > 0.5 * currentBall.transform.localScale.x)
+                else if (windows[currentTarget].RicochetMarker.transform.position.y > currentBall.transform.position.y)
                 {
+
                     launchAngleMin = angle;
                 }
                 else
                 {
-                    if (currentBall.currDist > currentBall.initDist)
-                    {
-                        launchAngleMax = angle;
-                    }
-                    else if (currentBall.currDist < currentBall.initDist)
+                    if (currentBall.currDist < currentBall.initDist)
                     {
                         launchAngleMin = angle;
                     }
+                    else if (currentBall.currDist > currentBall.initDist)
+                    {
+                        launchAngleMax = angle;
+                    }
+                    //else
+                    //{
+                    //    launchAngleMax = angle;
+                    //}
                 }
             }
             else// for just window
@@ -324,17 +332,32 @@ public class Culprit : MonoBehaviour
             }
         }
         
-        
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
         currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);
-        travelling = true;
+
         shootNext = false;
         totalBallsThrown++;
         iterations[currentTarget]++;
+    }
+    void CheckDistance()
+    {
+        //if (currentBall.currDist > currentBall.initDist)
+        //{
+        //    launchAngleMax = angle;
+
+        //}
+        if (currentBall.currDist < currentBall.initDist)
+        {
+            launchAngleMin = angle;
+        }
+        else
+        {
+            launchAngleMin = angle;
+        }
     }
     public void FireProjectileAt(int windowIndex)
     {
@@ -352,7 +375,6 @@ public class Culprit : MonoBehaviour
 
         currentBall.Shoot(windows[windowIndex], windowIndex);
 
-        travelling = true;
         shootNext = false;
 
         iterations[windowIndex]++;

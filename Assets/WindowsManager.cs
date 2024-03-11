@@ -200,14 +200,15 @@ public class WindowsManager : MonoBehaviour
         CurrentlySelectedPreciseWindow.RicochetMarker = null;
     }
 
-    public void PlaceRicochetMarker(Vector3 normal)
+    public void PlaceRicochetMarker(RaycastHit hit)
     {
         if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
         GameObject GO = Instantiate(RicochetMarkerPrefab, RicochetMarkerHighlighter.transform.position, Quaternion.identity);
         GO.transform.localScale = RicochetMarkerPrefab.transform.localScale;
         //GO.GetComponent<Precise_Window>().CalculateRequiredAngleofIncidence();
+        GO.transform.right = hit.normal;
         CurrentlySelectedPreciseWindow.RicochetMarker = GO;
-        CurrentlySelectedPreciseWindow.ricochetNormal = normal;
+        CurrentlySelectedPreciseWindow.ricochetPlane =  new Plane(GO.transform.right, GO.transform.position); ;
         OnUpdateConfidenceScale();
 
     }
@@ -287,7 +288,7 @@ public class WindowsManager : MonoBehaviour
                     if (Input.GetMouseButtonDown(0))
                     {
                         if(hit.transform.tag != "Precision")
-                            PlaceRicochetMarker(hit.normal);
+                            PlaceRicochetMarker(hit);
                     }
                 }
             }
@@ -315,7 +316,7 @@ public class Precise_Window
     public GameObject PrecisionMarker, WindowGO;
 
     public GameObject RicochetMarker;
-    public Vector3 ricochetNormal;
+    public Plane ricochetPlane;
     public float reflectionAngle = 0;
     public float estimatedAngleOfIncidence = 0;
 
@@ -326,8 +327,8 @@ public class Precise_Window
             Debug.Log("no ricochet point");
             return;
         }
-        Vector3 reflectVector = Vector3.Reflect(PrecisionMarker.transform.position - RicochetMarker.transform.position, ricochetNormal);
-        reflectionAngle = Vector3.Angle(ricochetNormal, reflectVector);
+        Vector3 reflectVector = Vector3.Reflect(PrecisionMarker.transform.position - RicochetMarker.transform.position, RicochetMarker.transform.up);
+        reflectionAngle = Vector3.Angle(RicochetMarker.transform.up, reflectVector);
         estimatedAngleOfIncidence = reflectionAngle;
     }
 }
