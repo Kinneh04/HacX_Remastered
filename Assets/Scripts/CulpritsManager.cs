@@ -96,13 +96,30 @@ public class CulpritsManager : MonoBehaviour
         AreaSplitManager[] Floors = GameObject.FindObjectsOfType<AreaSplitManager>();
 
         SpawnedCulprits.Clear();
+        int floorIndex = 1;
+        bool upFloor = false;
+        int dividingFloor = 0;
+        if(Floors.Length %2 == 0)
+        {
+            dividingFloor = Floors.Length / 2 + 1;
+        }
+        else
+        {
+            dividingFloor = Floors.Length / 2;
+        }
         for (int i = 0; i < Floors.Length; i++)
         {
-            Floors[i].Floor = Floors.Length - i;
+            Floors[i].Floor = dividingFloor - floorIndex;
             Floors[i].CulpritPrefab = CulpritPrefab;
             Floors[i].culpritManager = this;
             Floors[i].NumberOfCulprits = NumCulpritsPerRow;
-            Floors[i].RespawnCulprits(); 
+            Floors[i].RespawnCulprits();
+            if (upFloor)
+            {
+                upFloor = false;
+                floorIndex++;
+            }
+            else upFloor = true;
         }
     }
 
