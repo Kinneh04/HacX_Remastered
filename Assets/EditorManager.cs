@@ -27,6 +27,7 @@ public class EditorManager : MonoBehaviour
 
     [Header("EditorUIMenu")]
     public GameObject EditorUI, BuildingDetailsUI, MainButtonsUI;
+    public GameObject MainMenuUI;
     public TMP_Text TitleMenu;
     public Slider NumFloorSlider, WidthSlider, AngleSlider;
     public TMP_Text NumFloorSliderValue, WidthValue, AngleValue;
@@ -207,6 +208,15 @@ public class EditorManager : MonoBehaviour
         runtimeTransformGameObj.SetActive(false);
     }
 
+    public void PlayDirectlyFromEditor()
+    {
+        Scenario Temp = ReturnNewScenario();
+        DontDestroyOnLoadSettings.Instance.LoadedBuilding = Temp;
+        DontDestroyOnLoadSettings.Instance.TempScenario = Temp;
+        DontDestroyOnLoadSettings.Instance.isEditorMode = true;
+        DontDestroyOnLoadSettings.Instance.StartGame();
+    }
+
     public void ResetToDefaults()
     {
         int i = 0;
@@ -337,9 +347,10 @@ public class EditorManager : MonoBehaviour
     public void GoToEditorMenu()
     {
         isInEditMode = true;
-        MainMenuObjects.SetActive(false);
         EditorObjects.SetActive(true);
         EditorUI.SetActive(true);
+        MainMenuObjects.SetActive(false);
+        MainMenuUI.SetActive(false);
     }
     public void ExitFromEditorMenu()
     {
@@ -460,25 +471,10 @@ public class EditorManager : MonoBehaviour
         AngleValue.text = newAngle.ToString() + "°";
     }
 
-    public void SaveNewBuildingPreset(bool Override = false)
+    public Scenario ReturnNewScenario()
     {
-        if(string.IsNullOrEmpty(ScenarioNameInput.text))
-        {
-            PopupUIManager.Instance.ShowPopup("Error!", "Save name cannot be blank!");
-            return;
-        }
-        if (!Override && editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override))
-        {
-            OverrideSaveUI.SetActive(true);
-            NameOfSaveText.text = ScenarioNameInput.text;
-            return;
-        }
-        else if(Override)
-        {
-            editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override);
-        }
         List<SavableBuildingDetails> buildingDataBlock = new();
-        foreach(CustomBuilding building in CurrentBuildingsOnEditorDisplay)
+        foreach (CustomBuilding building in CurrentBuildingsOnEditorDisplay)
         {
             SavableBuildingDetails buildingData = new SavableBuildingDetails()
             {
@@ -494,13 +490,13 @@ public class EditorManager : MonoBehaviour
                 RotY = building.transform.rotation.eulerAngles.y,
                 RotZ = building.transform.rotation.eulerAngles.z
 
-        };
+            };
             buildingDataBlock.Add(buildingData);
         }
         PreviewSavedJsonString = JsonConvert.SerializeObject(buildingDataBlock);
 
         List<SavableEnvironmentDetails> EnvironmentDatablock = new();
-        foreach(GameObject GO in editorEnvironmentManager.InstantiatedProps)
+        foreach (GameObject GO in editorEnvironmentManager.InstantiatedProps)
         {
             EnvironmentalPrefab EnvP = GO.GetComponent<EnvironmentalPrefab>();
             SavableEnvironmentDetails savableEnv = new SavableEnvironmentDetails()
@@ -528,7 +524,28 @@ public class EditorManager : MonoBehaviour
             DistanceBetweenBuildings = currentDistance
 
         };
-        editorSave.CurrentlySavedScenarios.Add(newScenario);
+        return newScenario;
+    }
+
+    public void SaveNewBuildingPreset(bool Override = false)
+    {
+        if(string.IsNullOrEmpty(ScenarioNameInput.text))
+        {
+            PopupUIManager.Instance.ShowPopup("Error!", "Save name cannot be blank!");
+            return;
+        }
+        if (!Override && editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override))
+        {
+            OverrideSaveUI.SetActive(true);
+            NameOfSaveText.text = ScenarioNameInput.text;
+            return;
+        }
+        else if(Override)
+        {
+            editorSave.AlreadyHasSaveWithName(ScenarioNameInput.text, Override);
+        }
+      
+        editorSave.CurrentlySavedScenarios.Add(ReturnNewScenario());
         PopupUIManager.Instance.ShowPopup("Success", "Scenario saved successfully!");
     }
    

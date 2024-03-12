@@ -56,12 +56,21 @@ public class MainGameManager : MonoBehaviour
 
     public ScenarioBuilder scenarioBuilder;
 
+    [Header("EditorMode")]
+    public GameObject EditorModeUI;
+
 
 
     public TMP_Text MD_Title, MD_Date, MD_Time, MD_TargetFloors, MD_CulpritFloors, MD_Distance;
 
 
-
+    private void Start()
+    {
+        if(DontDestroyOnLoadSettings.Instance.isEditorMode)
+        {
+            EditorModeUI.SetActive(true);
+        }
+    }
     enum SimulationState
     {
         PRESIMULATE,
@@ -128,7 +137,7 @@ public class MainGameManager : MonoBehaviour
     }
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        DontDestroyOnLoadSettings.Instance.ReturnToMainMenu();
     }
 
     public void Reiterate()
@@ -210,6 +219,11 @@ public class MainGameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             StartCoroutine(TakeScreenshot());
+        }
+
+        if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R) && DontDestroyOnLoadSettings.Instance.isEditorMode)
+        {
+            DontDestroyOnLoadSettings.Instance.ReturnToMainMenu();
         }
     }
 

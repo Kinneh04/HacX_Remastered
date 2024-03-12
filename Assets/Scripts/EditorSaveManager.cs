@@ -71,7 +71,10 @@ public class EditorSaveManager : MonoBehaviour
 
     public void LoadCurrentScenariosFromPlayerPrefs()
     {
-     //   CurrentlySavedScenarios = JsonConvert.DeserializeObject<List<Scenario>>(PlayerPrefs.GetString("SavedScenarios"));
+        List<Scenario> Temp = JsonConvert.DeserializeObject<List<Scenario>>(PlayerPrefs.GetString("SavedScenarios"));
+
+        if (Temp.Count > 0)
+            CurrentlySavedScenarios = Temp;
     }
 
     public void CloseScenarioSettings()
@@ -147,16 +150,19 @@ public class EditorSaveManager : MonoBehaviour
         }
     }
 
-    public void LoadCurrentScene()
+    
+
+    public void LoadCurrentScene(Scenario S = null)
     {
 
         //Load selected scene
 
         List<SavableBuildingDetails> BuildingDatablock = new();
 
-        BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SelectedScenario.JsonSave);
-
-        for(int i = 0; i < BuildingDatablock.Count; i++)
+        if (S == null)
+            BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SelectedScenario.JsonSave);
+        else BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(S.JsonSave);
+        for (int i = 0; i < BuildingDatablock.Count; i++)
         {
             
             editorManager.OverrideBuildingFloors(i, BuildingDatablock[i].SavedNumFloors);

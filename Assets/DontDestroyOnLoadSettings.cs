@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Windows.Forms;
 
 public class DontDestroyOnLoadSettings : MonoBehaviour
 {
@@ -36,6 +36,21 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     private static DontDestroyOnLoadSettings _instance;
 
     public List<GameObject> EnvironmentalPrefabs;
+
+    [Header("Temporary")]
+    public Scenario TempScenario;
+    public bool isEditorMode;
+    public void CheckForEditorPreset()
+    {
+        if (isEditorMode)
+        {
+            EditorManager EM = GameObject.FindObjectOfType<EditorManager>();
+            EM.GoToEditorMenu();
+            EM.editorSave.LoadCurrentScene(TempScenario);
+            isEditorMode = false;
+            TempScenario = null;
+        }
+    }
     public void ResetScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -66,6 +81,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
                     _instance = managerObject.AddComponent<DontDestroyOnLoadSettings>();
                 }
             }
+            
             return _instance;
         }
     }
@@ -106,6 +122,18 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
         // Call the method to load settings into the main game
        // LoadSettingsIntoMainGame();
 
+    }
+
+    public void ReturnToMainMenu()
+    {
+        StartCoroutine(ReturnToMainMenuCoroutine());
+    }
+
+    public IEnumerator ReturnToMainMenuCoroutine()
+    {
+        SceneManager.LoadScene("MainMenu");
+        yield return null;
+        CheckForEditorPreset();
     }
 
 }
