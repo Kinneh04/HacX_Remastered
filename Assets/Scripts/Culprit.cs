@@ -103,7 +103,8 @@ public class Culprit : MonoBehaviour
 
         foreach(Ball ball in allBalls)
         {
-            ball.trailRenderer.Clear();
+            //ball.trailRenderer.Clear();
+            ball.lineRenderer.positionCount = 0;
             ball.gameObject.SetActive(false);
         }
     }
@@ -192,6 +193,7 @@ public class Culprit : MonoBehaviour
         else
         {
             done = true;
+            //currentBall.RenderLine();
             CalculateProbability();
         }
     }
@@ -262,7 +264,7 @@ public class Culprit : MonoBehaviour
 
         return pointSeeCulprit && culpritSeePoint;
     }
-    private void Update()
+    private void FixedUpdate()
     {
         
        if(outline.OutlineColor.a > 0.1f)  outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
@@ -292,13 +294,14 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                if (currentBall.transform.position.y > windows[currentTarget].RicochetMarker.transform.position.y)
+                Vector3 offset = windows[currentTarget].RicochetMarker.transform.up * currentBall.r;
+                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y - offset.y)
                 {
 
                     launchAngleMax = angle;
 
                 }
-                else if (windows[currentTarget].RicochetMarker.transform.position.y > currentBall.transform.position.y)
+                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y - offset.y)
                 {
 
                     launchAngleMin = angle;
@@ -321,11 +324,11 @@ public class Culprit : MonoBehaviour
             }
             else// for just window
             {
-                if (currentBall.transform.position.y > windows[currentTarget].PrecisionMarker.transform.position.y)
+                if (currentBall.contactPoint.y > windows[currentTarget].PrecisionMarker.transform.position.y)
                 {
                     launchAngleMax = angle;
                 }
-                else if (currentBall.transform.position.y < windows[currentTarget].PrecisionMarker.transform.position.y)
+                else if (currentBall.contactPoint.y < windows[currentTarget].PrecisionMarker.transform.position.y)
                 {
                     launchAngleMin = angle;
                 }
