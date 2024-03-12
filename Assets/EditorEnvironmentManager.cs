@@ -33,6 +33,9 @@ public class EditorEnvironmentManager : MonoBehaviour
     public GameObject ModelViewScreen, ImportScreen;
     public TMP_InputField CustomPropNameInput;
     public EditorManager editorManager;
+
+    public GameObject DontDestroyOnLoad;
+    public int PropIndex = 0;
     
     public void ClearAllProps()
     {
