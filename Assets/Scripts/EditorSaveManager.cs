@@ -71,7 +71,7 @@ public class EditorSaveManager : MonoBehaviour
 
     public void LoadCurrentScenariosFromPlayerPrefs()
     {
-        CurrentlySavedScenarios = JsonConvert.DeserializeObject<List<Scenario>>(PlayerPrefs.GetString("SavedScenarios"));
+     //   CurrentlySavedScenarios = JsonConvert.DeserializeObject<List<Scenario>>(PlayerPrefs.GetString("SavedScenarios"));
     }
 
     public void CloseScenarioSettings()
