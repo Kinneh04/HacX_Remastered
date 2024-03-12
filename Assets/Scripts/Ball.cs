@@ -48,6 +48,7 @@ public class Ball : MonoBehaviour
     //debug purposes
     public bool collided = false;
     public bool canRico = false;
+    public bool rico = false;
     public string collidedName;
     public bool calculated = false;
     public bool toreset = false;
@@ -102,8 +103,10 @@ public class Ball : MonoBehaviour
         canRico = false;
         calculated = false;
         toreset = false;
+        rico = false;
         collidedName = " ";
         contactOffset = Vector3.zero;
+        lineRenderer.positionCount = 0;
         if (Go != null)
             Destroy(Go);
         if (targetWindowPrecision.RicochetMarker != null)
@@ -250,9 +253,10 @@ public class Ball : MonoBehaviour
             contactPoint = contact.point;
             contactOffset = contact.normal * r;
             contactPoint -= contactOffset;
+            //transform.position = contactPoint;
         }
 
-
+        points.Add(transform.position);
         RenderLine();
 
         if (other.transform.tag == "Roof") // if hit roof lower angle
@@ -262,26 +266,29 @@ public class Ball : MonoBehaviour
             return;
         }
 
-        //if (collided && canRico)
-        //    Debug.Break();
         if (targetWindowPrecision.RicochetMarker != null)
         {
-            // if hit ricochet point
-            //if (Vector3.Distance(contact.point, targetWindowPrecision.RicochetMarker.transform.position) > 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x)
-            if(!canRico)
-            {
-                // not within range
-                hitFirstPoint = false;
-                ResetBall(contact);
-                return;
-            }
-            else // within range
-            {
+            Vector3 balldir = targetWindowPrecision.RicochetMarker.transform.position - transform.position;
+            //Vector3 projectedDir = Vector3.Project(balldir, targetWindowPrecision.RicochetMarker.transform.right);
+            float isUnder = Vector3.Dot(balldir, -targetWindowPrecision.RicochetMarker.transform.right);
+
+            rico = Vector3.Distance(targetWindowPrecision.RicochetMarker.transform.position, transform.position) < 0.5f * targetWindowPrecision.RicochetMarker.transform.localScale.x;
+            if (rico && contact.normal == targetWindowPrecision.RicochetMarker.transform.right && isUnder >= 0)
+            { 
                 hitFirstPoint = true;
 
                 // apply reflection bounce
                 CalculateBounce(contact);
                 calculated = true;
+                return;
+
+             
+            }
+            else 
+            {
+                // not within range
+                hitFirstPoint = false;
+                ResetBall(contact);
                 return;
             }
         }
@@ -364,10 +371,9 @@ public class Ball : MonoBehaviour
 
         if (points.Count <= 0)
             return;
-        lineRenderer.positionCount = points.Count + 1;
+        lineRenderer.positionCount = points.Count;
 
         for (int i = 0; i < points.Count; i++)
             lineRenderer.SetPosition(i, points[i]);
-        lineRenderer.SetPosition(points.Count, contactPoint);
     }
 }

@@ -12,7 +12,8 @@ public class Ricochet : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        other.GetComponent<Ball>().canRico = true;
+        if(!other.GetComponent<Ball>().collided)
+            other.GetComponent<Ball>().canRico = true;
     }
 
     public void OnTriggerExit(Collider other)

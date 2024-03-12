@@ -294,14 +294,14 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                Vector3 offset = windows[currentTarget].RicochetMarker.transform.up * currentBall.r;
-                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y - offset.y)
+                Vector3 offset = windows[currentTarget].RicochetMarker.transform.right * currentBall.r;
+                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y + offset.y)
                 {
 
                     launchAngleMax = angle;
 
                 }
-                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y - offset.y)
+                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y + offset.y)
                 {
 
                     launchAngleMin = angle;
