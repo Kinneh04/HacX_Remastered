@@ -33,6 +33,9 @@ public class PostUIManager : MonoBehaviour
     public Transform WindowSelectionPrefabParent;
     // TODO: Assign these and instantiate them;
 
+    [Header("Answer")]
+    public TMP_Text AnswerText;
+
 
     public void OnClearOutliersButton()
     {
@@ -103,6 +106,10 @@ public class PostUIManager : MonoBehaviour
         ChangeAccLimitSlider.value = ChangeAccLimitSlider.minValue;
 
         InstantiateWindowToggles();
+
+        Culprit AnswerCulprit = mainGameManager.CulpritsDone[0];
+
+        AnswerText.text = $"Most likely culprit on Floor {AnswerCulprit.floor}, Column {AnswerCulprit.column}, with an accuracy of {AnswerCulprit.averageProbability.ToString("F2")}%";
     }
 
     public float returnCulpritMinAccuracy()
