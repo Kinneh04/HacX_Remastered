@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4542200601412980128}
   - component: {fileID: 8283729567528041560}
   - component: {fileID: 8685993368288811277}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lamp_Environmental
   m_TagString: EditorEnvironmentProp
   m_Icon: {fileID: 0}

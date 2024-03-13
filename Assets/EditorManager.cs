@@ -206,6 +206,7 @@ public class EditorManager : MonoBehaviour
         canSelect = true;
         isEnvironmentalMode = false;
         runtimeTransformGameObj.SetActive(false);
+        editorEnvironmentManager.CurrentlySelectedProp = null;
     }
 
     public void PlayDirectlyFromEditor()
@@ -410,9 +411,11 @@ public class EditorManager : MonoBehaviour
             }
             else if (hit.collider.CompareTag("EditorEnvironmentProp") && isEnvironmentalMode)
             {
+                editorEnvironmentManager.CurrentlySelectedProp = hit.collider.gameObject;
                 runtimeTransformHandle.target = hit.collider.transform;
-                
                 runtimeTransformGameObj.SetActive(true);
+                editorEnvironmentManager.EnvironmentScreen.SetActive(true);
+                MainButtonsUI.SetActive(false);
             }
         }
     }

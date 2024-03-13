@@ -30,12 +30,15 @@ public class EditorEnvironmentManager : MonoBehaviour
     [Header("CustomOBJ")]
     public GameObject model;
     public Transform ParentPlatform;
-    public GameObject ModelViewScreen, ImportScreen;
+    public GameObject ModelViewScreen, ImportScreen, CustomOBJScreen, EnvironmentScreen;
     public TMP_InputField CustomPropNameInput;
     public EditorManager editorManager;
 
     public GameObject DontDestroyOnLoad;
     public int PropIndex = 0;
+
+    public GameObject CurrentlySelectedProp;
+    public TMP_Text PropLocationText;
     
     public void ClearAllProps()
     {
@@ -44,6 +47,7 @@ public class EditorEnvironmentManager : MonoBehaviour
             DeleteTiedProp(GO.GetComponent<PropButtonPrefab>().TiedProp, GO, false);
         }
         InstantiatedPropButtons.Clear();
+
     }
 
     public void AddCustomPropToEditor()
@@ -127,7 +131,7 @@ public class EditorEnvironmentManager : MonoBehaviour
                     // Optionally, you can set other properties of the MeshCollider here
                 }
 
-                child.gameObject.layer = LayerMask.NameToLayer("CustomEditorProp");
+                child.gameObject.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
                
             }
         }
@@ -214,6 +218,8 @@ public class EditorEnvironmentManager : MonoBehaviour
         prefab.TiedProp.GetComponent<EnvironmentalPrefab>().outline.OutlineColor = originalColor;
         editorManager.runtimeTransformGameObj.SetActive(true);
         editorManager.runtimeTransformHandle.target = prefab.TiedProp.transform;
+        EnvironmentScreen.SetActive(true);
+        CurrentlySelectedProp = prefab.TiedProp;
     }
 
     public void OnClickAddCustomProp()
@@ -229,7 +235,7 @@ public class EditorEnvironmentManager : MonoBehaviour
             PopupUIManager.Instance.ShowPopup("Error!", "Enter a valid name for your custom prop!");
             return;
         }
-
+        PropIndex++;
         GameObject NewProp = Instantiate(model, EnvironmentSpawnPoint.transform.position, Quaternion.identity);
         GameObject NewPropButton = Instantiate(PropNamePrefab);
         NewPropButton.transform.SetParent(PropNamePrefabParent, false);
@@ -247,12 +253,14 @@ public class EditorEnvironmentManager : MonoBehaviour
         if (!EP)
         {
             EP = NewProp.AddComponent<EnvironmentalPrefab>();
+            EP.propIndex = -PropIndex;
             Outline O =  NewProp.AddComponent<Outline>();
             O.OutlineColor = Color.cyan;
             EP.outline = O;
         }
-        EP.propIndex = -1;
-        NewProp.transform.SetParent(EditorParentTransform);
+        NewProp.transform.SetParent(DontDestroyOnLoadSettings.Instance.transform);
+        CustomOBJScreen.SetActive(false);
+        editorManager.MainButtonsUI.SetActive(true);
     }
 
     public void SpawnEnvironmentProp(int itemIndex)
@@ -288,50 +296,55 @@ public class EditorEnvironmentManager : MonoBehaviour
 
     private void Update()
     {
-
-        if (Input.GetMouseButtonDown(0) && CurrentlyMovingObject == null)
+        if (CurrentlySelectedProp)
         {
-            // Create a ray from the mouse position
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            // Check if the ray hits something
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                // Check if the hit object has the tag "Window"
-                if (hit.collider.CompareTag("EditorEnvironmentProp"))
-                {
-                    OnPickupProp(hit.collider.gameObject);
-                }
-            }
+            PropLocationText.text = $"({CurrentlySelectedProp.transform.position.x.ToString("F1")}, {CurrentlySelectedProp.transform.position.y.ToString("F1")}, {CurrentlySelectedProp.transform.position.z.ToString("F1")})";
         }
-        if(Input.GetMouseButtonUp(0))
-        {
-            OnSetDownProp();
-        }
+        else PropLocationText.text = "(--,--,--)";
+    //    if (Input.GetMouseButtonDown(0) && CurrentlyMovingObject == null)
+    //    {
+    //        // Create a ray from the mouse position
+    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if(CurrentlyMovingObject)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //        // Check if the ray hits something
+    //        RaycastHit hit;
+    //        if (Physics.Raycast(ray, out hit))
+    //        {
+    //            // Check if the hit object has the tag "Window"
+    //            if (hit.collider.CompareTag("EditorEnvironmentProp"))
+    //            {
+    //                OnPickupProp(hit.collider.gameObject);
+    //            }
+    //        }
+    //    }
+    //    if(Input.GetMouseButtonUp(0))
+    //    {
+    //        OnSetDownProp();
+    //    }
 
-            // Check if the ray hits something on the "EditorFloor" layer
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, editorFloorLayer))
-            {
-                // Instantiate the object at the hit point
-                CurrentlyMovingObject.transform.position = hit.point;
-            }
+    //    if(CurrentlyMovingObject)
+    //    {
+    //        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                // Rotate the instantiated object by 45 degrees in the Y-axis
-                CurrentlyMovingObject.transform.Rotate(0f, 45f, 0f);
-            }
-        }
+    //        // Check if the ray hits something on the "EditorFloor" layer
+    //        RaycastHit hit;
+    //        if (Physics.Raycast(ray, out hit, Mathf.Infinity, editorFloorLayer))
+    //        {
+    //            // Instantiate the object at the hit point
+    //            CurrentlyMovingObject.transform.position = hit.point;
+    //        }
+
+    //        if (Input.GetKeyDown(KeyCode.R))
+    //        {
+    //            // Rotate the instantiated object by 45 degrees in the Y-axis
+    //            CurrentlyMovingObject.transform.Rotate(0f, 45f, 0f);
+    //        }
+    //    }
     }
 
     public void DeleteTiedProp(GameObject GO, GameObject self, bool removeFromList = true)
     {
+        if (CurrentlySelectedProp == GO) CurrentlySelectedProp = null;
         editorManager.runtimeTransformGameObj.SetActive(false);
         Destroy(GO);
         if(removeFromList)

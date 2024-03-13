@@ -17106,6 +17106,7 @@ MonoBehaviour:
   ModularHDBTopPrefab: {fileID: 1042981208256203085, guid: d98f663bfec90644d9ca781e4b373551, type: 3}
   HDBFloorPivot: {fileID: 2054990483}
   floorHeightAdjustment: 3.61
+  OriginalHDBFloorPivot: {x: 0, y: 0, z: 0}
   InstantiatedFloors: []
   instantiateOnStart: 0
 --- !u!1 &950708922
@@ -19968,7 +19969,7 @@ MonoBehaviour:
     transformable: 1
     RenderedLayers:
       serializedVersion: 2
-      m_Bits: 383
+      m_Bits: 895
   - vCam: {fileID: 752577820}
     virtualCamera: {fileID: 1178186007}
     CamName: 'Culprit : Ortho'
@@ -19976,7 +19977,7 @@ MonoBehaviour:
     transformable: 1
     RenderedLayers:
       serializedVersion: 2
-      m_Bits: 255
+      m_Bits: 767
   - vCam: {fileID: 542497659}
     virtualCamera: {fileID: 643816850}
     CamName: 'Left : Persp'
@@ -20970,6 +20971,7 @@ MonoBehaviour:
   ModularHDBTopPrefab: {fileID: 1042981208256203085, guid: 95428b5575402794fb8497506d5b63bc, type: 3}
   HDBFloorPivot: {fileID: 54214157}
   floorHeightAdjustment: 3.61
+  OriginalHDBFloorPivot: {x: 0, y: 0, z: 0}
   InstantiatedFloors: []
   instantiateOnStart: 0
 --- !u!4 &1160119625
@@ -34246,6 +34248,7 @@ MonoBehaviour:
   ScenarioDetails: {fileID: 1626240299}
   culpritsManager: {fileID: 1048445635}
   BuildingScenarioScreen: {fileID: 867167046}
+  CustomEnvironmentThings: []
 --- !u!1 &2063522160
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,8 +18,32 @@ public class ScenarioBuilder : MonoBehaviour
     public CulpritsManager culpritsManager;
     public GameObject BuildingScenarioScreen;
 
+    public List<GameObject> CustomEnvironmentThings = new();
+
+    public void FetchCustomThings()
+    {
+        int childCount = DontDestroyOnLoadSettings.Instance.transform.childCount;
+        GameObject[] children = new GameObject[childCount];
+
+        for(int i = 0; i < childCount; i++)
+        {
+            CustomEnvironmentThings.Add(DontDestroyOnLoadSettings.Instance.transform.GetChild(i).gameObject);
+        }
+    }
+
+    public GameObject ReturnCustomPropWithIndex(int index)
+    {
+        foreach(GameObject GO in CustomEnvironmentThings)
+        {
+            EnvironmentalPrefab EP = GO.GetComponent<EnvironmentalPrefab>();
+            if (EP.propIndex == index) return GO;
+        }
+        return null;
+    }
+
     public IEnumerator buildSCenarioCoroutine()
     {
+        FetchCustomThings();
         for (int i = 0; i < ParsedBuildingDatablock.Count; i++)
         {
            //Change floors of buildings
@@ -50,7 +74,18 @@ public class ScenarioBuilder : MonoBehaviour
             for (int i = 0; i < ParsedEnvDatablock.Count; i++)
             {
                 // Add environmentals
-                GameObject GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
+                int index =ParsedEnvDatablock[i].savedItemIndex;
+                GameObject GO = null;
+                if (index < 0)
+                {
+                    // Prop is a custom env;
+                    GO = ReturnCustomPropWithIndex(index);
+
+                }
+                else
+                {
+                    GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
+                }
                 GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosZ, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosY);
                 GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
                 GO.transform.localScale = new Vector3(ParsedEnvDatablock[i].ScaleX, ParsedEnvDatablock[i].ScaleY, ParsedEnvDatablock[i].ScaleZ);
