@@ -27,10 +27,12 @@ public class EditorManager : MonoBehaviour
 
     [Header("EditorUIMenu")]
     public GameObject EditorUI, BuildingDetailsUI, MainButtonsUI;
-    public GameObject MainMenuUI;
+    public GameObject MainMenuUI, ObjectPool;
     public TMP_Text TitleMenu;
     public Slider NumFloorSlider, WidthSlider, AngleSlider;
     public TMP_Text NumFloorSliderValue, WidthValue, AngleValue;
+
+    
 
     [Header("LastSavedDetails")]
     public int SavedFloors, SavedWidthInMetres, SavedAngleInDegrees;
@@ -353,6 +355,7 @@ public class EditorManager : MonoBehaviour
         EditorUI.SetActive(true);
         MainMenuObjects.SetActive(false);
         MainMenuUI.SetActive(false);
+        ObjectPool.SetActive(false);
     }
     public void ExitFromEditorMenu()
     {
@@ -366,6 +369,7 @@ public class EditorManager : MonoBehaviour
         MainMenuObjects.SetActive(true);
         EditorObjects.SetActive(false);
         runtimeTransformGameObj.SetActive(false);
+        ObjectPool.SetActive(true);
 
     }
     public void ToggleEditMode(bool t)
