@@ -61,7 +61,7 @@ public class ScenarioBuilder : MonoBehaviour
         {
             //Change transforms of buildings
 
-            Vector3 OriginalBuildingPosition = new Vector3(ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
+            Vector3 OriginalBuildingPosition = new Vector3(-ParsedBuildingDatablock[i].PosZ, ParsedBuildingDatablock[i].PosY - 0.7f, ParsedBuildingDatablock[i].PosX);
             ParsedBuildingDatablock[i].RotY += 270;
            // if (ParsedBuildingDatablock[i].RotY < 0) ParsedBuildingDatablock[i].RotY *= -1;
             Quaternion newRotation = Quaternion.Euler(ParsedBuildingDatablock[i].RotZ, ParsedBuildingDatablock[i].RotY, ParsedBuildingDatablock[i].RotX);
@@ -76,17 +76,17 @@ public class ScenarioBuilder : MonoBehaviour
                 // Add environmentals
                 int index =ParsedEnvDatablock[i].savedItemIndex;
                 GameObject GO = null;
-                if (index < 0)
-                {
+                //if (index < 0)
+                //{
                     // Prop is a custom env;
                     GO = ReturnCustomPropWithIndex(index);
 
-                }
-                else
-                {
-                    GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
-                }
-                GO.transform.position = new Vector3(ParsedEnvDatablock[i].PosZ, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosY);
+                //}
+                //else
+                //{
+                //    GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[ParsedEnvDatablock[i].savedItemIndex]);
+                //}
+                GO.transform.position = new Vector3(-ParsedEnvDatablock[i].PosZ, ParsedEnvDatablock[i].PosY, ParsedEnvDatablock[i].PosX);
                 GO.transform.rotation = Quaternion.Euler(new Vector3(ParsedEnvDatablock[i].RotX, ParsedEnvDatablock[i].RotY, ParsedEnvDatablock[i].RotZ));
                 GO.transform.localScale = new Vector3(ParsedEnvDatablock[i].ScaleX, ParsedEnvDatablock[i].ScaleY, ParsedEnvDatablock[i].ScaleZ);
             }

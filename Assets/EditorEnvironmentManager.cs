@@ -139,6 +139,7 @@ public class EditorEnvironmentManager : MonoBehaviour
         BoxCollider BC = model.AddComponent<BoxCollider>();
         BC.size = new Vector3(2, 2, 2);
         BC.isTrigger = true;
+        model.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
         model.tag = "EditorEnvironmentProp";
     }
 
@@ -227,9 +228,34 @@ public class EditorEnvironmentManager : MonoBehaviour
         SpawnCustomEnvironmentProp(model);
     }
 
-    public void SpawnCustomEnvironmentProp(GameObject model)
+    public void AddEnvironmentProp(GameObject NewProp)
     {
-        if(string.IsNullOrEmpty(CustomPropNameInput.text))
+        GameObject NewPropButton = Instantiate(PropNamePrefab);
+        NewPropButton.transform.SetParent(PropNamePrefabParent, false);
+        PropButtonPrefab script = NewPropButton.GetComponent<PropButtonPrefab>();
+        NewPropButton.transform.SetAsFirstSibling();
+        script.propNameText.text = NewProp.name;
+        script.TiedProp = NewProp;
+
+        script.propHelperButton.onClick.AddListener(delegate { OnClickHelperButton(script); });
+        script.propDeleteButton.onClick.AddListener(delegate { DeleteTiedProp(NewProp, NewPropButton); });
+        InstantiatedPropButtons.Add(NewPropButton);
+        InstantiatedProps.Add(NewProp);
+        EnvironmentalPrefab EP = NewProp.GetComponent<EnvironmentalPrefab>();
+        if (!EP)
+        {
+            EP = NewProp.AddComponent<EnvironmentalPrefab>();
+            EP.propIndex = PropIndex;
+            Outline O = NewProp.AddComponent<Outline>();
+            O.OutlineColor = Color.cyan;
+            EP.outline = O;
+        }
+        NewProp.transform.SetParent(DontDestroyOnLoadSettings.Instance.transform);
+    }
+
+    public void SpawnCustomEnvironmentProp(GameObject model, bool prefab = false)
+    {
+        if(string.IsNullOrEmpty(CustomPropNameInput.text) && !prefab)
         {
 
             PopupUIManager.Instance.ShowPopup("Error!", "Enter a valid name for your custom prop!");
@@ -242,7 +268,8 @@ public class EditorEnvironmentManager : MonoBehaviour
         PropButtonPrefab script = NewPropButton.GetComponent<PropButtonPrefab>();
         NewPropButton.transform.SetAsFirstSibling();
 
-        script.propNameText.text = CustomPropNameInput.text;
+        if(prefab) script.propNameText.text = model.name;
+        else script.propNameText.text = CustomPropNameInput.text;
         script.TiedProp = NewProp;
 
         script.propHelperButton.onClick.AddListener(delegate { OnClickHelperButton(script); });
@@ -253,7 +280,7 @@ public class EditorEnvironmentManager : MonoBehaviour
         if (!EP)
         {
             EP = NewProp.AddComponent<EnvironmentalPrefab>();
-            EP.propIndex = -PropIndex;
+            EP.propIndex = PropIndex;
             Outline O =  NewProp.AddComponent<Outline>();
             O.OutlineColor = Color.cyan;
             EP.outline = O;
@@ -265,22 +292,27 @@ public class EditorEnvironmentManager : MonoBehaviour
 
     public void SpawnEnvironmentProp(int itemIndex)
     {
-        GameObject NewProp = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex], EnvironmentSpawnPoint.transform.position, Quaternion.identity);
-        GameObject NewPropButton = Instantiate(PropNamePrefab);
-        NewPropButton.transform.SetParent(PropNamePrefabParent,false);
-        PropButtonPrefab script = NewPropButton.GetComponent<PropButtonPrefab>();
-        NewPropButton.transform.SetAsFirstSibling();
-        
-        script.propNameText.text = DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex].name;
-        script.TiedProp = NewProp;
-      
-        script.propHelperButton.onClick.AddListener(delegate { OnClickHelperButton(script); });
-        script.propDeleteButton.onClick.AddListener(delegate { DeleteTiedProp(NewProp, NewPropButton); });
-        InstantiatedPropButtons.Add(NewPropButton);
-        InstantiatedProps.Add(NewProp);
 
-        NewProp.GetComponent<EnvironmentalPrefab>().propIndex = itemIndex;
-        NewProp.transform.SetParent(EditorParentTransform);
+        SpawnCustomEnvironmentProp(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex], true);
+        
+        // Testing new spawning method for keeping environment prefabs between scenes.
+
+        //GameObject NewProp = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex], EnvironmentSpawnPoint.transform.position, Quaternion.identity);
+        //GameObject NewPropButton = Instantiate(PropNamePrefab);
+        //NewPropButton.transform.SetParent(PropNamePrefabParent,false);
+        //PropButtonPrefab script = NewPropButton.GetComponent<PropButtonPrefab>();
+        //NewPropButton.transform.SetAsFirstSibling();
+        
+        //script.propNameText.text = DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[itemIndex].name;
+        //script.TiedProp = NewProp;
+      
+        //script.propHelperButton.onClick.AddListener(delegate { OnClickHelperButton(script); });
+        //script.propDeleteButton.onClick.AddListener(delegate { DeleteTiedProp(NewProp, NewPropButton); });
+        //InstantiatedPropButtons.Add(NewPropButton);
+        //InstantiatedProps.Add(NewProp);
+
+        //NewProp.GetComponent<EnvironmentalPrefab>().propIndex = itemIndex;
+        //NewProp.transform.SetParent(EditorParentTransform);
 
     }
 

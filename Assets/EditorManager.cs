@@ -233,6 +233,7 @@ public class EditorManager : MonoBehaviour
             rot += 180;
 
             CB.GetComponent<ModularHDB>().RefreshFloors();
+            editorEnvironmentManager.ClearAllProps();
         }
      
     }

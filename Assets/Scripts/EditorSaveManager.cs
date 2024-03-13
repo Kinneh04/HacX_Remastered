@@ -32,7 +32,19 @@ public class EditorSaveManager : MonoBehaviour
     [TextArea(5,5)]
     public string loadedJSONFromFile = "";
     public GameObject ImportingCloseButton, importingFeedbackGO;
+    public EditorEnvironmentManager environmentManager;
 
+    public List<GameObject> CustomEnvironmentThings = new();
+    public void FetchCustomThings()
+    {
+        int childCount = DontDestroyOnLoadSettings.Instance.transform.childCount;
+        GameObject[] children = new GameObject[childCount];
+
+        for (int i = 0; i < childCount; i++)
+        {
+            CustomEnvironmentThings.Add(DontDestroyOnLoadSettings.Instance.transform.GetChild(i).gameObject);
+        }
+    }
     public void DeleteCurrentlyselectedScenario()
     {
         CurrentlySavedScenarios.Remove(SelectedScenario);
@@ -150,7 +162,15 @@ public class EditorSaveManager : MonoBehaviour
         }
     }
 
-
+    public GameObject ReturnCustomPropWithIndex(int index)
+    {
+        foreach (GameObject GO in CustomEnvironmentThings)
+        {
+            EnvironmentalPrefab EP = GO.GetComponent<EnvironmentalPrefab>();
+            if (EP.propIndex == index) return GO;
+        }
+        return null;
+    }
     public void LoadCurrentlySelectedScene()
     {
 
@@ -163,12 +183,19 @@ public class EditorSaveManager : MonoBehaviour
     {
 
         //Load selected scene
-
+        FetchCustomThings();
         List<SavableBuildingDetails> BuildingDatablock = new();
-
+        List<SavableEnvironmentDetails> EnvironmentDatablock = new();
         if (S == null)
+        {
             BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SelectedScenario.JsonSave);
-        else BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(S.JsonSave);
+            EnvironmentDatablock = JsonConvert.DeserializeObject<List<SavableEnvironmentDetails>>(SelectedScenario.EnvironmentJSON);
+        }
+        else
+        {
+            BuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(S.JsonSave);
+            EnvironmentDatablock = JsonConvert.DeserializeObject<List<SavableEnvironmentDetails>>(S.EnvironmentJSON);
+        }
         for (int i = 0; i < BuildingDatablock.Count; i++)
         {
             
@@ -179,9 +206,36 @@ public class EditorSaveManager : MonoBehaviour
 
             editorManager.RefreshCurrentBuildingFloors(i);
         }
+        for (int i = 0; i < EnvironmentDatablock.Count; i++)
+        {
+            // Add environmentals
+            int index = EnvironmentDatablock[i].savedItemIndex;
+            GameObject GO = null;
+            if (index < 0)
+            {
+                // Prop is a custom env;
+                GO = ReturnCustomPropWithIndex(index);
 
-      //  editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);
+            }
+            else
+            {
+                GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[EnvironmentDatablock[i].savedItemIndex]);
+            }
+            environmentManager.AddEnvironmentProp(GO);
+            GO.transform.position = new Vector3(EnvironmentDatablock[i].PosX, EnvironmentDatablock[i].PosY, EnvironmentDatablock[i].PosZ);
+            GO.transform.rotation = Quaternion.Euler(new Vector3(EnvironmentDatablock[i].RotX, EnvironmentDatablock[i].RotY, EnvironmentDatablock[i].RotZ));
+            GO.transform.localScale = new Vector3(EnvironmentDatablock[i].ScaleX, EnvironmentDatablock[i].ScaleY, EnvironmentDatablock[i].ScaleZ);
 
+            GO.transform.SetParent(DontDestroyOnLoadSettings.Instance.transform);
+        }
+
+        //  editorManager.OverrideBuildingDistance(SelectedScenario.DistanceBetweenBuildings);
+
+
+        foreach (GameObject GO in CustomEnvironmentThings)
+        {
+            Destroy(GO);
+        }
         CloseScenarioSettings();
         ScenarioListUI.SetActive(false);
     }
