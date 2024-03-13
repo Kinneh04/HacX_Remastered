@@ -150,7 +150,14 @@ public class EditorSaveManager : MonoBehaviour
         }
     }
 
-    
+
+    public void LoadCurrentlySelectedScene()
+    {
+
+        //Load selected scene
+
+        LoadCurrentScene();
+    }
 
     public void LoadCurrentScene(Scenario S = null)
     {

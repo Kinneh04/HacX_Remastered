@@ -423,6 +423,7 @@ public class EditorManager : MonoBehaviour
     public void OnChangeSelectedBuildingFloors()
     {
         CurrentlySelectedBuilding.GetComponent<ModularHDB>().ChangeFloors((int)NumFloorSlider.value);
+        CurrentlySelectedBuilding.numFloors = (int)NumFloorSlider.value;
         NumFloorSliderValue.text = NumFloorSlider.value.ToString();
         SavedFloors = (int)NumFloorSlider.value;
     }

@@ -9,14 +9,19 @@ public class ModularHDB : MonoBehaviour
     public GameObject ModularHDBTopPrefab;
     public Transform HDBFloorPivot;
     public float floorHeightAdjustment = 3.61f;
-    Vector3 OriginalHDBFloorPivot;
+    public Vector3 OriginalHDBFloorPivot;
     public List<GameObject> InstantiatedFloors = new();
 
     public bool instantiateOnStart = true;
 
-    private void Start()
+    private void Awake()
     {
         OriginalHDBFloorPivot = HDBFloorPivot.transform.position;
+    }
+
+    private void Start()
+    {
+      //  OriginalHDBFloorPivot = HDBFloorPivot.transform.position;
 
         if(instantiateOnStart)
         ChangeFloors(numfloors);
