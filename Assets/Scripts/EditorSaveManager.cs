@@ -211,19 +211,13 @@ public class EditorSaveManager : MonoBehaviour
             // Add environmentals
             int index = EnvironmentDatablock[i].savedItemIndex;
             GameObject GO = null;
-            if (index < 0)
-            {
                 // Prop is a custom env;
                 GO = ReturnCustomPropWithIndex(index);
-
-            }
-            else
-            {
-                GO = Instantiate(DontDestroyOnLoadSettings.Instance.EnvironmentalPrefabs[EnvironmentDatablock[i].savedItemIndex]);
-            }
+            GO = Instantiate(GO, GO.transform.position, Quaternion.identity);
             environmentManager.AddEnvironmentProp(GO);
             GO.transform.position = new Vector3(EnvironmentDatablock[i].PosX, EnvironmentDatablock[i].PosY, EnvironmentDatablock[i].PosZ);
             GO.transform.rotation = Quaternion.Euler(new Vector3(EnvironmentDatablock[i].RotX, EnvironmentDatablock[i].RotY, EnvironmentDatablock[i].RotZ));
+            GO.name = GO.name.Replace("(Clone)", "");
             GO.transform.localScale = new Vector3(EnvironmentDatablock[i].ScaleX, EnvironmentDatablock[i].ScaleY, EnvironmentDatablock[i].ScaleZ);
 
             GO.transform.SetParent(DontDestroyOnLoadSettings.Instance.transform);
