@@ -39,7 +39,8 @@ public class EditorEnvironmentManager : MonoBehaviour
 
     public GameObject CurrentlySelectedProp;
     public TMP_Text PropLocationText;
-    
+
+    private MemoryStream SavedMTLStream;
     public void ClearAllProps()
     {
         foreach(GameObject GO in InstantiatedPropButtons)
@@ -66,6 +67,22 @@ public class EditorEnvironmentManager : MonoBehaviour
         });
     }
 
+    IEnumerator FindTexture(string originalPath)
+    {
+        string MTLPath = originalPath.Replace(".obj", ".mtl");
+        UnityWebRequest www = UnityWebRequest.Get(MTLPath);
+        yield return www.SendWebRequest();
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log("WWW ERROR: " + www.error);
+
+            PopupUIManager.Instance.ShowPopup("Error!", www.error);
+        }
+        else
+        { SavedMTLStream = new MemoryStream(Encoding.UTF8.GetBytes(www.downloadHandler.text));
+        }
+    }
+
     IEnumerator OutputModel(string path)
     {
 
@@ -89,11 +106,12 @@ public class EditorEnvironmentManager : MonoBehaviour
 
             //Load OBJ Model
             MemoryStream textStream = new MemoryStream(Encoding.UTF8.GetBytes(www.downloadHandler.text));
+            yield return StartCoroutine(FindTexture(path));
             if (model != null)
             {
                 Destroy(model);
             }
-            model = new OBJLoader().Load(textStream);
+            model = new OBJLoader().Load(textStream, SavedMTLStream);
             model.transform.localScale = new Vector3(-1, 1, 1); // set the position of parent model. Reverse X to show properly 
             FitOnScreen();
             DoublicateFaces();
@@ -123,21 +141,15 @@ public class EditorEnvironmentManager : MonoBehaviour
             if (meshRenderer != null)
             {
                 // Add a MeshCollider to the child
-                MeshCollider meshCollider = child.gameObject.GetComponent<MeshCollider>();
-                if (meshCollider == null)
-                {
-                    meshCollider = child.gameObject.AddComponent<MeshCollider>();
-                    meshCollider.convex = true;
-                    // Optionally, you can set other properties of the MeshCollider here
-                }
+                BoxCollider meshCollider = child.gameObject.GetComponent<BoxCollider>();
 
                 child.gameObject.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
                
             }
         }
 
-        BoxCollider BC = model.AddComponent<BoxCollider>();
-        BC.size = new Vector3(2, 2, 2);
+        MeshCollider BC = model.AddComponent<MeshCollider>();
+        BC.sharedMesh = model.GetComponent<MeshFilter>().mesh;
         BC.isTrigger = true;
         model.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
         model.tag = "EditorEnvironmentProp";

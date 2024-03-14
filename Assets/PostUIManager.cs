@@ -85,6 +85,17 @@ public class PostUIManager : MonoBehaviour
         else WindowIndexesSelected.Remove(windowIndex);
         RecalculateWindows();
 
+        foreach(Culprit CB in culpritsManager.SpawnedCulprits)
+        {
+            foreach(Ball B in CB.allBalls)
+            {
+                if(B.targetWindow == WindowsManager.Instance.SelectedWindows[windowIndex])
+                {
+                    B.lineRenderer.enabled = T.isOn;
+                }
+            }
+        }
+
         ChangeAccLimitSlider.maxValue = returnCulpritMaxAccuracy();
         ChangeAccLimitSlider.minValue = returnCulpritMinAccuracy();
     }
