@@ -302,7 +302,7 @@ public class Culprit : MonoBehaviour
                 {
                     launchAngleMin = angle;
                 }
-                else if (currentBall.contactPoint.y == windows[currentTarget].RicochetMarker.transform.position.y)
+                else
                 {
                     if (currentBall.currDist > currentBall.initDist)
                     {

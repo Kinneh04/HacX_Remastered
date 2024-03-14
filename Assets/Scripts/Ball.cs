@@ -29,13 +29,13 @@ public class Ball : MonoBehaviour
     public LineRenderer lineRenderer;
     public List<Vector3> points;
 
-    public bool hitFirstPoint = false;
+
 
     public float initDist = 0;
     public float currDist = 0;
     Vector2 culpritxz = Vector2.zero;
     Vector2 ricochetxz = Vector2.zero;
-    bool stop = false;
+
     RaycastHit contact;
     public bool forceLower = false;
     [Header("CalcProbability")]
@@ -45,29 +45,33 @@ public class Ball : MonoBehaviour
     public float impactForce = 0f;
     public float pressureApplied = 0f;
 
-    //debug purposes
-    public bool collided = false;
-    public bool canRico = false;
+    [Header("Ricochet stuff")]
+    public bool hitFirstPoint = false;
     public bool rico = false;
-    public string collidedName;
-    public bool calculated = false;
-    public bool toreset = false;
-    public bool checkDist = false;
-    public Vector3 prevPos;
+
+    public Vector3 ricoNormal;
+    public Vector3 ricoPoint;
     public Plane ricochetPlane;
+    public Vector3 intersectionPoint;
+
+    [Header("Collision stuff")]
     public Vector3 contactPoint;
     public Vector3 contactOffset;
-    public Vector3 ricochetNormal;
-    public Vector3 intersectionPoint;
+
+    public bool collided = false;
+    public bool calculated = false;
+    public bool toreset = false;
+
+    public Vector3 prevPos;
+
     public LayerMask layerMask;
-    public Vector3 ricoPoint;
+
     Culprit parentShooter;
     void Awake()
     {
         rbody = GetComponent<Rigidbody>();
-        //trailRenderer = GetComponent<TrailRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.positionCount = 0;
+
         parentShooter = transform.parent.GetComponent<Culprit>();
 
         isLaunched = false;
@@ -90,6 +94,8 @@ public class Ball : MonoBehaviour
         force = rbody.mass * initialVel;
 
         rbody.isKinematic = true;
+
+        lineRenderer.positionCount = 0;
     }
 
     public void NewVel(int _vel)
@@ -102,20 +108,20 @@ public class Ball : MonoBehaviour
     {
         points.Clear();
         prevPos = Vector3.zero;
-        contactPoint = Vector3.zero;
-        intersectionPoint = Vector3.zero;
-        ricochetNormal = Vector3.zero;
-        ricoPoint = Vector3.zero;
-        collided = false;
-        canRico = false;
-        calculated = false;
-        toreset = false;
+
         rico = false;
-        collidedName = " ";
+        toreset = false;
+        ricoNormal = Vector3.zero;
+        ricoPoint = Vector3.zero;
+
+        collided = false;
+        contactPoint = Vector3.zero;
         contactOffset = Vector3.zero;
+        intersectionPoint = Vector3.zero;
+        calculated = false;
+
         lineRenderer.positionCount = 0;
-        if (Go != null)
-            Destroy(Go);
+
         if (targetWindowPrecision.RicochetMarker != null)
         {
             culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
@@ -123,21 +129,22 @@ public class Ball : MonoBehaviour
             initDist = Vector2.Distance(culpritxz, ricochetxz);
             
             Vector3 planeNormal = -parentShooter.ShootPosition.forward;
-            Vector3 planePoint = targetWindowPrecision.RicochetMarker.transform.position /*+ (parentShooter.ShootPosition.forward * targetWindowPrecision.RicochetMarker.transform.localScale.x * 0.4f)*/;
+            Vector3 planePoint = targetWindowPrecision.RicochetMarker.transform.position;
             ricochetPlane = new Plane(planeNormal, planePoint);
         }
-        collided = false;
+
         forceLower = false;
-        stop = false;
+
         GameObject target = PreciseTarget.WindowGO;
         targetWindowPrecision = PreciseTarget;
         transform.position = parentShooter.ShootPosition.position;
-        //trailRenderer.Clear();
+
         rbody.isKinematic = false;
         hitFirstPoint = false;
         isLaunched = true;
         targetWindow = target;
         this.target = targetIndex;
+
         // Assuming that 'transform.forward' represents the direction the ball is facing.
         Vector3 facingDirection = parentShooter.ShootPosition.forward;
 
@@ -154,7 +161,6 @@ public class Ball : MonoBehaviour
     {
         if (!IsGrounded() && !rbody.isKinematic)
         {
-            // Debug.Log(rbody.velocity.magnitude);
             SimulateInRealTime();
             vel = rbody.velocity;
 
@@ -186,16 +192,15 @@ public class Ball : MonoBehaviour
     {
         if (rbody.velocity.magnitude == 0)
             return false;
-        float distance;
 
         Vector3 movement = transform.position - prevPos;
 
-        if (ricochetPlane.Raycast(new(prevPos, movement), out distance))
+        if (ricochetPlane.Raycast(new(prevPos, movement), out float distance))
         {
             Vector3 intersectionPoint = prevPos + movement.normalized * distance;
 
-            rbody.isKinematic = true;
-            parentShooter.shootNext = true;
+            //rbody.isKinematic = true;
+            //parentShooter.shootNext = true;
 
             contactPoint = intersectionPoint;
             //transform.position = contactPoint;
@@ -212,6 +217,8 @@ public class Ball : MonoBehaviour
 
     bool CheckCollision()
     {
+        if (rbody.isKinematic)
+            return false;
         // Calculate projected position one fixed frame ahead
         Vector3 nextPosition = transform.position + rbody.velocity.normalized * rbody.velocity.magnitude * Time.fixedDeltaTime;
         
@@ -245,7 +252,6 @@ public class Ball : MonoBehaviour
     }
     void HandleCollision(RaycastHit other)
     {
-        collidedName = other.transform.gameObject.name;
         contact = other;
         
         CheckIfHitRoof(other);
@@ -268,13 +274,13 @@ public class Ball : MonoBehaviour
             {
                 hitFirstPoint = true;
                 toreset = false;
-                ricochetNormal = contact.normal;
+                ricoNormal = contact.normal;
                 ricoPoint = contactPoint;
+
                 // apply reflection bounce
                 CalculateBounce(contact);
 
-                calculated = true;
-                contactPoint = contact.point;
+                //contactPoint = contact.point;
                 points.Add(transform.position);
                 RenderLine();
 
@@ -285,10 +291,10 @@ public class Ball : MonoBehaviour
                 hitFirstPoint = false;
 
                 ResetBall();
+                currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
 
                 points.Add(transform.position);
                 RenderLine();
-                currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
 
                 return;
             }
