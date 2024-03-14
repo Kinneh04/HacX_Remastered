@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Roof: {fileID: 1042981210242549235}
+  windowAreas: []
 --- !u!1 &1042981208265664718
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +643,7 @@ GameObject:
   - component: {fileID: 1042981208365554558}
   m_Layer: 7
   m_Name: HDB_Grey_Floor
-  m_TagString: Untagged
+  m_TagString: Roof
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
