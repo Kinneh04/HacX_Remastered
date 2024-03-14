@@ -294,35 +294,30 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                Vector3 offset = windows[currentTarget].RicochetMarker.transform.right * currentBall.r;
-                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y + offset.y)
+                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y + currentBall.contactOffset.y)
                 {
-
                     launchAngleMax = angle;
-
                 }
-                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y + offset.y)
+                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y + currentBall.contactOffset.y)
                 {
-
                     launchAngleMin = angle;
                 }
-                else
+                else if (currentBall.contactPoint.y == windows[currentTarget].RicochetMarker.transform.position.y)
                 {
-                    if (currentBall.currDist < currentBall.initDist)
-                    {
-                        launchAngleMin = angle;
-                    }
-                    else if (currentBall.currDist > currentBall.initDist)
+                    if (currentBall.currDist > currentBall.initDist)
                     {
                         launchAngleMax = angle;
                     }
-                    //else
-                    //{
-                    //    launchAngleMax = angle;
-                    //}
+                    else if (currentBall.currDist < currentBall.initDist)
+                    {
+                        launchAngleMin = angle;
+                    }
                 }
+               
+                
+                
             }
-            else// for just window
+            else if (windows[currentTarget].RicochetMarker == null)
             {
                 if (currentBall.contactPoint.y > windows[currentTarget].PrecisionMarker.transform.position.y)
                 {

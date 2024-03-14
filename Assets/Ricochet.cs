@@ -10,9 +10,9 @@ public class Ricochet : MonoBehaviour
         
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerStay(Collider other)
     {
-        if(!other.GetComponent<Ball>().collided)
+        //if(!other.GetComponent<Ball>().collided)
             other.GetComponent<Ball>().canRico = true;
     }
 

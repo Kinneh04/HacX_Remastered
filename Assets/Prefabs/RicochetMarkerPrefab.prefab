@@ -12,8 +12,7 @@ GameObject:
   - component: {fileID: 2651076467522473977}
   - component: {fileID: 7695458464562442247}
   - component: {fileID: 2410959985872013648}
-  - component: {fileID: 7531282844455823276}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RicochetMarkerPrefab
   m_TagString: Richochet
   m_Icon: {fileID: 0}
@@ -63,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e2ee3fa31b983c4481fcc107b57d961, type: 2}
+  - {fileID: 2100000, guid: 26820d7b6ba79df4190a885b70f6563f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,15 +97,3 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7531282844455823276
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2702159495858541917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af3e4243971289941980e8278e014647, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
