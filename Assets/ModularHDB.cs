@@ -11,8 +11,12 @@ public class ModularHDB : MonoBehaviour
     public float floorHeightAdjustment = 3.61f;
     public Vector3 OriginalHDBFloorPivot;
     public List<GameObject> InstantiatedFloors = new();
+    [Range(4, 15)]
+    public int NumWindowsPerFloor = 7;
 
     public bool instantiateOnStart = true;
+
+    public List<WindowSpawnArea> WindowsSplits = new();
 
     private void Awake()
     {
@@ -39,6 +43,7 @@ public class ModularHDB : MonoBehaviour
         {
             Destroy(GO);
         }
+        InstantiatedFloors.Clear();
 
         HDBFloorPivot.position = new Vector3(HDBFloorPivot.position.x, OriginalHDBFloorPivot.y, HDBFloorPivot.position.z);
 
@@ -52,11 +57,40 @@ public class ModularHDB : MonoBehaviour
             CurrentFLoorPivotPosition.y += floorHeightAdjustment;
             InstantiatedFloors.Add(ModFloor);
             HDBFloorPivot.position = CurrentFLoorPivotPosition;
-            if(i == numfloors - 1)
+            HDBFloor floor = ModFloor.GetComponent<HDBFloor>();
+            if (i == numfloors - 1)
             {
-                ModFloor.GetComponent<HDBFloor>().Roof.SetActive(true);
+                floor.Roof.SetActive(true);
+            }
+            foreach (WindowSpawnArea WSA in floor.windowAreas)
+            {
+                WSA.ChangeWindowCount(NumWindowsPerFloor);
             }
         }
+
+        foreach(WindowSpawnArea WSA in WindowsSplits)
+        {
+            WSA.ChangeWindowCount(NumWindowsPerFloor);
+        }
     }
-   
+
+    public void RefreshAllWindowCount(int newFloor)
+    {
+        numfloors = newFloor;
+        foreach (GameObject GO in InstantiatedFloors)
+        {
+            foreach(WindowSpawnArea WSA in GO.GetComponent<HDBFloor>().windowAreas)
+            {
+                WSA.ChangeWindowCount(newFloor);
+            }
+
+           
+        }
+
+        foreach (WindowSpawnArea WSA in WindowsSplits)
+        {
+            WSA.ChangeWindowCount(newFloor);
+        }
+    }
+
 }
