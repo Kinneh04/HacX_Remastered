@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2651076467522473977}
   - component: {fileID: 7695458464562442247}
   - component: {fileID: 5399138666033411257}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: PrecisionMarkerPrefab
   m_TagString: Precision
   m_Icon: {fileID: 0}
