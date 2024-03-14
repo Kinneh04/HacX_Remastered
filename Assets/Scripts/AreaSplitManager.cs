@@ -13,6 +13,12 @@ public class AreaSplitManager : MonoBehaviour
     public CulpritsManager culpritManager;
     public Transform Parent;
 
+    public bool spawnOnStart = false;
+    private void Start()
+    {
+        if (spawnOnStart) RespawnCulprits();
+    }
+
     public bool inverse = false;
     public void RespawnCulprits()
     {
@@ -41,12 +47,16 @@ public class AreaSplitManager : MonoBehaviour
                 {
                     GO.transform.Rotate(0, 180, 0);
                 }
-               // GO.transform.rotation = transform.rotation;
-                culpritManager.AddCulprit(GO.GetComponent<Culprit>());
-                GO.name = "Culprit " + culpritManager.SpawnedCulprits.Count;
-                Culprit culprit = GO.GetComponent<Culprit>();
-                culprit.column = s;
-                culprit.floor = Floor;
+                // GO.transform.rotation = transform.rotation;
+                if (culpritManager)
+                { 
+                    culpritManager.AddCulprit(GO.GetComponent<Culprit>());
+                    GO.name = "Culprit " + culpritManager.SpawnedCulprits.Count;
+                    Culprit culprit = GO.GetComponent<Culprit>();
+                    culprit.column = s;
+                    culprit.floor = Floor;
+                }
+             
                 SpawnedCulprits.Add(GO);
                 s++;
               //  mainGameManager.CulpritPositions.Add(culprit.ShootPosition.position);
