@@ -15,6 +15,8 @@ public class WindowSpawnArea : MonoBehaviour
 
     public Vector3 MinSpawnScale, MaxSpawnScale;
 
+  //  public LayerMask layers;
+
     private void Start()
     {
        // RespawnWindows();
@@ -60,6 +62,7 @@ public class WindowSpawnArea : MonoBehaviour
                 spawnedWindows.Add(GO);
                 GO.transform.localScale = GenerateRandomVector();
                 s++;
+                GO.layer = gameObject.layer;
                 //  mainGameManager.CulpritPositions.Add(culprit.ShootPosition.position);
             }
         }
