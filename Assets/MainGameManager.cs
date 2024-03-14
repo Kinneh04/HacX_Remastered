@@ -71,14 +71,16 @@ public class MainGameManager : MonoBehaviour
             EditorModeUI.SetActive(true);
         }
     }
-    enum SimulationState
+    public enum SimulationState
     {
         PRESIMULATE,
         SIMULATE,
         POSTSIMULATE
     }
 
-    SimulationState simState = SimulationState.PRESIMULATE;
+   public SimulationState simState = SimulationState.PRESIMULATE;
+
+    public CameraManager camManager;
 
     void Awake()
     {
@@ -224,6 +226,12 @@ public class MainGameManager : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.R) && DontDestroyOnLoadSettings.Instance.isEditorMode)
         {
             DontDestroyOnLoadSettings.Instance.ReturnToMainMenu();
+        }
+
+        if(Input.GetKeyDown(KeyCode.F) && simState == SimulationState.PRESIMULATE && !WindowsManager.Instance.isPrecisionMode)
+        {
+            camManager.SwitchToFreecam(!camManager.freecamMode, false);
+            WindowsManager.Instance.canSelectWindow = !camManager.freecamMode;
         }
     }
 

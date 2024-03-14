@@ -64,6 +64,7 @@ public class SimulationSelectionManager : MonoBehaviour
             SP.NameText.text = scenario.NameOfScenario;
             SP.scenario = scenario;
             GO.transform.SetParent(SimulationPrefabParent, false);
+            InstantiatedSimualtionPrefabs.Add(GO);
         }
     }
 

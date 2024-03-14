@@ -12,6 +12,8 @@ public class CustomBuilding : MonoBehaviour
     public BuildingType typeofBuilding;
     public Quaternion originalRotation;
     public float AddedAngle = 0;
+
+    
     private void Start()
     {
         originalRotation = transform.rotation;
