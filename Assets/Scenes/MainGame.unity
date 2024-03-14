@@ -5613,6 +5613,7 @@ MonoBehaviour:
   ModHDBs:
   - {fileID: 1160119624}
   - {fileID: 947509323}
+  ChangeWindowAmountText: {fileID: 615197565}
 --- !u!1 &315740123
 GameObject:
   m_ObjectHideFlags: 0
