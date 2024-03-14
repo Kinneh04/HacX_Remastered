@@ -173,9 +173,10 @@ public class Ball : MonoBehaviour
                     CheckRicochet();
                         
                 }
-                if (!collided)
-                    StartCoroutine(HandlePotentialCollision());
+                
             }
+            if (!collided)
+                StartCoroutine(HandlePotentialCollision());
             prevPos = transform.position;
         }
 
@@ -211,8 +212,6 @@ public class Ball : MonoBehaviour
 
     bool CheckCollision()
     {
-        if (rbody.isKinematic)
-            return false;
         // Calculate projected position one fixed frame ahead
         Vector3 nextPosition = transform.position + rbody.velocity.normalized * rbody.velocity.magnitude * Time.fixedDeltaTime;
         
