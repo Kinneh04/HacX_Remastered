@@ -311,7 +311,7 @@ public class Culprit : MonoBehaviour
                     {
                         launchAngleMax = angle;
                     }
-                    else if (currentBall.currDist < currentBall.initDist)
+                    if (currentBall.currDist < currentBall.initDist)
                     {
                         launchAngleMin = angle;
                     }
@@ -332,8 +332,8 @@ public class Culprit : MonoBehaviour
         
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
-        Debug.Log("low: " + this.name + " " + angle);
-       Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
+        //Debug.Log("low: " + this.name + " " + angle);
+        Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
         currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);

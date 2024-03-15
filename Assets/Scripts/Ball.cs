@@ -115,6 +115,7 @@ public class Ball : MonoBehaviour
         ricoPoint = Vector3.zero;
 
         collided = false;
+        contact = new();
         contactPoint = Vector3.zero;
         contactOffset = Vector3.zero;
         intersectionPoint = Vector3.zero;
@@ -218,7 +219,7 @@ public class Ball : MonoBehaviour
             return false;
         // Calculate projected position one fixed frame ahead
         //Vector3 nextPosition = transform.position + rbody.velocity.normalized * rbody.velocity.magnitude * Time.fixedDeltaTime;
-        
+
         // Perform sphere cast with fixed time step
         RaycastHit hit;
         if (Physics.SphereCast(transform.position, r, rbody.velocity.normalized, out hit, rbody.velocity.magnitude * Time.fixedDeltaTime, ~layerMask))
@@ -257,6 +258,7 @@ public class Ball : MonoBehaviour
         {
             contactPoint = contact.point;
             contactOffset = contact.normal * r;
+            contactPoint = other.transform.GetComponent<Collider>().ClosestPoint(contact.point); // have to do this for when the projectile hits right on the corner
             currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
         }
 
@@ -289,6 +291,7 @@ public class Ball : MonoBehaviour
                 hitFirstPoint = false;
 
                 ResetBall();
+
                 transform.position = contact.point + contactOffset;
                 currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
 
