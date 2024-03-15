@@ -294,13 +294,16 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y + currentBall.contactOffset.y)
+                if(Math.Round(currentBall.contactPoint.y, 3) != Math.Round(windows[currentTarget].RicochetMarker.transform.position.y, 3))
                 {
-                    launchAngleMax = angle;
-                }
-                else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y + currentBall.contactOffset.y)
-                {
-                    launchAngleMin = angle;
+                    if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y)
+                    {
+                        launchAngleMax = angle;
+                    }
+                    else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y)
+                    {
+                        launchAngleMin = angle;
+                    }
                 }
                 else
                 {
@@ -312,10 +315,7 @@ public class Culprit : MonoBehaviour
                     {
                         launchAngleMin = angle;
                     }
-                }
-               
-                
-                
+                } 
             }
             else if (windows[currentTarget].RicochetMarker == null)
             {
@@ -332,7 +332,8 @@ public class Culprit : MonoBehaviour
         
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
-        Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
+        Debug.Log("low: " + this.name + " " + angle);
+       Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
         currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);
@@ -341,21 +342,23 @@ public class Culprit : MonoBehaviour
         totalBallsThrown++;
         iterations[currentTarget]++;
     }
-    void CheckDistance()
+    public static bool NearlyEqual(float a, float b, float epsilon = 0.0001f)
     {
-        //if (currentBall.currDist > currentBall.initDist)
-        //{
-        //    launchAngleMax = angle;
+        Debug.Assert(float.Epsilon <= epsilon);
+        Debug.Assert(epsilon < 1.0f);
 
-        //}
-        if (currentBall.currDist < currentBall.initDist)
+        if (a == b)
         {
-            launchAngleMin = angle;
+            return true;
         }
-        else
-        {
-            launchAngleMin = angle;
-        }
+
+        float diff = Mathf.Abs(a - b);
+        float norm = Mathf.Min(Mathf.Abs(a) + Mathf.Abs(b), float.MaxValue);
+
+        // Faster alternative (uncomment if preferred)
+        // float norm = Mathf.Min(Mathf.Abs(a + b), float.MaxValue);
+
+        return diff < Mathf.Max(Mathf.Abs(epsilon), epsilon * norm);
     }
     public void FireProjectileAt(int windowIndex)
     {

@@ -257,7 +257,6 @@ public class Ball : MonoBehaviour
         {
             contactPoint = contact.point;
             contactOffset = contact.normal * r;
-            transform.position = contact.point + contactOffset;
             currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
         }
 
@@ -272,8 +271,10 @@ public class Ball : MonoBehaviour
                 hitFirstPoint = true;
                 toreset = false;
                 ricoNormal = contact.normal;
-                ricoPoint = contactPoint;
-
+                ricoPoint = contact.point;
+                contactPoint = contact.point;
+                contactOffset = contact.normal * r;
+                transform.position = contact.point + contactOffset;
                 // apply reflection bounce
                 CalculateBounce(contact);
 
@@ -288,6 +289,7 @@ public class Ball : MonoBehaviour
                 hitFirstPoint = false;
 
                 ResetBall();
+                transform.position = contact.point + contactOffset;
                 currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
 
                 points.Add(transform.position);
