@@ -32,6 +32,10 @@ public class SettingsMenu : MonoBehaviour
     public Slider Slider_Drag;
     public TMP_Text Text_drag;
 
+    [Header("Coefficient")]
+    public Slider Slider_Bounce;
+    public TMP_Text Text_Bounce;
+
     [Header("Velocity")]
     public TMP_InputField minVelocityInputField;
     public TMP_InputField maxVelocityInputField;
@@ -111,6 +115,12 @@ public class SettingsMenu : MonoBehaviour
     {
         settingsManager.dragCoefficient = Slider_Drag.value;
         Text_drag.text = Slider_Drag.value.ToString("F1");
+    }
+
+    public void OnChangeBounceCoefficient()
+    {
+        settingsManager.coefficientOfRestitution = Slider_Bounce.value;
+        Text_Bounce.text = Slider_Bounce.value.ToString("F1");
     }
 
     public void OnChangeMaxIterations()
@@ -259,6 +269,9 @@ public class SettingsMenu : MonoBehaviour
         Slider_SimulationSpeed.onValueChanged.AddListener(delegate { OnChangeSimulationSpeed(); });
 
         Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
+
+        Slider_Bounce.onValueChanged.AddListener(delegate { OnChangeBounceCoefficient(); });
+
 
         minVelocityInputField.onValueChanged.AddListener(OnMinVelocityChanged);
         maxVelocityInputField.onValueChanged.AddListener(OnMaxVelocityChanged);
