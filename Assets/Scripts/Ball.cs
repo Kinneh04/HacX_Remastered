@@ -185,6 +185,11 @@ public class Ball : MonoBehaviour
             prevPos = transform.position;
         }
 
+        else if(IsGrounded())
+        {
+            ResetBall();
+        }
+
     }
 
     bool CheckRicochet()
