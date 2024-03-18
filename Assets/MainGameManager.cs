@@ -306,6 +306,22 @@ public class MainGameManager : MonoBehaviour
             }
         }
     }
+
+    public void HandleEndSimulation()
+    {
+        for(int i = 0; i < culpritsManager.SpawnedCulprits.Count; i++)
+        {
+            culpritsManager.SpawnedCulprits[i].done = true;
+            culpritsManager.SpawnedCulprits[i].CalculateProbability();
+            if (!CulpritsDone.Contains(culpritsManager.SpawnedCulprits[i]))
+                CulpritsDone.Add(culpritsManager.SpawnedCulprits[i]);
+        }
+        //CalculateAvgProbability(ListOfProbabilityList);
+        SortCulpritsList();
+
+        // post UI
+        EnablePostUI();
+    }
     public void ResetListsForNextIteration()
     {
         //settings.StartGame();
@@ -376,6 +392,7 @@ public class MainGameManager : MonoBehaviour
     {
         SimulationUI.SetActive(false);
         PostSimUI.SetActive(true);
+        ProgressUI.SetActive(false);
         cameraManager.OnEndSimulation();
         postUIManager.OnEndSimulation();
         culpritsManager.OnEndSimulation();
