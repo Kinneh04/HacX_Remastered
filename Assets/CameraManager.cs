@@ -68,7 +68,7 @@ public class CameraManager : MonoBehaviour
 
     public void OnClickToggleFreecam()
     {
-        SwitchToFreecam(!freecamMode);
+        SwitchToFreecam(!freecamMode, false);
     }
 
     public void SwitchToFreecam(bool toggle, bool EnableUI = true)

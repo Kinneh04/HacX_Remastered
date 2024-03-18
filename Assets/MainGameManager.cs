@@ -228,7 +228,7 @@ public class MainGameManager : MonoBehaviour
             DontDestroyOnLoadSettings.Instance.ReturnToMainMenu();
         }
 
-        if(Input.GetKeyDown(KeyCode.F) && simState == SimulationState.PRESIMULATE && !WindowsManager.Instance.isPrecisionMode)
+        if(Input.GetKeyDown(KeyCode.F) && !WindowsManager.Instance.isPrecisionMode)
         {
             camManager.SwitchToFreecam(!camManager.freecamMode, false);
             WindowsManager.Instance.canSelectWindow = !camManager.freecamMode;
@@ -351,6 +351,9 @@ public class MainGameManager : MonoBehaviour
         cameraManager.OnEndSimulation();
         postUIManager.OnEndSimulation();
         culpritsManager.OnEndSimulation();
+
+        camManager.SwitchToFreecam(false, false);
+        //WindowsManager.Instance.canSelectWindow = !camManager.freecamMode;
     }
 
 

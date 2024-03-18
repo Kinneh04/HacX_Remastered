@@ -34,7 +34,7 @@ public class EditorEnvironmentManager : MonoBehaviour
     public TMP_InputField CustomPropNameInput;
     public EditorManager editorManager;
 
-    public GameObject DontDestroyOnLoad;
+   // public GameObject DontDestroyOnLoad;
     public int PropIndex = 0;
 
     public GameObject CurrentlySelectedProp;
@@ -148,8 +148,8 @@ public class EditorEnvironmentManager : MonoBehaviour
             }
         }
 
-        MeshCollider BC = model.AddComponent<MeshCollider>();
-        BC.sharedMesh = model.GetComponent<MeshFilter>().mesh;
+        BoxCollider BC = model.AddComponent<BoxCollider>();
+    //    BC.sharedMesh = model.GetComponent<BoxCollider>().mesh;
         BC.isTrigger = true;
         model.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
         model.tag = "EditorEnvironmentProp";
