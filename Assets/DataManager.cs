@@ -155,7 +155,7 @@ public class DataManager : MonoBehaviour
     
     public void OnClickExportSingularCulpritDataToCSV()
     {
-        if (!checkForValidNamingConvention()) return;
+       // if (!checkForValidNamingConvention()) return;
         JsonCulpritData CD = ExportSingularCulpritData(culpritsManager.SelectedCulprit);
         // Specify the path for the CSV file
         string desktopPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Desktop);
