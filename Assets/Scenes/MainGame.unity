@@ -2255,6 +2255,10 @@ PrefabInstance:
       propertyPath: Parent
       value: 
       objectReference: {fileID: 1160119625}
+    - target: {fileID: 7022577592877071347, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
+      propertyPath: CulpritWindowType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
 --- !u!1 &95288761
@@ -6622,6 +6626,10 @@ PrefabInstance:
       propertyPath: Parent
       value: 
       objectReference: {fileID: 1160119625}
+    - target: {fileID: 7022577592877071347, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
+      propertyPath: CulpritWindowType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
 --- !u!1 &349211945

@@ -4552,6 +4552,7 @@ MonoBehaviour:
   inverse: 0
   MinSpawnScale: {x: 1.5, y: 1.5, z: 0.1}
   MaxSpawnScale: {x: 2.5, y: 2.5, z: 0.1}
+  CulpritWindowType: 1
 --- !u!1001 &1965539196611839895
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4611,6 +4612,10 @@ PrefabInstance:
       propertyPath: Parent
       value: 
       objectReference: {fileID: 1042981208256214706}
+    - target: {fileID: 7022577592877071347, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
+      propertyPath: CulpritWindowType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
 --- !u!4 &4804946568803898738 stripped
