@@ -303,16 +303,15 @@ public class Ball : MonoBehaviour
             }
         }
 
-        points.Add(transform.position);
-        RenderLine();
 
-        ResetBall();
+        
 
         if (targetWindowPrecision.PrecisionMarker != null)
         {
             // see if hit window
             if (Vector3.Distance(contact.point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x)
             {
+                ResetBall();
                 return;
             }
             else
@@ -320,13 +319,20 @@ public class Ball : MonoBehaviour
                 // return if havent hit first point or is not the target window
                 if (contact.transform.gameObject != targetWindow || (!hitFirstPoint && targetWindowPrecision.RicochetMarker != null))
                 {
+                    ResetBall();
                     return;
                 }
             }
         }
         //hit was a success
+        rbody.isKinematic = true;
+        transform.position = contact.point;
+        points.Add(transform.position);
+        RenderLine();
+
         parentShooter.windowHit[target] = true;
         parentShooter.TotalBallsHit++;
+
         // values to calc accuracy
         distanceFromCenter = Vector3.Distance(transform.position, targetWindowPrecision.PrecisionMarker.transform.position);
         angleOfImpact = Vector3.Angle(vel, -contact.normal);
@@ -346,6 +352,7 @@ public class Ball : MonoBehaviour
         //if can break window
         if (pressureApplied > targetWindowPrecision.breakingStress)
         {
+            parentShooter.finishedCurrent = true;
             Culprit.OnHit?.Invoke(gameObject, target);
         }
         else

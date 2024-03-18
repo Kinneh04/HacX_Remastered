@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using System.IO;
 using TMPro;
 using Newtonsoft.Json;
+using UnityEngine.UI;
 
 public class MainGameManager : MonoBehaviour
 {
@@ -59,7 +60,13 @@ public class MainGameManager : MonoBehaviour
     [Header("EditorMode")]
     public GameObject EditorModeUI;
 
-
+    [Header("ProgressBar")]
+    public GameObject ProgressUI;
+    public Slider Slider_Progress;
+    public TMP_Text Text_Progress;
+    public TMP_Text Text_WindowIter;
+    public TMP_Text Text_CurrWindow;
+    int currWindow = 0;
 
     public TMP_Text MD_Title, MD_Date, MD_Time, MD_TargetFloors, MD_CulpritFloors, MD_Distance;
 
@@ -105,6 +112,12 @@ public class MainGameManager : MonoBehaviour
         {
             ListOfProbabilityList.Add(new());
         }
+
+        currWindow = 0;
+        Slider_Progress.value = 0;
+        Text_Progress.text = Slider_Progress.value.ToString("F1") + "%";
+        Text_WindowIter.text = (currentIteration + 1).ToString() + "/" + potentialIterations.ToString();
+        ProgressUI.SetActive(false);
     }
 
     private void OnDestroy()
@@ -156,6 +169,8 @@ public class MainGameManager : MonoBehaviour
             return;
         }
         PreSimUI.SetActive(false);
+        ProgressUI.SetActive(true);
+        Text_CurrWindow.text = "Window: " + 1.ToString() + "/" + WindowsManager.Instance.SelectedWindows.Count;
         for (int i = 0; i < WindowsManager.Instance.SelectedWindows.Count; i++)
         {
             ListOfHitList.Add(new HitList()
@@ -244,14 +259,24 @@ public class MainGameManager : MonoBehaviour
     public void HandleHit(GameObject ball, int target)
     {
         ListOfHitList[target].Hit.Add(ball);
+        HandleProgressBar(target);
         StartNextWindow(target);
     }
-
+    public void HandleProgressBar(int target)
+    {
+        float done = ListOfHitList[target].Hit.Count / (float)(culpritsManager.SpawnedCulprits.Count - ListOfNoHitList[target].Hit.Count);
+        Slider_Progress.value = done * 100;
+        Text_Progress.text = Slider_Progress.value.ToString("F1") + "%";
+    }
     public void StartNextWindow(int target)
     {
         if (ListOfNoHitList[target].Hit.Count + ListOfHitList[target].Hit.Count == culpritsManager.SpawnedCulprits.Count)
         {
             OnNextWindow?.Invoke();
+            currWindow++;
+            if (currWindow > WindowsManager.Instance.SelectedWindows.Count)
+                currWindow = WindowsManager.Instance.SelectedWindows.Count - 1;
+            Text_CurrWindow.text = "Window: " + (currWindow + 1).ToString() + "/" + WindowsManager.Instance.SelectedWindows.Count;
         }
     }
 
@@ -260,12 +285,13 @@ public class MainGameManager : MonoBehaviour
         CulpritsDone.Add(culprit);
 
         // check if all done
-        if(CulpritsDone.Count == culpritsManager.SpawnedCulprits.Count)
+        if (CulpritsDone.Count == culpritsManager.SpawnedCulprits.Count)
         {
             if(startVel != maxVel)
             {
                 startVel = CalculateIterations(startVel);
                 currentIteration++;
+                Text_WindowIter.text = (currentIteration + 1).ToString() + "/" + potentialIterations.ToString();
                 ResetListsForNextIteration();
                 return;
             }
@@ -285,7 +311,8 @@ public class MainGameManager : MonoBehaviour
         ListOfHitList.Clear();
         ListOfNoHitList.Clear();
         CulpritsDone.Clear();
-
+        currWindow = 0;
+        Text_CurrWindow.text = "Window: " + (currWindow + 1).ToString() + "/" + WindowsManager.Instance.SelectedWindows.Count;
         StartSimulation();
     }
     public int CalculateIterations(int currentVel)
