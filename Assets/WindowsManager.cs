@@ -49,6 +49,7 @@ public class WindowsManager : MonoBehaviour
 
     [Header("UI")]
     public GameObject MainUI, WindowPrecisionUI, PrecisionMarkerSettingsUI;
+    public GameObject ScenarioDetailsUI, ScenarioDropdownUI;
     public Slider ConfidenceSlider;
     Vector3 OriginalPrefabScale;
 
@@ -57,11 +58,16 @@ public class WindowsManager : MonoBehaviour
     [Header("Layers")]
     public LayerMask raycastLayers;
 
+    [Header("Camera")]
+    public CinemachineVirtualCamera cam;
+    public float PrecisionNearClippingPlane, OriginalNearClippingPlane;
     private void Start()
     {
         OriginalCamPosition = MainVCamera.transform.position;
         OriginalCamRotation = MainVCamera.transform.rotation;
         OriginalPrefabScale = PrecisionMarkerPrefab.transform.localScale;
+
+        cam.m_Lens.NearClipPlane = OriginalNearClippingPlane ;
     }
 
     public bool isRegisteredPreciseWindow(GameObject Target)
@@ -78,6 +84,9 @@ public class WindowsManager : MonoBehaviour
     }
     public void GotoPrecision(GameObject Target)
     {
+        ScenarioDetailsUI.SetActive(false);
+        ScenarioDropdownUI.SetActive(false);
+        cam.m_Lens.NearClipPlane = PrecisionNearClippingPlane;
         if (!isRegisteredPreciseWindow(Target))
         {
             Precise_Window PW = new Precise_Window()
@@ -147,6 +156,8 @@ public class WindowsManager : MonoBehaviour
         MainVCamera.transform.position = OriginalCamPosition;
         MainVCamera.transform.rotation = OriginalCamRotation;
         isPrecisionMode = false;
+        cam.m_Lens.NearClipPlane = OriginalNearClippingPlane;
+        ScenarioDropdownUI.SetActive(true);
     }
 
     private void Awake()

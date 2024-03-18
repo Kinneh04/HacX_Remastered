@@ -638,10 +638,6 @@ public class EditorManager : MonoBehaviour
             {
                 runtimeTransformHandle.type = HandleType.SCALE;
             }
-            else if(Input.GetKeyDown(KeyCode.R))
-            {
-                ResetFreecam();
-            }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 if (Input.GetKeyDown(KeyCode.G))
@@ -675,7 +671,11 @@ public class EditorManager : MonoBehaviour
                 }
              
             }
-            if(Input.GetKeyDown(KeyCode.F))
+            else if (Input.GetKeyDown(KeyCode.T))
+            {
+                ResetFreecam();
+            }
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 ToggleEditorFreecam(!freecamMode);
             }

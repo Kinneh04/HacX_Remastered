@@ -163,6 +163,7 @@ public class MainGameManager : MonoBehaviour
 
     public void StartSimulation()
     {
+        SimulationUI.SetActive(true);
         if (WindowsManager.Instance.PreciseWindows.Count <= 0)
         {
             PopupUIManager.Instance.ShowPopup("Error!", " Simulation cannot start. Please select at least one window.");

@@ -109,7 +109,6 @@ public class CameraManager : MonoBehaviour
     {
          mainCam.orthographic = vCamList[vCamIndex].perspective == VCam.Pers.Orthographic;
         mainCam.cullingMask = vCamList[vCamIndex].RenderedLayers;
-
     }
 
     public void OnEndSimulation()
