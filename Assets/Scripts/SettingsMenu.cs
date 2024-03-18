@@ -53,13 +53,14 @@ public class SettingsMenu : MonoBehaviour
     [Header("Position Range")]
     public TMP_InputField positionInputField;
 
+    [Header("Ball Presets")]
+    public TMP_Dropdown ballDropdown;
+    public BallPreset[] ballPresets;
 
     public void OpenLink(string s)
     {
         Application.OpenURL(s);
     }
-
-
     public void StartGame()
     {
         settingsManager.StartGame();
@@ -87,13 +88,13 @@ public class SettingsMenu : MonoBehaviour
     {
         if (GetSettingsManager())
         {
-            AddListenersToSettingsSliders();
-            ParseCurrentValuesIntoSliders();
-            UpdateUI();
+            AddListenersToSettings();
+            PopulateBallPresets();
+            ParseSettingsIntoCurrentValues();
         }
     }
 
-    public void ParseCurrentValuesIntoSliders()
+    public void ParseSettingsIntoCurrentValues()
     {
         Slider_MaxIterations.value = settingsManager.MaxIterationsValue;
         Text_MaxIterations.text = Slider_MaxIterations.value.ToString();
@@ -106,9 +107,19 @@ public class SettingsMenu : MonoBehaviour
 
         Slider_Drag.value = settingsManager.dragCoefficient;
         Text_drag.text = Slider_Drag.value.ToString("F1");
+
+        settingsManager.coefficientOfRestitution = Slider_Bounce.value;
+        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
+
+        minVelocityInputField.text = settingsManager.minVelocity.ToString();
+        maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
+        velocityIncrementInputField.text = settingsManager.velocityIncrement.ToString();
+        densityInputField.text = settingsManager.density.ToString();
+        diameterInputField.text = settingsManager.diameter.ToString();
+        positionInputField.text = settingsManager.positionRange.ToString();
     }
 
-    public void ParseSlidersIntoCurrentValues()
+    public void ParseCurrentValuesIntoSettings()
     {
         OnChangeNumCulpritsPerRow();
         OnChangeMaxIterations();
@@ -126,7 +137,7 @@ public class SettingsMenu : MonoBehaviour
     public void OnChangeBounceCoefficient()
     {
         settingsManager.coefficientOfRestitution = Slider_Bounce.value;
-        Text_Bounce.text = Slider_Bounce.value.ToString("F1");
+        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
     }
 
     public void OnChangeMaxIterations()
@@ -160,7 +171,7 @@ public class SettingsMenu : MonoBehaviour
                 settingsManager.minVelocity = settingsManager.maxVelocity;
                 Debug.LogError("Min velocity cannot be greater than or equal to max velocity.");
             }
-            UpdateUI();
+            ParseSettingsIntoCurrentValues();
         }
         else
         {
@@ -183,7 +194,7 @@ public class SettingsMenu : MonoBehaviour
                 settingsManager.maxVelocity = settingsManager.minVelocity;
                 Debug.LogError("Max velocity cannot be less than or equal to min velocity.");
             }
-            UpdateUI();
+            ParseSettingsIntoCurrentValues();
         }
         else
         {
@@ -203,7 +214,7 @@ public class SettingsMenu : MonoBehaviour
             settingsManager.velocityIncrement = 1;
             Debug.LogError("Invalid input for velocity increment. Please enter a valid number.");
         }
-        UpdateUI();
+        ParseSettingsIntoCurrentValues();
     }
 
     private void OnDensityChanged(string value)
@@ -212,13 +223,13 @@ public class SettingsMenu : MonoBehaviour
         {
             // Add any validation or logic for density if needed
             settingsManager.density = newDensity;
-            UpdateUI();
         }
         else
         {
             settingsManager.density = 7750f;
             Debug.LogError("Invalid input for density. Please enter a valid number.");
         }
+        ParseSettingsIntoCurrentValues();
     }
 
     private void OnDiameterChanged(string value)
@@ -227,13 +238,13 @@ public class SettingsMenu : MonoBehaviour
         {
             // Add any validation or logic for density if needed
             settingsManager.diameter = newDiameter;
-            UpdateUI();
         }
         else
         {
             settingsManager.diameter = 0.01f;
             Debug.LogError("Invalid input for density. Please enter a valid number.");
         }
+        ParseSettingsIntoCurrentValues();
     }
 
     private void OnPositionRangeChanged(string value)
@@ -242,13 +253,13 @@ public class SettingsMenu : MonoBehaviour
         {
             // Add any validation or logic for density if needed
             settingsManager.positionRange= newRange;
-            UpdateUI();
         }
         else
         {
             settingsManager.positionRange = 0;
             Debug.LogError("Invalid input for density. Please enter a valid number.");
         }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnTimestepDropdownChanged(int value)
@@ -256,17 +267,19 @@ public class SettingsMenu : MonoBehaviour
         settingsManager.timeStepAmt = settingsManager.timeSteps[value];
     }
 
-    private void UpdateUI()
+    public void OnBallDropdownChanged(int value)
     {
-        minVelocityInputField.text = settingsManager.minVelocity.ToString();
-        maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
-        velocityIncrementInputField.text = settingsManager.velocityIncrement.ToString();
-        densityInputField.text = settingsManager.density.ToString();
-        diameterInputField.text = settingsManager.diameter.ToString();
-        positionInputField.text = settingsManager.positionRange.ToString();
+        BallPreset b = ballPresets[value];
+        settingsManager.dragCoefficient = b.drag;
+        settingsManager.coefficientOfRestitution = b.restitution;
+        settingsManager.density = b.density;
+        settingsManager.diameter = b.diameter;
+
+        ParseSettingsIntoCurrentValues();
     }
 
-    private void AddListenersToSettingsSliders()
+
+    private void AddListenersToSettings()
     {
         Slider_NumCulpritsPerRow.onValueChanged.AddListener(delegate { OnChangeNumCulpritsPerRow(); });
 
@@ -288,6 +301,34 @@ public class SettingsMenu : MonoBehaviour
         positionInputField.onValueChanged.AddListener(OnPositionRangeChanged);
 
         timeStepDropdown.onValueChanged.AddListener(OnTimestepDropdownChanged);
+        ballDropdown.onValueChanged.AddListener(OnBallDropdownChanged);
+    }
+
+    public void PopulateBallPresets()
+    {
+        ballDropdown.ClearOptions(); // Clear any existing options
+
+        List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
+
+        ballPresets = Resources.LoadAll<BallPreset>("BallPresets"); // Dynamic loading
+
+        // Loop through available ScriptableObjects
+        foreach (BallPreset so in ballPresets)
+        {
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(so.name);
+            options.Add(option);
+        }
+
+        ballDropdown.AddOptions(options);
+
+        for (int i = 0; i < ballDropdown.options.Count; i++) // set steel as the default
+        {
+            if (ballDropdown.options[i].text == "Steel")
+            {
+                ballDropdown.value = i;
+                break; 
+            }
+        }
     }
     public void DisplayHelpMenu(string title, string desc, Sprite Image)
     {
