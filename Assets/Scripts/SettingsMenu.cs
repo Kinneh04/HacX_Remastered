@@ -109,6 +109,7 @@ public class SettingsMenu : MonoBehaviour
         OnChangeMaxIterations();
         OnChangeSimulationSpeed();
         OnChangeDragCoefficient();
+        OnChangeBounceCoefficient();
     }
 
     public void OnChangeDragCoefficient()
