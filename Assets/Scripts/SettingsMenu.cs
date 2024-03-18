@@ -54,6 +54,11 @@ public class SettingsMenu : MonoBehaviour
     public TMP_InputField positionInputField;
 
 
+    public void OpenLink(string s)
+    {
+        Application.OpenURL(s);
+    }
+
 
     public void StartGame()
     {
