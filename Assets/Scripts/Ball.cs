@@ -242,6 +242,7 @@ public class Ball : MonoBehaviour
             yield return new WaitForFixedUpdate();
 
             HandleCollision(contact);
+            collided = false;
 
             yield return new WaitForFixedUpdate();
 
@@ -380,6 +381,7 @@ public class Ball : MonoBehaviour
     {
         rbody.isKinematic = true;
         parentShooter.shootNext = true;
+        //parentShooter.HandleNextShot();
     }
 
     void CheckIfHitRoof(RaycastHit other)

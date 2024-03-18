@@ -161,7 +161,6 @@ public class Culprit : MonoBehaviour
 
     public void CheckIfNext()
     {
-        Debug.Log("hit");
         if(windowHit[currentTarget] || iterations[currentTarget] >= MAX_ITERATIONS)
         {
             CheckCanNext();
@@ -269,7 +268,6 @@ public class Culprit : MonoBehaviour
         
        if(outline.OutlineColor.a > 0.1f)  outline.OutlineColor = Color.Lerp(outline.OutlineColor, new Color(0, 0, 0, 0), Time.deltaTime);
 
-
         if (!currentBall || !currentBallRb.isKinematic)
             return;
 
@@ -281,12 +279,11 @@ public class Culprit : MonoBehaviour
             finishedCurrent = true;
             OnCantHit?.Invoke(gameObject, currentTarget);
             //Debug.Log(gameObject.name + " " + iterations[currentTarget] + " " + MAX_ITERATIONS);
-
             return;
         }
 
         // binary search
-        if(currentBall.forceLower)
+        if (currentBall.forceLower)
         {
             launchAngleMax = angle;
         }
@@ -294,7 +291,7 @@ public class Culprit : MonoBehaviour
         {
             if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
             {
-                if(Math.Round(currentBall.contactPoint.y, 3) != Math.Round(windows[currentTarget].RicochetMarker.transform.position.y, 3))
+                if (Math.Round(currentBall.contactPoint.y, 3) != Math.Round(windows[currentTarget].RicochetMarker.transform.position.y, 3))
                 {
                     if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y)
                     {
@@ -315,7 +312,7 @@ public class Culprit : MonoBehaviour
                     {
                         launchAngleMin = angle;
                     }
-                } 
+                }
             }
             else if (windows[currentTarget].RicochetMarker == null)
             {
@@ -329,10 +326,81 @@ public class Culprit : MonoBehaviour
                 }
             }
         }
-        
+
 
         angle = (launchAngleMin + launchAngleMax) * 0.5f;
-        //Debug.Log("low: " + this.name + " " + angle);
+        Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
+        Quaternion finalRotation = targetRotation * tiltRotation;
+        ShootPosition.rotation = finalRotation;
+        currentBall.Shoot(WindowsManager.Instance.PreciseWindows[currentTarget], currentTarget);
+
+        shootNext = false;
+        totalBallsThrown++;
+        iterations[currentTarget]++;
+    }
+    public void HandleNextShot()
+    {
+        if (!currentBall || !currentBallRb.isKinematic)
+            return;
+
+        if (done || !shootNext || windowHit[currentTarget] || finishedCurrent)
+            return;
+
+        if (iterations[currentTarget] >= MAX_ITERATIONS)
+        {
+            finishedCurrent = true;
+            OnCantHit?.Invoke(gameObject, currentTarget);
+            //Debug.Log(gameObject.name + " " + iterations[currentTarget] + " " + MAX_ITERATIONS);
+            return;
+        }
+
+        // binary search
+        if (currentBall.forceLower)
+        {
+            launchAngleMax = angle;
+        }
+        else // for ricochet
+        {
+            if (!balls[currentTarget].hitFirstPoint && windows[currentTarget].RicochetMarker != null)
+            {
+                if (Math.Round(currentBall.contactPoint.y, 3) != Math.Round(windows[currentTarget].RicochetMarker.transform.position.y, 3))
+                {
+                    if (currentBall.contactPoint.y > windows[currentTarget].RicochetMarker.transform.position.y)
+                    {
+                        launchAngleMax = angle;
+                    }
+                    else if (currentBall.contactPoint.y < windows[currentTarget].RicochetMarker.transform.position.y)
+                    {
+                        launchAngleMin = angle;
+                    }
+                }
+                else
+                {
+                    if (currentBall.currDist > currentBall.initDist)
+                    {
+                        launchAngleMax = angle;
+                    }
+                    if (currentBall.currDist < currentBall.initDist)
+                    {
+                        launchAngleMin = angle;
+                    }
+                }
+            }
+            else if (windows[currentTarget].RicochetMarker == null)
+            {
+                if (currentBall.contactPoint.y > windows[currentTarget].PrecisionMarker.transform.position.y)
+                {
+                    launchAngleMax = angle;
+                }
+                else if (currentBall.contactPoint.y < windows[currentTarget].PrecisionMarker.transform.position.y)
+                {
+                    launchAngleMin = angle;
+                }
+            }
+        }
+
+
+        angle = (launchAngleMin + launchAngleMax) * 0.5f;
         Quaternion tiltRotation = Quaternion.Euler(angle, 0, 0);
         Quaternion finalRotation = targetRotation * tiltRotation;
         ShootPosition.rotation = finalRotation;
