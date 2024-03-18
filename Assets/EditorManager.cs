@@ -75,6 +75,33 @@ public class EditorManager : MonoBehaviour
     private bool isMiddleMouseButtonHeld = false;
     public float Sensitivity = 1.0f;
     public float zoomSpeed = 5f;
+    public Camera cam;
+
+    public bool freecamMode = false;
+    public GameObject Freecam;
+
+    public void ToggleEditorFreecam(bool t)
+    {
+        CameraPerspectives[camIndex].SetActive(!t);
+        freecamMode = t;
+        Freecam.SetActive(t);
+        cam.orthographic = !t;
+
+        if(!GizmosInstructions.activeInHierarchy)
+        {
+            FreecamInstructions.SetActive(t);
+            //  GizmosInstructions.SetActive(false);
+            HelperInstructions.SetActive(false);
+        }
+
+
+    }
+
+    public void ResetFreecam()
+    {
+        Freecam.transform.position = CameraPerspectives[0].transform.position;
+        Freecam.transform.rotation = CameraPerspectives[0].transform.rotation;
+    }
 
     [Header("Stencils")]
     public List<GameObject> stencils = new();
@@ -110,7 +137,7 @@ public class EditorManager : MonoBehaviour
         DistanceText.text = "Distance: " + currentDistance.ToString("F1") + "m";
     }
 
-    public GameObject HelperInstructions, GizmosInstructions;
+    public GameObject HelperInstructions, GizmosInstructions, FreecamInstructions;
     private void Start()
     {
         runtimeTransformGameObj = new GameObject();
@@ -237,7 +264,7 @@ public class EditorManager : MonoBehaviour
             CB.GetComponent<ModularHDB>().RefreshFloors();
             editorEnvironmentManager.ClearAllProps();
         }
-     
+        ResetFreecam();
     }
 
     public void OnChangeAngleOfCurrentBuilding()
@@ -611,6 +638,10 @@ public class EditorManager : MonoBehaviour
             {
                 runtimeTransformHandle.type = HandleType.SCALE;
             }
+            else if(Input.GetKeyDown(KeyCode.R))
+            {
+                ResetFreecam();
+            }
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
             {
                 if (Input.GetKeyDown(KeyCode.G))
@@ -623,23 +654,41 @@ public class EditorManager : MonoBehaviour
                 }
             }
             HelperInstructions.SetActive(false);
+            FreecamInstructions.SetActive(false);
             GizmosInstructions.SetActive(true);
         }
         else
         {
-            // Check for left arrow key press
-            if (Input.GetKeyDown(KeyCode.A))
+            if(!freecamMode)
             {
-                // Move to the previous camera
-                SwitchCamera(-1);
+                // Check for left arrow key press
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    // Move to the previous camera
+                    SwitchCamera(-1);
+                }
+                // Check for right arrow key press
+                else if (Input.GetKeyDown(KeyCode.D))
+                {
+                    // Move to the next camera
+                    SwitchCamera(1);
+                }
+             
             }
-            // Check for right arrow key press
-            else if (Input.GetKeyDown(KeyCode.D))
+            if(Input.GetKeyDown(KeyCode.F))
             {
-                // Move to the next camera
-                SwitchCamera(1);
+                ToggleEditorFreecam(!freecamMode);
             }
-            HelperInstructions.SetActive(true);
+            if (freecamMode)
+            {
+                HelperInstructions.SetActive(false);
+                FreecamInstructions.SetActive(true);
+            }
+            else
+            {
+                HelperInstructions.SetActive(true);
+                FreecamInstructions.SetActive(false);
+            }
             GizmosInstructions.SetActive(false);
         }
 
