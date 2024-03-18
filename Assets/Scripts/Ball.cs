@@ -312,7 +312,7 @@ public class Ball : MonoBehaviour
             contactPoint = contact.point;
             if (Vector3.Distance(contact.point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x)
             {
-                Debug.Log(parentShooter.name);
+              //  Debug.Log(parentShooter.name);
                 ResetBall();
                 return;
             }

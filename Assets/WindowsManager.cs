@@ -70,6 +70,18 @@ public class WindowsManager : MonoBehaviour
         cam.m_Lens.NearClipPlane = OriginalNearClippingPlane ;
     }
 
+    public void RemoveAllPreciseWindowPlacements()
+    {
+        foreach(Precise_Window PW in PreciseWindows)
+        {
+            if (PW.PrecisionMarker) Destroy(PW.PrecisionMarker);
+            if (PW.RicochetMarker) Destroy(PW.RicochetMarker);
+
+        }
+        PreciseWindows.Clear();
+        SelectedWindows.Clear();
+    }
+
     public bool isRegisteredPreciseWindow(GameObject Target)
     {
         foreach (Precise_Window PW in PreciseWindows)

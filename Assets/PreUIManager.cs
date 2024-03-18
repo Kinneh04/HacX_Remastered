@@ -19,11 +19,14 @@ public class PreUIManager : MonoBehaviour
             M.RefreshAllWindowCount((int)ChangeWindwCountSlider.value);
         }
         ChangeWindowAmountText.text = ChangeWindwCountSlider.value.ToString("F0");
+        WindowsManager.Instance.RemoveAllPreciseWindowPlacements();
     }
 
     public void OnOverrideTargetFloors()
     {
         ModHDBs[0].ChangeFloors((int)ChangeTargetFloorSlider.value);
         ChangeTargetFloorText.text = ChangeTargetFloorSlider.value.ToString();
+
+        WindowsManager.Instance.RemoveAllPreciseWindowPlacements();
     }
 }
