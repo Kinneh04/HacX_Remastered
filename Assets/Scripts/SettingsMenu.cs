@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using UnityEditor;
 public class SettingsMenu : MonoBehaviour
 {
     [Header("HelpMenu")]
@@ -56,6 +56,7 @@ public class SettingsMenu : MonoBehaviour
     [Header("Ball Presets")]
     public TMP_Dropdown ballDropdown;
     public BallPreset[] ballPresets;
+    public TMP_InputField presetName;
 
     public void OpenLink(string s)
     {
@@ -329,6 +330,46 @@ public class SettingsMenu : MonoBehaviour
                 break; 
             }
         }
+    }
+
+    public void CreateNewPreset()
+    {
+        BallPreset b = BallPreset.CreateInstance<BallPreset>();
+        b.name = presetName.text;
+        b.drag = settingsManager.dragCoefficient;
+        b.restitution = settingsManager.coefficientOfRestitution;
+        b.density = settingsManager.density;
+        b.diameter = settingsManager.diameter;
+        string savePath = "Assets/Resources/BallPresets/" + b.name + ".asset";
+        AssetDatabase.CreateAsset(b, savePath);
+        PopulateBallPresets();
+
+        for (int i = 0; i < ballDropdown.options.Count; i++) // set steel as the default
+        {
+            if (ballDropdown.options[i].text == b.name)
+            {
+                ballDropdown.value = i;
+                break; 
+            }
+        }
+    }
+
+    public void OverridePreset()
+    {
+        BallPreset b = ballPresets[ballDropdown.value];
+        b.drag = settingsManager.dragCoefficient;
+        b.restitution = settingsManager.coefficientOfRestitution;
+        b.density = settingsManager.density;
+        b.diameter = settingsManager.diameter;
+    }
+
+    public void DestroyPreset()
+    {
+        BallPreset b = ballPresets[ballDropdown.value];
+        string assetPath = "Assets/Resources/BallPresets/" + b.name + ".asset";
+        AssetDatabase.DeleteAsset(assetPath);
+        AssetDatabase.SaveAssets();
+        PopulateBallPresets();
     }
     public void DisplayHelpMenu(string title, string desc, Sprite Image)
     {
