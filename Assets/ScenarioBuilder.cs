@@ -90,7 +90,7 @@ public class ScenarioBuilder : MonoBehaviour
         else
         {
             CarTransform.SetActive(false);
-              WindowsManager.Instance.isCarMode = true;
+              WindowsManager.Instance.isCarMode = false;
         }
 
         if (ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
