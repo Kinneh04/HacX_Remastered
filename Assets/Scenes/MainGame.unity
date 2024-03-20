@@ -2695,6 +2695,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 108990645}
   m_CullTransparentMesh: 1
+--- !u!1 &117646846
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 117646847}
+  m_Layer: 0
+  m_Name: CarParentTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &117646847
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117646846}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &132141368
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,6 +4175,18 @@ MonoBehaviour:
   cam: {fileID: 1114312052}
   PrecisionNearClippingPlane: -12
   OriginalNearClippingPlane: 0
+  SideUI: {fileID: 1925145897}
+  isCarMode: 0
+  CarPreciseWindow:
+    windowThickness: 10
+    windowLength: 2500
+    windowHeight: 1500
+    breakingStress: 18
+    PrecisionMarker: {fileID: 0}
+    WindowGO: {fileID: 0}
+    RicochetMarker: {fileID: 0}
+    reflectionAngle: 0
+    estimatedAngleOfIncidence: 0
 --- !u!4 &219114920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6478540274563683045, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
@@ -13732,8 +13775,7 @@ RectTransform:
   m_Children:
   - {fileID: 616877011}
   - {fileID: 1347647473}
-  - {fileID: 1753191741}
-  - {fileID: 876842252}
+  - {fileID: 1925145898}
   m_Father: {fileID: 927122961}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19426,12 +19468,12 @@ RectTransform:
   m_Children:
   - {fileID: 1140118184}
   - {fileID: 261729703}
-  m_Father: {fileID: 653957904}
-  m_RootOrder: 3
+  m_Father: {fileID: 1925145898}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -436.5, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &881683778
@@ -34654,12 +34696,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1956747545}
-  m_Father: {fileID: 653957904}
-  m_RootOrder: 2
+  m_Father: {fileID: 1925145898}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 888, y: 0}
+  m_AnchoredPosition: {x: 451.5, y: 0}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1765743768
@@ -38227,6 +38269,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1924660609}
   m_CullTransparentMesh: 1
+--- !u!1 &1925145897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1925145898}
+  m_Layer: 5
+  m_Name: SideUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1925145898
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925145897}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1753191741}
+  - {fileID: 876842252}
+  m_Father: {fileID: 653957904}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 436.5, y: 0}
+  m_SizeDelta: {x: 973, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1932005669
 GameObject:
   m_ObjectHideFlags: 0
@@ -41694,9 +41774,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ParsedBuildingDatablock: []
   ParsedEnvDatablock: []
+  ParsedCarDatablock:
+    PosX: 0
+    PosY: 0
+    PosZ: 0
+    RotX: 0
+    RotY: 0
+    RotZ: 0
+    ScaleX: 0
+    ScaleY: 0
+    ScaleZ: 0
+    CarIndexChosen: 0
   SavedScenario:
+    SavedScenarioType: 0
     JsonSave: 
     EnvironmentJSON: 
+    CarJson: 
     NameOfScenario: 
     DistanceBetweenBuildings: 0
   Buildings:
@@ -41706,6 +41799,7 @@ MonoBehaviour:
   ScenarioDetails: {fileID: 1626240299}
   culpritsManager: {fileID: 1048445635}
   BuildingScenarioScreen: {fileID: 867167046}
+  CarTransform: {fileID: 117646846}
   CustomEnvironmentThings: []
 --- !u!1 &2063522160
 GameObject:

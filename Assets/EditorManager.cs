@@ -689,7 +689,7 @@ public class EditorManager : MonoBehaviour
             };
             EnvironmentDatablock.Add(savableEnv);
         }
-
+        string car = "";
         if(typeOfScenario == ScenarioTypes.Car)
         {
             SavableCarDetails carDetails = new()
@@ -705,6 +705,7 @@ public class EditorManager : MonoBehaviour
                 ScaleY = CarTransformParent.transform.localScale.y,
                 ScaleZ = CarTransformParent.transform.localScale.z,
             };
+            car = JsonConvert.SerializeObject(carDetails);
         }
         //string s = JsonConvert.SerializeObject(editorEnvironmentManager.InstantiatedProps);
         string env = JsonConvert.SerializeObject(EnvironmentDatablock);
@@ -712,6 +713,7 @@ public class EditorManager : MonoBehaviour
         {
             SavedScenarioType = typeOfScenario,
             JsonSave = PreviewSavedJsonString,
+            CarJson = car,
             EnvironmentJSON = env,
             NameOfScenario = ScenarioNameInput.text,
             DistanceBetweenBuildings = currentDistance

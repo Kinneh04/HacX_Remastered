@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3433129987766332954}
   - component: {fileID: 7845931815301534671}
   - component: {fileID: 3292981329507613218}
+  - component: {fileID: 6570532367086132671}
   m_Layer: 0
   m_Name: Fit
-  m_TagString: Untagged
+  m_TagString: Window
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -83,6 +84,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6570532367086132671
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399790813947440277}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2931181920070049047, guid: 5629a50338b260549b31d5fa2b848181, type: 3}
 --- !u!1 &5201615956225742217
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,7 +109,7 @@ GameObject:
   - component: {fileID: 4856017893456252723}
   m_Layer: 0
   m_Name: HondaFitPrefab
-  m_TagString: Untagged
+  m_TagString: SelectableCar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

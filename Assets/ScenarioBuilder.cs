@@ -75,19 +75,21 @@ public class ScenarioBuilder : MonoBehaviour
 
         if(SavedScenario.SavedScenarioType == EditorManager.ScenarioTypes.Car)
         {
-            Buildings[1].gameObject.SetActive(false);
+            Buildings[0].gameObject.SetActive(false);
             CarTransform.SetActive(true);
-            CarTransform.transform.position = new Vector3(ParsedCarDatablock.PosX, ParsedCarDatablock.PosY, ParsedCarDatablock.PosZ);
-            Quaternion newRotation = Quaternion.Euler(ParsedCarDatablock.RotX, ParsedCarDatablock.RotX, ParsedCarDatablock.RotX);
+            CarTransform.transform.position = new Vector3(ParsedCarDatablock.PosZ, ParsedCarDatablock.PosY, ParsedCarDatablock.PosX);
+            Quaternion newRotation = Quaternion.Euler(ParsedCarDatablock.RotZ, ParsedCarDatablock.RotY - 90, ParsedCarDatablock.RotX);
             CarTransform.transform.rotation = newRotation;
             CarTransform.transform.localScale = new Vector3(ParsedCarDatablock.ScaleX, ParsedCarDatablock.ScaleY, ParsedCarDatablock.ScaleZ);
 
             GameObject SelectedCar = Instantiate(DontDestroyCarTypes.Instance.Cars[ParsedCarDatablock.CarIndexChosen].CarModel);
             SelectedCar.transform.SetParent(CarTransform.transform, false);
+            WindowsManager.Instance.isCarMode = true;
         }
         else
         {
             CarTransform.SetActive(false);
+              WindowsManager.Instance.isCarMode = true;
         }
 
         if (ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
