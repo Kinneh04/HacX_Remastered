@@ -61,6 +61,8 @@ public class WindowsManager : MonoBehaviour
     [Header("Camera")]
     public CinemachineVirtualCamera cam;
     public float PrecisionNearClippingPlane, OriginalNearClippingPlane;
+
+    public GameObject SideUI;
     private void Start()
     {
         OriginalCamPosition = MainVCamera.transform.position;
@@ -99,6 +101,7 @@ public class WindowsManager : MonoBehaviour
         ScenarioDetailsUI.SetActive(false);
         ScenarioDropdownUI.SetActive(false);
         cam.m_Lens.NearClipPlane = PrecisionNearClippingPlane;
+        SideUI.SetActive(false);
         if (!isRegisteredPreciseWindow(Target))
         {
             Precise_Window PW = new Precise_Window()
@@ -170,6 +173,7 @@ public class WindowsManager : MonoBehaviour
         isPrecisionMode = false;
         cam.m_Lens.NearClipPlane = OriginalNearClippingPlane;
         ScenarioDropdownUI.SetActive(true);
+        SideUI.SetActive(true);
     }
 
     private void Awake()

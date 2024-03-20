@@ -11,6 +11,14 @@ using RuntimeHandle;
 public class EditorManager : MonoBehaviour
 {
 
+    //[Header("TypeOfScenario")]
+    public enum ScenarioTypes
+    {
+        Building, Car
+    }
+
+    public ScenarioTypes typeOfScenario;
+
     public bool isInEditMode = false;
     public Color OriginalCulpritBuildingColor, OriginalTargetBuildingColor;
     public List<CustomBuilding> CurrentBuildingsOnEditorDisplay = new();
@@ -79,6 +87,26 @@ public class EditorManager : MonoBehaviour
 
     public bool freecamMode = false;
     public GameObject Freecam;
+    [Header("CarSpecific")]
+    public GameObject CarSettingsButton;
+    public GameObject CarTransformParent;
+    public GameObject CurrentlySelectedCar;
+    public GameObject CarSideUI;
+    public void ChangeToBuildingScenario()
+    {
+        ChangeScenarioType(ScenarioTypes.Building);
+    }
+
+    public void ChangeToCarScenario()
+    {
+        ChangeScenarioType(ScenarioTypes.Car);
+    }
+
+    public void ChangeScenarioType(ScenarioTypes T)
+    {
+        typeOfScenario = T;
+        ResetToDefaults();
+    }
 
     public void ToggleEditorFreecam(bool t)
     {
@@ -99,8 +127,7 @@ public class EditorManager : MonoBehaviour
 
     public void ResetFreecam()
     {
-        Freecam.transform.position = CameraPerspectives[0].transform.position;
-        Freecam.transform.rotation = CameraPerspectives[0].transform.rotation;
+        Freecam.transform.SetPositionAndRotation(CameraPerspectives[0].transform.position, CameraPerspectives[0].transform.rotation);
     }
 
     [Header("Stencils")]
@@ -124,7 +151,10 @@ public class EditorManager : MonoBehaviour
 
     public void UpdateDistance()
     {
-        Vector3 PosA = CurrentBuildingsOnEditorDisplay[0].transform.position;
+        Vector3 PosA = Vector3.zero;
+        if (typeOfScenario == ScenarioTypes.Car)
+            PosA = CarTransformParent.transform.position;
+        else PosA = CurrentBuildingsOnEditorDisplay[0].transform.position;
         PosA.y = 1;
         Vector3 PosB = CurrentBuildingsOnEditorDisplay[1].transform.position;
         PosB.y = 1;
@@ -249,22 +279,40 @@ public class EditorManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
-        int i = 0;
-        float rot = 0;
-        foreach(CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
+        if (typeOfScenario == ScenarioTypes.Building)
         {
-            Vector3 Distance = new Vector3(i, 0, 0);
-            Vector3 rota = new Vector3(0, rot, 0);
-            OverrideBuildingFloors(CB, DefaultFloorCount);
-            OverrideBuildingTransforms(CB, Distance, rota);
-           
-            i -= 40;
-            rot += 180;
+            CarTransformParent.SetActive(false);
+            CurrentBuildingsOnEditorDisplay[0].gameObject.SetActive(true);
+            // Reset building positions;
+            int i = 0;
+            float rot = 0;
+            foreach (CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
+            {
+                Vector3 Distance = new Vector3(i, 0, 0);
+                Vector3 rota = new Vector3(0, rot, 0);
+                OverrideBuildingFloors(CB, DefaultFloorCount);
+                OverrideBuildingTransforms(CB, Distance, rota);
 
-            CB.GetComponent<ModularHDB>().RefreshFloors();
-            editorEnvironmentManager.ClearAllProps();
+                i -= 40;
+                rot += 180;
+
+                CB.GetComponent<ModularHDB>().RefreshFloors();
+                editorEnvironmentManager.ClearAllProps();
+            }
+            ResetFreecam();
         }
-        ResetFreecam();
+        else
+        {
+            // spawn car and reset their positions;
+            CarTransformParent.SetActive(true);
+            CarTransformParent.transform.position = new Vector3(0, 1.25f, 0);
+            CarTransformParent.transform.rotation = Quaternion.identity;
+            CurrentBuildingsOnEditorDisplay[0].gameObject.SetActive(false);
+
+            CurrentlySelectedCar = Instantiate(DontDestroyCarTypes.Instance.Cars[0].CarModel, Vector3.zero, Quaternion.identity);
+           
+            CurrentlySelectedCar.transform.SetParent(CarTransformParent.transform, false);
+        }
     }
 
     public void OnChangeAngleOfCurrentBuilding()
@@ -417,6 +465,8 @@ public class EditorManager : MonoBehaviour
             // Check if the hit object has the tag "window"
             if (hit.collider.CompareTag("EditorHDB") && canSelect)
             {
+
+                // Selected an editor building;
                 if (CurrentlySelectedBuilding == hit.collider.GetComponent<CustomBuilding>()) return;
                 CurrentlySelectedBuilding = hit.collider.GetComponent<CustomBuilding>();
                 if (CurrentlySelectedBuilding != null)
@@ -440,6 +490,15 @@ public class EditorManager : MonoBehaviour
 
                 runtimeTransformHandle.target = CurrentlySelectedBuilding.transform;
                 runtimeTransformGameObj.SetActive(true);
+            }
+            else if(hit.collider.CompareTag("EditorCar") & canSelect)
+            {
+                // Selected a editor car;
+                BuildingDetailsUI.SetActive(false);
+
+                runtimeTransformHandle.target = CarTransformParent.transform;
+                runtimeTransformGameObj.SetActive(true);
+
             }
             else if (hit.collider.CompareTag("EditorEnvironmentProp") && isEnvironmentalMode)
             {
