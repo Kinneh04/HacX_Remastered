@@ -91,7 +91,7 @@ public class EditorManager : MonoBehaviour
     public GameObject CarSettingsButton;
     public GameObject CarTransformParent;
     public GameObject CurrentlySelectedCar;
-    public GameObject CarSideUI;
+    public GameObject CarDetailsUI;
     public void ChangeToBuildingScenario()
     {
         ChangeScenarioType(ScenarioTypes.Building);
@@ -162,8 +162,9 @@ public class EditorManager : MonoBehaviour
 
         DistanceLineRenderer.SetPosition(0, PosA);
         DistanceLineRenderer.SetPosition(1, PosB);
-        currentDistance = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
-        
+        if(typeOfScenario == ScenarioTypes.Building)
+            currentDistance = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
+        else currentDistance = Vector3.Distance(CarTransformParent.transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
         DistanceText.text = "Distance: " + currentDistance.ToString("F1") + "m";
     }
 
@@ -279,6 +280,9 @@ public class EditorManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
+        runtimeTransformGameObj.SetActive(false);
+        runtimeTransformHandle.target = null;
+
         if (typeOfScenario == ScenarioTypes.Building)
         {
             CarTransformParent.SetActive(false);
@@ -495,7 +499,8 @@ public class EditorManager : MonoBehaviour
             {
                 // Selected a editor car;
                 BuildingDetailsUI.SetActive(false);
-
+                CarDetailsUI.SetActive(true);
+                MainButtonsUI.SetActive(false);
                 runtimeTransformHandle.target = CarTransformParent.transform;
                 runtimeTransformGameObj.SetActive(true);
 
@@ -533,6 +538,14 @@ public class EditorManager : MonoBehaviour
         CurrentlySelectedBuilding.numFloors = SavedFloors;
 
         OnDeselectBuilding();
+    }
+
+    public void OnDeselectCar()
+    {
+        CurrentlySelectedBuilding = null;
+        CarDetailsUI.SetActive(false);
+        MainButtonsUI.SetActive(true);
+        runtimeTransformGameObj.SetActive(false);
     }
 
     //public void OnRevertBuildingDetails()
