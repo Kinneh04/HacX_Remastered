@@ -11,6 +11,14 @@ using RuntimeHandle;
 public class EditorManager : MonoBehaviour
 {
 
+    //[Header("TypeOfScenario")]
+    public enum ScenarioTypes
+    {
+        Building, Car
+    }
+
+    public ScenarioTypes typeOfScenario;
+
     public bool isInEditMode = false;
     public Color OriginalCulpritBuildingColor, OriginalTargetBuildingColor;
     public List<CustomBuilding> CurrentBuildingsOnEditorDisplay = new();
@@ -80,6 +88,78 @@ public class EditorManager : MonoBehaviour
     public bool freecamMode = false;
     public GameObject Freecam;
 
+    [Header("Stencils")]
+    public List<GameObject> stencils = new();
+
+    [Header("Gizmos")]
+    public GameObject runtimeTransformGameObj;
+    public RuntimeTransformHandle runtimeTransformHandle;
+    private int runtimeTransformLayer = 6;
+    private int runtimeTransformLayerMask;
+
+    [Header("Distance")]
+    float currentDistance;
+    public TMP_Text DistanceText;
+    public LineRenderer DistanceLineRenderer;
+
+    [Header("OverrideSave")]
+    public GameObject OverrideSaveUI;
+    public TMP_Text NameOfSaveText;
+
+
+
+    [Header("CarSpecific")]
+
+    public GameObject CarSettingsButton;
+    public GameObject CarTransformParent;
+    public GameObject CurrentlySelectedCar;
+    public GameObject CarDetailsUI;
+    public int CurrentCarIndex;
+
+    public GameObject CarButtonPrefab;
+    public Transform CarButtonPrefabParent;
+    public List<GameObject> InstantiatedCarButtons = new();
+    public GameObject CarSettingsUI;
+
+    public void PopulateCarList()
+    {
+        foreach (GameObject GO in InstantiatedCarButtons) Destroy(GO);
+        InstantiatedCarButtons.Clear();
+        int carindex = 0;
+        foreach(Car c in DontDestroyCarTypes.Instance.Cars)
+        {
+            GameObject GO = Instantiate(CarButtonPrefab);
+            GO.transform.SetParent(CarButtonPrefabParent, false);
+
+            CarChangeButton CCB = GO.GetComponent<CarChangeButton>();
+            CCB.CarIndex = carindex;
+            CCB.CarNameText.text = c.carName;
+            CCB.CarButton.onClick.AddListener(delegate { ChangeCars(CCB.CarIndex); });
+            carindex++;
+
+            //GO.GetComponentInChildren<TMP_Text>().text = c.carName;
+            //GO.GetComponent<Button>().onClick.AddListener()
+        }
+    }
+    public void ChangeToBuildingScenario()
+    {
+        ChangeScenarioType(ScenarioTypes.Building);
+        CarSettingsButton.SetActive(false);
+    }
+
+    public void ChangeToCarScenario()
+    {
+
+        ChangeScenarioType(ScenarioTypes.Car);
+        CarSettingsButton.SetActive(true);
+    }
+
+    public void ChangeScenarioType(ScenarioTypes T)
+    {
+        typeOfScenario = T;
+        ResetToDefaults();
+    }
+
     public void ToggleEditorFreecam(bool t)
     {
         CameraPerspectives[camIndex].SetActive(!t);
@@ -99,32 +179,16 @@ public class EditorManager : MonoBehaviour
 
     public void ResetFreecam()
     {
-        Freecam.transform.position = CameraPerspectives[0].transform.position;
-        Freecam.transform.rotation = CameraPerspectives[0].transform.rotation;
+        Freecam.transform.SetPositionAndRotation(CameraPerspectives[0].transform.position, CameraPerspectives[0].transform.rotation);
     }
 
-    [Header("Stencils")]
-    public List<GameObject> stencils = new();
-
-    [Header("Gizmos")]
-    public GameObject runtimeTransformGameObj;
-    public RuntimeTransformHandle runtimeTransformHandle;
-    private int runtimeTransformLayer = 6;
-    private int runtimeTransformLayerMask;
-
-    [Header("Distance")]
-    float currentDistance;
-    public TMP_Text DistanceText;
-    public LineRenderer DistanceLineRenderer;
-
-    [Header("OverrideSave")]
-    public GameObject OverrideSaveUI;
-    public TMP_Text NameOfSaveText;
-    
 
     public void UpdateDistance()
     {
-        Vector3 PosA = CurrentBuildingsOnEditorDisplay[0].transform.position;
+        Vector3 PosA = Vector3.zero;
+        if (typeOfScenario == ScenarioTypes.Car)
+            PosA = CarTransformParent.transform.position;
+        else PosA = CurrentBuildingsOnEditorDisplay[0].transform.position;
         PosA.y = 1;
         Vector3 PosB = CurrentBuildingsOnEditorDisplay[1].transform.position;
         PosB.y = 1;
@@ -132,8 +196,9 @@ public class EditorManager : MonoBehaviour
 
         DistanceLineRenderer.SetPosition(0, PosA);
         DistanceLineRenderer.SetPosition(1, PosB);
-        currentDistance = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
-        
+        if(typeOfScenario == ScenarioTypes.Building)
+            currentDistance = Vector3.Distance(CurrentBuildingsOnEditorDisplay[0].transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
+        else currentDistance = Vector3.Distance(CarTransformParent.transform.position, CurrentBuildingsOnEditorDisplay[1].transform.position);
         DistanceText.text = "Distance: " + currentDistance.ToString("F1") + "m";
     }
 
@@ -151,6 +216,8 @@ public class EditorManager : MonoBehaviour
         runtimeTransformHandle.positionSnap = new Vector3(0.1f, 0.1f, 0.1f);
         runtimeTransformHandle.scaleSnap = new Vector3(0.1f, 0.1f, 0.1f);
         runtimeTransformGameObj.SetActive(false);
+
+        PopulateCarList();
     }
 
     public void BuildMapScenario(List<GameObject> BuildingPositions, float calculatedDistance)
@@ -209,6 +276,22 @@ public class EditorManager : MonoBehaviour
         }
     }
 
+    public void OnClickOpenCarSettingsUI()
+    {
+        CarSettingsUI.SetActive(true);
+        MainButtonsUI.SetActive(false);
+        canSelect = false;
+       
+    }
+
+    public void OnClickCloseCarSettingsUI()
+    {
+        runtimeTransformGameObj.SetActive(false);
+        CarSettingsUI.SetActive(false);
+        MainButtonsUI.SetActive(true);
+        canSelect = true;
+    }
+
    
     public void OnClickOpenEnvironmentUI()
     {
@@ -249,22 +332,56 @@ public class EditorManager : MonoBehaviour
 
     public void ResetToDefaults()
     {
-        int i = 0;
-        float rot = 0;
-        foreach(CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
-        {
-            Vector3 Distance = new Vector3(i, 0, 0);
-            Vector3 rota = new Vector3(0, rot, 0);
-            OverrideBuildingFloors(CB, DefaultFloorCount);
-            OverrideBuildingTransforms(CB, Distance, rota);
-           
-            i -= 40;
-            rot += 180;
+        runtimeTransformGameObj.SetActive(false);
+        runtimeTransformHandle.target = null;
 
-            CB.GetComponent<ModularHDB>().RefreshFloors();
-            editorEnvironmentManager.ClearAllProps();
+        if (typeOfScenario == ScenarioTypes.Building)
+        {
+            CarTransformParent.SetActive(false);
+            CurrentBuildingsOnEditorDisplay[0].gameObject.SetActive(true);
+            // Reset building positions;
+            int i = 0;
+            float rot = 0;
+            foreach (CustomBuilding CB in CurrentBuildingsOnEditorDisplay)
+            {
+                Vector3 Distance = new Vector3(i, 0, 0);
+                Vector3 rota = new Vector3(0, rot, 0);
+                OverrideBuildingFloors(CB, DefaultFloorCount);
+                OverrideBuildingTransforms(CB, Distance, rota);
+
+                i -= 40;
+                rot += 180;
+
+                CB.GetComponent<ModularHDB>().RefreshFloors();
+                editorEnvironmentManager.ClearAllProps();
+            }
+            ResetFreecam();
         }
-        ResetFreecam();
+        else
+        {
+            // spawn car and reset their positions;
+            CarTransformParent.SetActive(true);
+            CarTransformParent.transform.position = new Vector3(0, 1.25f, 0);
+            CarTransformParent.transform.rotation = Quaternion.identity;
+            CurrentBuildingsOnEditorDisplay[0].gameObject.SetActive(false);
+
+            CurrentlySelectedCar = Instantiate(DontDestroyCarTypes.Instance.Cars[0].CarModel, Vector3.zero, Quaternion.identity);
+            CurrentCarIndex = 0;
+            CurrentlySelectedCar.transform.SetParent(CarTransformParent.transform, false);
+        }
+    }
+
+    public void ChangeCars(int index)
+    {
+        if (CurrentCarIndex == index) return;
+        if(CurrentlySelectedCar)
+        {
+            Destroy(CurrentlySelectedCar);
+        }
+        CurrentlySelectedCar = Instantiate(DontDestroyCarTypes.Instance.Cars[index].CarModel, Vector3.zero, Quaternion.identity);
+        CurrentCarIndex = index;
+        CurrentlySelectedCar.transform.SetParent(CarTransformParent.transform, false);
+
     }
 
     public void OnChangeAngleOfCurrentBuilding()
@@ -417,6 +534,8 @@ public class EditorManager : MonoBehaviour
             // Check if the hit object has the tag "window"
             if (hit.collider.CompareTag("EditorHDB") && canSelect)
             {
+
+                // Selected an editor building;
                 if (CurrentlySelectedBuilding == hit.collider.GetComponent<CustomBuilding>()) return;
                 CurrentlySelectedBuilding = hit.collider.GetComponent<CustomBuilding>();
                 if (CurrentlySelectedBuilding != null)
@@ -440,6 +559,17 @@ public class EditorManager : MonoBehaviour
 
                 runtimeTransformHandle.target = CurrentlySelectedBuilding.transform;
                 runtimeTransformGameObj.SetActive(true);
+            }
+            else if(hit.collider.CompareTag("EditorCar") & canSelect)
+            {
+                // Selected a editor car;
+                BuildingDetailsUI.SetActive(false);
+             //   CarSettingsUI.SetActive(true);
+                OnClickOpenCarSettingsUI();
+              //  MainButtonsUI.SetActive(false);
+                runtimeTransformHandle.target = CarTransformParent.transform;
+                runtimeTransformGameObj.SetActive(true);
+
             }
             else if (hit.collider.CompareTag("EditorEnvironmentProp") && isEnvironmentalMode)
             {
@@ -474,6 +604,14 @@ public class EditorManager : MonoBehaviour
         CurrentlySelectedBuilding.numFloors = SavedFloors;
 
         OnDeselectBuilding();
+    }
+
+    public void OnDeselectCar()
+    {
+        CurrentlySelectedBuilding = null;
+        CarDetailsUI.SetActive(false);
+        MainButtonsUI.SetActive(true);
+        runtimeTransformGameObj.SetActive(false);
     }
 
     //public void OnRevertBuildingDetails()
@@ -514,6 +652,7 @@ public class EditorManager : MonoBehaviour
         {
             SavableBuildingDetails buildingData = new SavableBuildingDetails()
             {
+                
                 savedBuildingType = building.typeofBuilding,
                 SavedNumFloors = building.numFloors,
                 PosX = building.transform.position.x,
@@ -541,20 +680,40 @@ public class EditorManager : MonoBehaviour
                 PosX = GO.transform.position.x,
                 PosY = GO.transform.position.y,
                 PosZ = GO.transform.position.z,
-                RotX = GO.transform.rotation.x,
-                RotY = GO.transform.rotation.y,
-                RotZ = GO.transform.rotation.z,
+                RotX = GO.transform.rotation.eulerAngles.x,
+                RotY = GO.transform.rotation.eulerAngles.y,
+                RotZ = GO.transform.rotation.eulerAngles.z,
                 ScaleX = GO.transform.localScale.x,
                 ScaleY = GO.transform.localScale.y,
                 ScaleZ = GO.transform.localScale.z
             };
             EnvironmentDatablock.Add(savableEnv);
         }
+        string car = "";
+        if(typeOfScenario == ScenarioTypes.Car)
+        {
+            SavableCarDetails carDetails = new()
+            {
+                CarIndexChosen = CurrentCarIndex,
+                PosX = CarTransformParent.transform.position.x,
+                PosY = CarTransformParent.transform.position.y,
+                PosZ = CarTransformParent.transform.position.z,
+                RotX = CarTransformParent.transform.rotation.eulerAngles.x,
+                RotY = CarTransformParent.transform.rotation.eulerAngles.y,
+                RotZ = CarTransformParent.transform.rotation.eulerAngles.z,
+                ScaleX = CarTransformParent.transform.localScale.x,
+                ScaleY = CarTransformParent.transform.localScale.y,
+                ScaleZ = CarTransformParent.transform.localScale.z,
+            };
+            car = JsonConvert.SerializeObject(carDetails);
+        }
         //string s = JsonConvert.SerializeObject(editorEnvironmentManager.InstantiatedProps);
         string env = JsonConvert.SerializeObject(EnvironmentDatablock);
         Scenario newScenario = new Scenario()
         {
+            SavedScenarioType = typeOfScenario,
             JsonSave = PreviewSavedJsonString,
+            CarJson = car,
             EnvironmentJSON = env,
             NameOfScenario = ScenarioNameInput.text,
             DistanceBetweenBuildings = currentDistance
@@ -747,7 +906,8 @@ public class EditorManager : MonoBehaviour
 public class Scenario
 {
     //[WIP]
-    public string JsonSave, EnvironmentJSON;
+    public EditorManager.ScenarioTypes SavedScenarioType;
+    public string JsonSave, EnvironmentJSON, CarJson;
     public string NameOfScenario;
     public float DistanceBetweenBuildings;
 
@@ -761,6 +921,15 @@ public class SavableBuildingDetails
     public CustomBuilding.BuildingType savedBuildingType;
     public float PosX, PosY, PosZ;
     public float RotX, RotY, RotZ;
+}
+
+[System.Serializable]
+public class SavableCarDetails
+{
+    public float PosX, PosY, PosZ;
+    public float RotX, RotY, RotZ;
+    public float ScaleX, ScaleY, ScaleZ;
+    public int CarIndexChosen = 0;
 }
 
 [System.Serializable]

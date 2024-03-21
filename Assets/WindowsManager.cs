@@ -61,6 +61,13 @@ public class WindowsManager : MonoBehaviour
     [Header("Camera")]
     public CinemachineVirtualCamera cam;
     public float PrecisionNearClippingPlane, OriginalNearClippingPlane;
+
+    public GameObject SideUI;
+
+    [Header("Car")]
+    public bool isCarMode = false;
+    public Precise_Window CarPreciseWindow;
+
     private void Start()
     {
         OriginalCamPosition = MainVCamera.transform.position;
@@ -99,6 +106,8 @@ public class WindowsManager : MonoBehaviour
         ScenarioDetailsUI.SetActive(false);
         ScenarioDropdownUI.SetActive(false);
         cam.m_Lens.NearClipPlane = PrecisionNearClippingPlane;
+        SideUI.SetActive(false);
+
         if (!isRegisteredPreciseWindow(Target))
         {
             Precise_Window PW = new Precise_Window()
@@ -114,7 +123,8 @@ public class WindowsManager : MonoBehaviour
         MainUI.SetActive(false);
         WindowPrecisionUI.SetActive(true);
         canSelectWindow = false;
-        MainVCamera.Follow = Target.transform;
+        if (!isCarMode) MainVCamera.Follow = Target.transform;
+        else MainVCamera.LookAt = Target.transform;
         TargetOrthoSize = 2.5f;
          //  MainVCamera.m_Lens.OrthographicSize = 2.5f;
          Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -163,6 +173,7 @@ public class WindowsManager : MonoBehaviour
         WindowPrecisionUI.SetActive(false);
         canSelectWindow = true;
         MainVCamera.Follow = VCamOverviewFollower;
+        MainVCamera.LookAt = null;
         TargetOrthoSize = OverviewOrthoSize;
         if (CurrentlySelectedWIndow) CurrentlySelectedWIndow = null;
         MainVCamera.transform.position = OriginalCamPosition;
@@ -170,6 +181,7 @@ public class WindowsManager : MonoBehaviour
         isPrecisionMode = false;
         cam.m_Lens.NearClipPlane = OriginalNearClippingPlane;
         ScenarioDropdownUI.SetActive(true);
+        SideUI.SetActive(true);
     }
 
     private void Awake()
@@ -268,53 +280,83 @@ public class WindowsManager : MonoBehaviour
             return;
         if (Physics.Raycast(ray, out hit, raycastLayers))
         {
-            // Check if the hit object has the tag "window"
-            if (hit.collider.CompareTag("Window"))
+            //if (!isCarMode)
             {
-                RicochetMarkerHighlighter.SetActive(false);
-
-                CurrentlyHoveredWindow = hit.collider.gameObject;
-                if (isPrecisionMode && CurrentlyHoveredWindow == CurrentlySelectedPreciseWindow.WindowGO)
+                // Check if the hit object has the tag "window"
+                if (hit.collider.CompareTag("Window"))
                 {
-                    PrecisionMarkerHighlighter.SetActive(true);
-                    PrecisionMarkerHighlighter.transform.position = hit.point;
+                    RicochetMarkerHighlighter.SetActive(false);
 
-                    if(Input.GetMouseButtonDown(0))
+                    CurrentlyHoveredWindow = hit.collider.gameObject;
+                    if (isPrecisionMode && CurrentlyHoveredWindow == CurrentlySelectedPreciseWindow.WindowGO)
                     {
-                        PlacePrecisionMarker();
+                        PrecisionMarkerHighlighter.SetActive(true);
+                        PrecisionMarkerHighlighter.transform.position = hit.point;
+
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            PlacePrecisionMarker();
+                        }
                     }
-                }
-                if (!SelectedWindows.Contains(CurrentlyHoveredWindow) && canSelectWindow)
-                {
-                    Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
-                    //  originalColor = M.color;
-                    M.color = HighlightedColor;
-                }
-               
-            }
-            else
-            {
-                PrecisionMarkerHighlighter.SetActive(false);
-                //Stop hover on window
-                if (CurrentlyHoveredWindow)
-                {
-                    if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
-                        CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
-                    CurrentlyHoveredWindow = null;
-                }
-
-                if (CurrentlySelectedPreciseWindow != null && isPrecisionMode)
-                {
-                    RicochetMarkerHighlighter.SetActive(true);
-                    RicochetMarkerHighlighter.transform.position = hit.point;
-
-                    if (Input.GetMouseButtonDown(0))
+                    if (!SelectedWindows.Contains(CurrentlyHoveredWindow) && canSelectWindow)
                     {
-                        if(hit.transform.tag != "Precision")
-                            PlaceRicochetMarker(hit);
+                        Material M = CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material;
+                        //  originalColor = M.color;
+                        M.color = HighlightedColor;
                     }
+
+                }
+                else
+                {
+                    PrecisionMarkerHighlighter.SetActive(false);
+                    //Stop hover on window
+                    if (CurrentlyHoveredWindow)
+                    {
+                        if (!SelectedWindows.Contains(CurrentlyHoveredWindow))
+                            CurrentlyHoveredWindow.GetComponent<MeshRenderer>().material.color = originalColor;
+                        CurrentlyHoveredWindow = null;
+                    }
+
+                    if (CurrentlySelectedPreciseWindow != null && isPrecisionMode && !isCarMode)
+                    {
+                        RicochetMarkerHighlighter.SetActive(true);
+                        RicochetMarkerHighlighter.transform.position = hit.point;
+
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            if (hit.transform.tag != "Precision")
+                                PlaceRicochetMarker(hit);
+                        }
+                    }
+                    else
+                    {
+                        RicochetMarkerHighlighter.SetActive(false);
+                    } 
+                        
                 }
             }
+            //else
+            //{
+            //    if (hit.collider.CompareTag("SelectableCar"))
+            //    {
+            //        PrecisionMarkerHighlighter.SetActive(true);
+            //        PrecisionMarkerHighlighter.transform.position = hit.point;
+            //        if(Input.GetMouseButtonDown(0))
+            //        {
+            //            Precise_Window PW = new()
+            //            {
+            //                WindowGO = hit.collider.gameObject
+            //            };
+            //            PreciseWindows.Add(PW);
+            //            CurrentlySelectedPreciseWindow = PW;
+            //            PlacePrecisionMarker();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        PrecisionMarkerHighlighter.SetActive(false);
+            //    }
+            //}
         }
 
         if (Input.GetMouseButtonDown(0) && CurrentlyHoveredWindow && canSelectWindow)
@@ -323,8 +365,14 @@ public class WindowsManager : MonoBehaviour
           
             StartButton.SetActive(SelectedWindows.Count > 0);
         }
+     
         WindowCounter.text = "Windows Selected: " + SelectedWindows.Count;
     }
+
+    //public void ToggleCar()
+    //{
+    //    GotoPrecision()
+    //}
 }
 
 [System.Serializable]

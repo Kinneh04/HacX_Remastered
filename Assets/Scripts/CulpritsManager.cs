@@ -66,6 +66,8 @@ public class CulpritsManager : MonoBehaviour
         cameraManager.canMoveAndZoom = false;
         isSelectingCulprit = true;
         SelectedCulprit = C;
+        C.outline.OutlineColor = Color.cyan;
+        
         culpritVCam.Follow = C.transform;
         culpritVCam.m_Lens.OrthographicSize = 3.0f;
 

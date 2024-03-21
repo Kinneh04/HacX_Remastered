@@ -33,8 +33,12 @@ public class Ball : MonoBehaviour
 
     public float initDist = 0;
     public float currDist = 0;
+
+    public float preciseDist = 0;
+
     Vector2 culpritxz = Vector2.zero;
     Vector2 ricochetxz = Vector2.zero;
+    Vector2 precisexz = Vector2.zero;
 
     RaycastHit contact;
     public bool forceLower = false;
@@ -123,12 +127,14 @@ public class Ball : MonoBehaviour
 
         lineRenderer.positionCount = 0;
 
+        culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
         if (targetWindowPrecision.RicochetMarker != null)
         {
-            culpritxz = new Vector2(parentShooter.transform.position.x, parentShooter.transform.position.z);
+           
             ricochetxz = new Vector2(targetWindowPrecision.RicochetMarker.transform.position.x, targetWindowPrecision.RicochetMarker.transform.position.z);
-            initDist = Vector2.Distance(culpritxz, ricochetxz);
             
+            initDist = Vector2.Distance(culpritxz, ricochetxz);
+
             Vector3 planeNormal = -parentShooter.ShootPosition.forward;
             Vector3 planePoint = targetWindowPrecision.RicochetMarker.transform.position;
             ricochetPlane = new Plane(planeNormal, planePoint);
@@ -139,6 +145,9 @@ public class Ball : MonoBehaviour
         GameObject target = PreciseTarget.WindowGO;
         targetWindowPrecision = PreciseTarget;
         transform.position = parentShooter.ShootPosition.position;
+
+        precisexz = new Vector2(targetWindowPrecision.PrecisionMarker.transform.position.x, targetWindowPrecision.PrecisionMarker.transform.position.z);
+        preciseDist = Vector2.Distance(culpritxz, precisexz);
 
         rbody.isKinematic = false;
         hitFirstPoint = false;
@@ -167,18 +176,20 @@ public class Ball : MonoBehaviour
 
             points.Add(transform.position);
 
+            Vector2 ballxz = new Vector2(transform.position.x, transform.position.z);
+            currDist = Vector2.Distance(culpritxz, ballxz);
+
             if (targetWindowPrecision.RicochetMarker != null)
             {
-                if(!hitFirstPoint)
-                {
-                    Vector2 ballxz = new Vector2(transform.position.x, transform.position.z);
-                    currDist = Vector2.Distance(culpritxz, ballxz);
-                }
-
                 if (!hitFirstPoint && (currDist > initDist))
                 {
                     CheckRicochet();
                 }
+            }
+            if(!parentShooter.finishedCurrent && (currDist > preciseDist))
+            {
+                contactPoint = transform.position;
+                ResetBall();
             }
             if (!collided) // manually check collision
                 StartCoroutine(HandlePotentialCollision());
@@ -313,6 +324,7 @@ public class Ball : MonoBehaviour
 
         if (targetWindowPrecision.PrecisionMarker != null)
         {
+            if(currDist > p)
             // see if hit window
             contactPoint = contact.point;
             if (Vector3.Distance(contact.point, targetWindowPrecision.PrecisionMarker.transform.position) > 0.5f * targetWindowPrecision.PrecisionMarker.transform.localScale.x)

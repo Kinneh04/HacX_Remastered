@@ -17,6 +17,8 @@ TagManager:
   - Selectable
   - Roof
   - Precision
+  - EditorCar
+  - SelectableCar
   layers:
   - Default
   - TransparentFX

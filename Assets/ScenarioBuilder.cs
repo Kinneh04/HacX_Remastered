@@ -1,14 +1,14 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Newtonsoft.Json;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 public class ScenarioBuilder : MonoBehaviour
 {
     [Header("Datablocks")]
     [SerializeField] public List<SavableBuildingDetails> ParsedBuildingDatablock;
     [SerializeField] List<SavableEnvironmentDetails> ParsedEnvDatablock;
+    public SavableCarDetails ParsedCarDatablock;
     [SerializeField] Scenario SavedScenario;
     [Header("Scenario builder")]
     public List<Transform> Buildings = new();
@@ -17,6 +17,9 @@ public class ScenarioBuilder : MonoBehaviour
     public TMP_Text ScenarioDetails;
     public CulpritsManager culpritsManager;
     public GameObject BuildingScenarioScreen;
+
+    [Header("Car")]
+    public GameObject CarTransform;
 
     public List<GameObject> CustomEnvironmentThings = new();
 
@@ -70,6 +73,26 @@ public class ScenarioBuilder : MonoBehaviour
 
         }
 
+        if(SavedScenario.SavedScenarioType == EditorManager.ScenarioTypes.Car)
+        {
+            Buildings[0].gameObject.SetActive(false);
+            CarTransform.SetActive(true);
+            CarTransform.transform.position = new Vector3(ParsedCarDatablock.PosZ, ParsedCarDatablock.PosY, ParsedCarDatablock.PosX);
+            Quaternion newRotation = Quaternion.Euler(ParsedCarDatablock.RotZ, ParsedCarDatablock.RotY, ParsedCarDatablock.RotX);
+            CarTransform.transform.rotation = newRotation;
+            CarTransform.transform.localScale = new Vector3(ParsedCarDatablock.ScaleX, ParsedCarDatablock.ScaleY, ParsedCarDatablock.ScaleZ);
+
+            GameObject SelectedCar = Instantiate(DontDestroyCarTypes.Instance.Cars[ParsedCarDatablock.CarIndexChosen].CarModel);
+            SelectedCar.transform.SetParent(CarTransform.transform, false);
+            SelectedCar.transform.Rotate(new Vector3(0, -90, 0));
+            WindowsManager.Instance.isCarMode = true;
+        }
+        else
+        {
+            CarTransform.SetActive(false);
+              WindowsManager.Instance.isCarMode = false;
+        }
+
         if (ParsedEnvDatablock != null && ParsedEnvDatablock.Count > 0)
             for (int i = 0; i < ParsedEnvDatablock.Count; i++)
             {
@@ -108,6 +131,11 @@ public class ScenarioBuilder : MonoBehaviour
         SavedScenario = scenario;
         ParsedBuildingDatablock = JsonConvert.DeserializeObject<List<SavableBuildingDetails>>(SavedScenario.JsonSave);
         ParsedEnvDatablock = JsonConvert.DeserializeObject<List<SavableEnvironmentDetails>>(SavedScenario.EnvironmentJSON);
+        if (SavedScenario.SavedScenarioType == EditorManager.ScenarioTypes.Car)
+        {
+            ParsedCarDatablock = JsonConvert.DeserializeObject<SavableCarDetails>(SavedScenario.CarJson);
+        }
+
         BuildScenario();
     }
 }

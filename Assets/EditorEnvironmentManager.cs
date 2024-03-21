@@ -137,20 +137,21 @@ public class EditorEnvironmentManager : MonoBehaviour
         foreach (Transform child in model.transform)
         {
             // Check if the child has a MeshRenderer component
-            MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
+            MeshFilter meshRenderer = child.GetComponent<MeshFilter>();
             if (meshRenderer != null)
             {
                 // Add a MeshCollider to the child
-                BoxCollider meshCollider = child.gameObject.GetComponent<BoxCollider>();
+          //      BoxCollider meshCollider = child.gameObject.GetComponent<BoxCollider>();
 
                 child.gameObject.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
-               
+                MeshCollider BC = model.AddComponent<MeshCollider>();
+              //  BC.isTrigger = true;
+                BC.sharedMesh = meshRenderer.mesh;
             }
         }
 
-        BoxCollider BC = model.AddComponent<BoxCollider>();
-    //    BC.sharedMesh = model.GetComponent<BoxCollider>().mesh;
-        BC.isTrigger = true;
+      
+     
         model.layer = LayerMask.NameToLayer("EditorEnvironmentProp");
         model.tag = "EditorEnvironmentProp";
     }
