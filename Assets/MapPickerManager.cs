@@ -13,6 +13,7 @@ public class MapPickerManager : MonoBehaviour
     public GameObject MappickerUI, MapPickerWarningUI; bool saidOnce = false;
     public GameObject EditorSceneObjects, MapPickerSceneObjects;
     public GameObject MainCamera, PickerCamera;
+    public Vector3 PickerCameraOriginalPosition, PickerCameraOriginalRotation;
     public AbstractMap map;
 
     [Header("Selection and related UI")]
@@ -33,6 +34,21 @@ public class MapPickerManager : MonoBehaviour
     [Header("Building")]
     public EditorManager editorManager;
     public float distanceCalculated;
+
+    private void Start()
+    {
+        PickerCameraOriginalPosition = PickerCamera.transform.position;
+        PickerCameraOriginalRotation = PickerCamera.transform.rotation.eulerAngles;
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            PickerCamera.transform.position = PickerCameraOriginalPosition;
+            PickerCamera.transform.rotation = Quaternion.Euler(PickerCameraOriginalRotation);
+        }
+    }
 
     public void EraseCollisionLists()
     {
