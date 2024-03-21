@@ -2256,6 +2256,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WindowSpawnArea (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6478540274563683046, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7022577592877071347, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
       propertyPath: Parent
       value: 
@@ -6945,6 +6949,10 @@ PrefabInstance:
     - target: {fileID: 6478540274563683046, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
       propertyPath: m_Name
       value: WindowSpawnArea
+      objectReference: {fileID: 0}
+    - target: {fileID: 6478540274563683046, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7022577592877071347, guid: 80ec60a82185a2f44bf6f6a29e3a6467, type: 3}
       propertyPath: Parent
