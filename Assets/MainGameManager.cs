@@ -169,6 +169,11 @@ public class MainGameManager : MonoBehaviour
             PopupUIManager.Instance.ShowPopup("Error!", " Simulation cannot start. Please select at least one window.");
             return;
         }
+        else if (WindowsManager.Instance.PreciseWindows.Count >= 4)
+        {
+            PopupUIManager.Instance.ShowPopup("Warning!", "(for the sake of the demo) Please dont select so many windows!");
+            return;
+        }
         PreSimUI.SetActive(false);
         ProgressUI.SetActive(true);
         Text_CurrWindow.text = "Window: " + 1.ToString() + "/" + WindowsManager.Instance.SelectedWindows.Count;
