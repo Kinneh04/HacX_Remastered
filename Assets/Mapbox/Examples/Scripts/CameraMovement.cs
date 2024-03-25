@@ -66,6 +66,7 @@ namespace Mapbox.Examples
 
 		void HandleMouseAndKeyBoard()
 		{
+			if(MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
 			if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
 			{
 				var mousePosition = Input.mousePosition;
