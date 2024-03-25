@@ -240,21 +240,21 @@ public class WindowsManager : MonoBehaviour
         if (CurrentlySelectedPreciseWindow.RicochetMarker) Destroy(CurrentlySelectedPreciseWindow.RicochetMarker);
         GameObject GO = Instantiate(RicochetMarkerPrefab, RicochetMarkerHighlighter.transform.position, Quaternion.identity);
         GO.transform.localScale = RicochetMarkerPrefab.transform.localScale;
-        //GO.GetComponent<Precise_Window>().CalculateRequiredAngleofIncidence();
+
         GO.transform.right = hit.normal;
         CurrentlySelectedPreciseWindow.RicochetMarker = GO;
-        CurrentlySelectedPreciseWindow.ricochetPlane =  new Plane(GO.transform.right, GO.transform.position); ;
+        CurrentlySelectedPreciseWindow.CalculateRequiredAngleOfIncidence();
+
+        //CurrentlySelectedPreciseWindow.ricochetPlane =  new Plane(GO.transform.right, GO.transform.position);
         OnUpdateConfidenceScale();
 
     }
     public void OnUpdateConfidenceScale()
     {
         CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
+
         if(CurrentlySelectedPreciseWindow.RicochetMarker != null)
             CurrentlySelectedPreciseWindow.RicochetMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
-        //Vector3 newScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
-        //CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = newScale;
-        //CurrentlySelectedPreciseWindow.RicochetMarker.transform.localScale = newScale;
     }
 
     private void Update()
@@ -380,6 +380,7 @@ public class WindowsManager : MonoBehaviour
 [System.Serializable]
 public class Precise_Window
 {
+    // btw ricochetmarker.up is actl richochetmaarker.right, the raycast normal is applied to ricochetmarker.right, idk y but if ur trying to fix it its set on instantiation
     public float windowThickness = 10f; // window thickness in mm
     public float windowLength = 2500f;
     public float windowHeight = 1500f;
@@ -390,10 +391,10 @@ public class Precise_Window
 
     public GameObject RicochetMarker;
     public Plane ricochetPlane;
-    public float reflectionAngle = 0;
-    public float estimatedAngleOfIncidence = 0;
 
-    public void CalculateRequiredAngleofIncidence()
+    public float estimatedAngleOfIncidence = 0;
+    public Vector3 ricoPreciseDir;
+    public void CalculateRequiredAngleOfIncidence()
     {
         if(RicochetMarker == null)
         {
@@ -401,7 +402,8 @@ public class Precise_Window
             return;
         }
         Vector3 reflectVector = Vector3.Reflect(PrecisionMarker.transform.position - RicochetMarker.transform.position, RicochetMarker.transform.up);
-        reflectionAngle = Vector3.Angle(RicochetMarker.transform.up, reflectVector);
-        estimatedAngleOfIncidence = reflectionAngle;
+        estimatedAngleOfIncidence = Vector3.Angle(RicochetMarker.transform.right, reflectVector);
+
+        ricoPreciseDir = (PrecisionMarker.transform.position - RicochetMarker.transform.position).normalized;
     }
 }

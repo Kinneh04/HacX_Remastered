@@ -209,6 +209,17 @@ public class Culprit : MonoBehaviour
         Vector3 origin = ShootPosition.position;
         Vector3 direction = origin - target.transform.position;
 
+        if(windows[currentTarget].RicochetMarker != null)
+        {
+            Vector3 dirxz = new Vector3(direction.x, 0, direction.z);
+            Vector3 ricoxz = new Vector3(windows[currentTarget].ricoPreciseDir.x, 0, windows[currentTarget].ricoPreciseDir.z);
+
+            float angleFromPoint = Vector3.Angle(-dirxz.normalized, ricoxz);
+            if (angleFromPoint > 20)
+                return false;
+        }
+
+
         float maxDistance = Vector3.Distance(origin, target.transform.position);
 
         RaycastHit hit;
