@@ -34998,7 +34998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: spawnOnStart
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: numberOfAreas
@@ -37032,13 +37032,13 @@ GameObject:
   - component: {fileID: 1878687573}
   - component: {fileID: 1878687572}
   - component: {fileID: 1878687571}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BallNet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1878687571
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -38814,7 +38814,7 @@ PrefabInstance:
       objectReference: {fileID: 1160119625}
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: spawnOnStart
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4787422746501831964, guid: f73074fa56582654f81f2a43ace0d3ff, type: 3}
       propertyPath: numberOfAreas
