@@ -8,7 +8,7 @@ public class MouseLayerScroll : MonoBehaviour
     public int UILayer = 5;
     private void Update()
     {
-        print(IsPointerOverUIElement() ? "Over UI" : "Not over UI");
+       // print(IsPointerOverUIElement() ? "Over UI" : "Not over UI");
     }
 
     private void Awake()

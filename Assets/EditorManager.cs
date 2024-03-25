@@ -851,8 +851,9 @@ public class EditorManager : MonoBehaviour
             }
             GizmosInstructions.SetActive(false);
         }
-     //   if (IsPointerOverUIElement()) return;
+        //   if (IsPointerOverUIElement()) return;
         // Check for scroll inpu t
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Adjust orthographic size based on scroll input
