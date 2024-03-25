@@ -215,7 +215,7 @@ public class Culprit : MonoBehaviour
             Vector3 ricoxz = new Vector3(windows[currentTarget].ricoPreciseDir.x, 0, windows[currentTarget].ricoPreciseDir.z);
 
             float angleFromPoint = Vector3.Angle(-dirxz.normalized, ricoxz);
-            if (angleFromPoint > 20)
+            if (angleFromPoint > DontDestroyOnLoadSettings.Instance.angleThreshold)
                 return false;
         }
 
@@ -236,7 +236,6 @@ public class Culprit : MonoBehaviour
             {
                 // Raycast hit something else, so the object cannot see the target
                 pointSeeCulprit = false;
-                //Debug.Log(this.name + " | " + hit.transform.gameObject.name);
             }
         }
         else
@@ -246,10 +245,8 @@ public class Culprit : MonoBehaviour
         }
 
         // check to see if the culprit can see point
-        //origin = ShootPosition.position;
         direction = target.transform.position - origin;
 
-        //maxDistance = Vector3.Distance(origin, target.transform.position);
         //hit everything but culprit layer
         if (Physics.Raycast(origin, direction, out hit, maxDistance, ~layerMask))
         {
@@ -263,7 +260,6 @@ public class Culprit : MonoBehaviour
             {
                 // Raycast hit something else, so the object cannot see the target
                 culpritSeePoint = false;
-                //Debug.Log(this.name + " | " + hit.transform.gameObject.name);
             }
         }
         else

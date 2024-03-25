@@ -26,6 +26,7 @@ public class DontDestroyOnLoadSettings : MonoBehaviour
     public int minVelocity;
     public int maxVelocity;
     public int velocityIncrement;
+    public float angleThreshold;
 
     [Header("BuildingToLoad")]
     public Scenario LoadedBuilding;

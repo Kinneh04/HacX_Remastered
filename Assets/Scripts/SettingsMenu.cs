@@ -53,6 +53,9 @@ public class SettingsMenu : MonoBehaviour
     [Header("Position Range")]
     public TMP_InputField positionInputField;
 
+    [Header("AngleThreshold")]
+    public TMP_InputField angleThresholdInputField;
+
     [Header("Ball Presets")]
     public TMP_Dropdown ballDropdown;
     public BallPreset[] ballPresets;
@@ -118,6 +121,7 @@ public class SettingsMenu : MonoBehaviour
         densityInputField.text = settingsManager.density.ToString();
         diameterInputField.text = settingsManager.diameter.ToString();
         positionInputField.text = settingsManager.positionRange.ToString();
+        angleThresholdInputField.text = settingsManager.angleThreshold.ToString("F1");
     }
 
     public void ParseCurrentValuesIntoSettings()
@@ -222,7 +226,6 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newDensity) && newDensity > 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.density = newDensity;
         }
         else
@@ -237,13 +240,12 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newDiameter) && newDiameter > 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.diameter = newDiameter;
         }
         else
         {
             settingsManager.diameter = 0.01f;
-            Debug.LogError("Invalid input for density. Please enter a valid number.");
+            Debug.LogError("Invalid input for diameter. Please enter a valid number.");
         }
         ParseSettingsIntoCurrentValues();
     }
@@ -252,13 +254,27 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newRange) && newRange >= 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.positionRange= newRange;
         }
         else
         {
             settingsManager.positionRange = 0;
-            Debug.LogError("Invalid input for density. Please enter a valid number.");
+            Debug.LogError("Invalid input for positionRange. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
+    }
+
+    private void OnAngleThresholdChanged(string value)
+    {
+        if (float.TryParse(value, out var newAngle) && newAngle >= 0f)
+        {
+            newAngle = Mathf.Round(newAngle * 10.0f) * 0.1f;
+            settingsManager.angleThreshold = newAngle;
+        }
+        else
+        {
+            settingsManager.angleThreshold = 0;
+            Debug.LogError("Invalid input for angleThreshold. Please enter a valid number.");
         }
         ParseSettingsIntoCurrentValues();
     }
@@ -293,13 +309,15 @@ public class SettingsMenu : MonoBehaviour
         Slider_Bounce.onValueChanged.AddListener(delegate { OnChangeBounceCoefficient(); });
 
 
-        minVelocityInputField.onValueChanged.AddListener(OnMinVelocityChanged);
-        maxVelocityInputField.onValueChanged.AddListener(OnMaxVelocityChanged);
-        velocityIncrementInputField.onValueChanged.AddListener(OnVelocityIncrementChanged);
+        minVelocityInputField.onEndEdit.AddListener(OnMinVelocityChanged);
+        maxVelocityInputField.onEndEdit.AddListener(OnMaxVelocityChanged);
+        velocityIncrementInputField.onEndEdit.AddListener(OnVelocityIncrementChanged);
 
-        densityInputField.onValueChanged.AddListener(OnDensityChanged);
-        diameterInputField.onValueChanged.AddListener(OnDiameterChanged);
-        positionInputField.onValueChanged.AddListener(OnPositionRangeChanged);
+        densityInputField.onEndEdit.AddListener(OnDensityChanged);
+        diameterInputField.onEndEdit.AddListener(OnDiameterChanged);
+        positionInputField.onEndEdit.AddListener(OnPositionRangeChanged);
+
+        angleThresholdInputField.onEndEdit.AddListener(OnAngleThresholdChanged);
 
         timeStepDropdown.onValueChanged.AddListener(OnTimestepDropdownChanged);
         ballDropdown.onValueChanged.AddListener(OnBallDropdownChanged);
