@@ -30,11 +30,11 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("DragCoefficient")]
     public Slider Slider_Drag;
-    public TMP_Text Text_drag;
+    public TMP_InputField dragInputField;
 
     [Header("Coefficient")]
     public Slider Slider_Bounce;
-    public TMP_Text Text_Bounce;
+    public TMP_InputField bounceInputField;
 
     [Header("Velocity")]
     public TMP_InputField minVelocityInputField;
@@ -110,10 +110,10 @@ public class SettingsMenu : MonoBehaviour
         numCulpritsPerRowInputField.text = Slider_NumCulpritsPerRow.value.ToString();
 
         Slider_Drag.value = settingsManager.dragCoefficient;
-        Text_drag.text = Slider_Drag.value.ToString("F1");
+        dragInputField.text = Slider_Drag.value.ToString("F2");
 
-        settingsManager.coefficientOfRestitution = Slider_Bounce.value;
-        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
+        Slider_Bounce.value = settingsManager.coefficientOfRestitution;
+        bounceInputField.text = Slider_Bounce.value.ToString("F2");
 
         minVelocityInputField.text = settingsManager.minVelocity.ToString();
         maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
@@ -136,13 +136,44 @@ public class SettingsMenu : MonoBehaviour
     public void OnChangeDragCoefficient()
     {
         settingsManager.dragCoefficient = Slider_Drag.value;
-        Text_drag.text = Slider_Drag.value.ToString("F1");
+        dragInputField.text = Slider_Drag.value.ToString("F2");
+    }
+
+    private void OnDragChanged(string value)
+    {
+        if (float.TryParse(value, out var newDrag))
+        {
+            newDrag = Mathf.Round(newDrag * 100.0f) * 0.01f;
+            newDrag = Mathf.Clamp(newDrag, Slider_Drag.minValue, Slider_Drag.maxValue);
+            settingsManager.dragCoefficient = newDrag;
+        }
+        else
+        {
+            settingsManager.dragCoefficient = 0.5f;
+            Debug.LogError("Invalid input for drag. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeBounceCoefficient()
     {
         settingsManager.coefficientOfRestitution = Slider_Bounce.value;
-        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
+        bounceInputField.text = Slider_Bounce.value.ToString("F2");
+    }
+    private void OnBounceChanged(string value)
+    {
+        if (float.TryParse(value, out var newBounce))
+        {
+            newBounce = Mathf.Round(newBounce * 100.0f) * 0.01f;
+            newBounce = Mathf.Clamp(newBounce, Slider_Bounce.minValue, Slider_Bounce.maxValue);
+            settingsManager.coefficientOfRestitution = newBounce;
+        }
+        else
+        {
+            settingsManager.coefficientOfRestitution = 0.85f;
+            Debug.LogError("Invalid input for CoefficientOfRestitution. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeMaxIterations()
@@ -354,9 +385,10 @@ public class SettingsMenu : MonoBehaviour
         simulationSpeedInputField.onEndEdit.AddListener(OnSimSpeedChanged);
 
         Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
+        dragInputField.onEndEdit.AddListener(OnDragChanged);
 
         Slider_Bounce.onValueChanged.AddListener(delegate { OnChangeBounceCoefficient(); });
-
+        bounceInputField.onEndEdit.AddListener(OnBounceChanged);
 
         minVelocityInputField.onEndEdit.AddListener(OnMinVelocityChanged);
         maxVelocityInputField.onEndEdit.AddListener(OnMaxVelocityChanged);
