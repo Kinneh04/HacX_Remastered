@@ -16,16 +16,16 @@ public class SettingsMenu : MonoBehaviour
     [Header("Settings")]
     [Header("CalculationDensity")]
     public Slider Slider_NumCulpritsPerRow;
-    public TMP_Text Text_NumCulpritePerRow;
+    public TMP_InputField numCulpritsPerRowInputField;
 
     [Header("SimulationSpeed")]
     public Slider Slider_SimulationSpeed;
-    public TMP_Text Text_SimulationSpeed;
+    public TMP_InputField simulationSpeedInputField;
     
 
     [Header("Maxiterations")]
     public Slider Slider_MaxIterations;
-    public TMP_Text Text_MaxIterations;
+    public TMP_InputField maxIterationsInputField;
     private DontDestroyOnLoadSettings settingsManager;
 
     [Header("DragCoefficient")]
@@ -101,13 +101,13 @@ public class SettingsMenu : MonoBehaviour
     public void ParseSettingsIntoCurrentValues()
     {
         Slider_MaxIterations.value = settingsManager.MaxIterationsValue;
-        Text_MaxIterations.text = Slider_MaxIterations.value.ToString();
+        maxIterationsInputField.text = Slider_MaxIterations.value.ToString();
 
         Slider_SimulationSpeed.value = settingsManager.SimulationSpeedValue;
-        Text_SimulationSpeed.text = Slider_SimulationSpeed.value.ToString("F1") + "x";
+        simulationSpeedInputField.text = Slider_SimulationSpeed.value.ToString("F1");
 
         Slider_NumCulpritsPerRow.value= settingsManager.NumCulpritsPerRowValue;
-        Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
+        numCulpritsPerRowInputField.text = Slider_NumCulpritsPerRow.value.ToString();
 
         Slider_Drag.value = settingsManager.dragCoefficient;
         Text_drag.text = Slider_Drag.value.ToString("F1");
@@ -148,18 +148,64 @@ public class SettingsMenu : MonoBehaviour
     public void OnChangeMaxIterations()
     {
         settingsManager.MaxIterationsValue = (int)Slider_MaxIterations.value;
-        Text_MaxIterations.text = Slider_MaxIterations.value.ToString();
+        maxIterationsInputField.text = Slider_MaxIterations.value.ToString();
+    }
+    private void OnMaxIterationChanged(string value)
+    {
+        if (int.TryParse(value, out var newMax))
+        {
+            newMax = Mathf.Clamp(newMax, (int)Slider_MaxIterations.minValue, (int)Slider_MaxIterations.maxValue);
+            settingsManager.MaxIterationsValue = newMax;
+        }
+        else
+        {
+            settingsManager.MaxIterationsValue = 1;
+            Debug.LogError("Invalid input for MaxIteration. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeSimulationSpeed()
     {
         settingsManager.SimulationSpeedValue = Slider_SimulationSpeed.value;
-        Text_SimulationSpeed.text = Slider_SimulationSpeed.value.ToString("F1") + "x";
+        simulationSpeedInputField.text = Slider_SimulationSpeed.value.ToString("F1");
     }
+
+    private void OnSimSpeedChanged(string value)
+    {
+        if (float.TryParse(value, out var newSpeed))
+        {
+            newSpeed = Mathf.Round(newSpeed * 10.0f) * 0.1f;
+            newSpeed = Mathf.Clamp(newSpeed, Slider_SimulationSpeed.minValue, Slider_SimulationSpeed.maxValue);
+            settingsManager.SimulationSpeedValue = newSpeed;
+        }
+        else
+        {
+            settingsManager.SimulationSpeedValue = 1;
+            Debug.LogError("Invalid input for SimulationSpeed. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
+    }
+
     public void OnChangeNumCulpritsPerRow()
     {
        settingsManager.NumCulpritsPerRowValue = (int)Slider_NumCulpritsPerRow.value;
-        Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
+       numCulpritsPerRowInputField.text = Slider_NumCulpritsPerRow.value.ToString();
+    }
+
+    private void OnNumCulpritsChanged(string value)
+    {
+        if (int.TryParse(value, out var newCulprits))
+        {
+            newCulprits = Mathf.Clamp(newCulprits, (int)Slider_NumCulpritsPerRow.minValue, (int)Slider_NumCulpritsPerRow.maxValue);
+            settingsManager.NumCulpritsPerRowValue = newCulprits;
+        }
+        else
+        {
+            settingsManager.NumCulpritsPerRowValue = 1;
+            Debug.LogError("Invalid input for NumCulprits. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     private void OnMinVelocityChanged(string value)
@@ -299,10 +345,13 @@ public class SettingsMenu : MonoBehaviour
     private void AddListenersToSettings()
     {
         Slider_NumCulpritsPerRow.onValueChanged.AddListener(delegate { OnChangeNumCulpritsPerRow(); });
+        numCulpritsPerRowInputField.onEndEdit.AddListener(OnNumCulpritsChanged);
 
         Slider_MaxIterations.onValueChanged.AddListener(delegate { OnChangeMaxIterations(); });
+        maxIterationsInputField.onEndEdit.AddListener(OnMaxIterationChanged);
 
         Slider_SimulationSpeed.onValueChanged.AddListener(delegate { OnChangeSimulationSpeed(); });
+        simulationSpeedInputField.onEndEdit.AddListener(OnSimSpeedChanged);
 
         Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
 
