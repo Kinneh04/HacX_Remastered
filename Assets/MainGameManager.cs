@@ -247,7 +247,7 @@ public class MainGameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F) && !WindowsManager.Instance.isPrecisionMode)
         {
             camManager.SwitchToFreecam(!camManager.freecamMode, false);
-            WindowsManager.Instance.canSelectWindow = !camManager.freecamMode;
+           // WindowsManager.Instance.canSelectWindow = !camManager.freecamMode;
         }
     }
 
