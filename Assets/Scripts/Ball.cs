@@ -185,12 +185,24 @@ public class Ball : MonoBehaviour
                 {
                     CheckRicochet();
                 }
+                else if(hitFirstPoint)
+                {
+                    if (!parentShooter.finishedCurrent && (currDist > preciseDist))
+                    {
+                        contactPoint = transform.position;
+                        ResetBall();
+                    }
+                }
             }
-            if(!parentShooter.finishedCurrent && (currDist > preciseDist))
+            else
             {
-                contactPoint = transform.position;
-                ResetBall();
+                if (!parentShooter.finishedCurrent && (currDist > preciseDist))
+                {
+                    contactPoint = transform.position;
+                    ResetBall();
+                }
             }
+
             if (!collided) // manually check collision
                 StartCoroutine(HandlePotentialCollision());
             prevPos = transform.position;
@@ -271,14 +283,17 @@ public class Ball : MonoBehaviour
         
         CheckIfHitRoof(other);
 
-        if (!toreset)
+        if (!toreset) // if its not overshoot update the contact point
         {
             contactPoint = contact.point;
             contactOffset = contact.normal * r;
             contactPoint = other.transform.GetComponent<Collider>().ClosestPoint(contact.point); // have to do this for when the projectile hits right on the corner
             currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
         }
-
+        else
+        {
+            contactPoint = intersectionPoint;
+        }
 
 
 
@@ -309,7 +324,7 @@ public class Ball : MonoBehaviour
 
                 ResetBall();
 
-                transform.position = contact.point + contactOffset;
+                transform.position = contactPoint + contactOffset;
                 currDist = Vector3.Distance(culpritxz, new Vector2(contactPoint.x, contactPoint.z));
 
                 points.Add(transform.position);
@@ -320,7 +335,7 @@ public class Ball : MonoBehaviour
         }
 
 
-        
+
 
         if (targetWindowPrecision.PrecisionMarker != null)
         {
@@ -345,8 +360,7 @@ public class Ball : MonoBehaviour
         //hit was a success
         rbody.isKinematic = true;
         transform.position = contact.point;
-        points.Add(transform.position);
-        RenderLine();
+
 
         parentShooter.windowHit[target] = true;
         parentShooter.TotalBallsHit++;
@@ -407,6 +421,9 @@ public class Ball : MonoBehaviour
     {
         rbody.isKinematic = true;
         parentShooter.shootNext = true;
+
+        points.Add(transform.position);
+        RenderLine();
         //parentShooter.HandleNextShot();
     }
 

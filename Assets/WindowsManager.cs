@@ -250,6 +250,8 @@ public class WindowsManager : MonoBehaviour
     public void OnUpdateConfidenceScale()
     {
         CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
+        if(CurrentlySelectedPreciseWindow.RicochetMarker != null)
+            CurrentlySelectedPreciseWindow.RicochetMarker.transform.localScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
         //Vector3 newScale = OriginalPrefabScale * 1 / ConfidenceSlider.value;
         //CurrentlySelectedPreciseWindow.PrecisionMarker.transform.localScale = newScale;
         //CurrentlySelectedPreciseWindow.RicochetMarker.transform.localScale = newScale;
