@@ -11,7 +11,7 @@ public class WindowSpawnArea : MonoBehaviour
     public List<GameObject> spawnedWindows = new();
 
     public Transform Parent;
-    public bool inverse = false;
+    public bool inverse = false; public bool SpawnOnStart;
 
     public Vector3 MinSpawnScale, MaxSpawnScale;
 
@@ -21,7 +21,7 @@ public class WindowSpawnArea : MonoBehaviour
 
     private void Start()
     {
-       // RespawnWindows();
+       if(SpawnOnStart) RespawnWindows();
     }
     Vector3 GenerateRandomVector()
     {
