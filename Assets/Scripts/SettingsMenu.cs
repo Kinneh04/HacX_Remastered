@@ -16,25 +16,25 @@ public class SettingsMenu : MonoBehaviour
     [Header("Settings")]
     [Header("CalculationDensity")]
     public Slider Slider_NumCulpritsPerRow;
-    public TMP_Text Text_NumCulpritePerRow;
+    public TMP_InputField numCulpritsPerRowInputField;
 
     [Header("SimulationSpeed")]
     public Slider Slider_SimulationSpeed;
-    public TMP_Text Text_SimulationSpeed;
+    public TMP_InputField simulationSpeedInputField;
     
 
     [Header("Maxiterations")]
     public Slider Slider_MaxIterations;
-    public TMP_Text Text_MaxIterations;
+    public TMP_InputField maxIterationsInputField;
     private DontDestroyOnLoadSettings settingsManager;
 
     [Header("DragCoefficient")]
     public Slider Slider_Drag;
-    public TMP_Text Text_drag;
+    public TMP_InputField dragInputField;
 
     [Header("Coefficient")]
     public Slider Slider_Bounce;
-    public TMP_Text Text_Bounce;
+    public TMP_InputField bounceInputField;
 
     [Header("Velocity")]
     public TMP_InputField minVelocityInputField;
@@ -52,6 +52,9 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("Position Range")]
     public TMP_InputField positionInputField;
+
+    [Header("AngleThreshold")]
+    public TMP_InputField angleThresholdInputField;
 
     [Header("Ball Presets")]
     public TMP_Dropdown ballDropdown;
@@ -98,19 +101,19 @@ public class SettingsMenu : MonoBehaviour
     public void ParseSettingsIntoCurrentValues()
     {
         Slider_MaxIterations.value = settingsManager.MaxIterationsValue;
-        Text_MaxIterations.text = Slider_MaxIterations.value.ToString();
+        maxIterationsInputField.text = Slider_MaxIterations.value.ToString();
 
         Slider_SimulationSpeed.value = settingsManager.SimulationSpeedValue;
-        Text_SimulationSpeed.text = Slider_SimulationSpeed.value.ToString("F1") + "x";
+        simulationSpeedInputField.text = Slider_SimulationSpeed.value.ToString("F1");
 
         Slider_NumCulpritsPerRow.value= settingsManager.NumCulpritsPerRowValue;
-        Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
+        numCulpritsPerRowInputField.text = Slider_NumCulpritsPerRow.value.ToString();
 
         Slider_Drag.value = settingsManager.dragCoefficient;
-        Text_drag.text = Slider_Drag.value.ToString("F1");
+        dragInputField.text = Slider_Drag.value.ToString("F2");
 
-        settingsManager.coefficientOfRestitution = Slider_Bounce.value;
-        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
+        Slider_Bounce.value = settingsManager.coefficientOfRestitution;
+        bounceInputField.text = Slider_Bounce.value.ToString("F2");
 
         minVelocityInputField.text = settingsManager.minVelocity.ToString();
         maxVelocityInputField.text = settingsManager.maxVelocity.ToString();
@@ -118,6 +121,7 @@ public class SettingsMenu : MonoBehaviour
         densityInputField.text = settingsManager.density.ToString();
         diameterInputField.text = settingsManager.diameter.ToString();
         positionInputField.text = settingsManager.positionRange.ToString();
+        angleThresholdInputField.text = settingsManager.angleThreshold.ToString("F1");
     }
 
     public void ParseCurrentValuesIntoSettings()
@@ -132,30 +136,107 @@ public class SettingsMenu : MonoBehaviour
     public void OnChangeDragCoefficient()
     {
         settingsManager.dragCoefficient = Slider_Drag.value;
-        Text_drag.text = Slider_Drag.value.ToString("F1");
+        dragInputField.text = Slider_Drag.value.ToString("F2");
+    }
+
+    private void OnDragChanged(string value)
+    {
+        if (float.TryParse(value, out var newDrag))
+        {
+            newDrag = Mathf.Round(newDrag * 100.0f) * 0.01f;
+            newDrag = Mathf.Clamp(newDrag, Slider_Drag.minValue, Slider_Drag.maxValue);
+            settingsManager.dragCoefficient = newDrag;
+        }
+        else
+        {
+            settingsManager.dragCoefficient = 0.5f;
+            Debug.LogError("Invalid input for drag. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeBounceCoefficient()
     {
         settingsManager.coefficientOfRestitution = Slider_Bounce.value;
-        Text_Bounce.text = Slider_Bounce.value.ToString("F2");
+        bounceInputField.text = Slider_Bounce.value.ToString("F2");
+    }
+    private void OnBounceChanged(string value)
+    {
+        if (float.TryParse(value, out var newBounce))
+        {
+            newBounce = Mathf.Round(newBounce * 100.0f) * 0.01f;
+            newBounce = Mathf.Clamp(newBounce, Slider_Bounce.minValue, Slider_Bounce.maxValue);
+            settingsManager.coefficientOfRestitution = newBounce;
+        }
+        else
+        {
+            settingsManager.coefficientOfRestitution = 0.85f;
+            Debug.LogError("Invalid input for CoefficientOfRestitution. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeMaxIterations()
     {
         settingsManager.MaxIterationsValue = (int)Slider_MaxIterations.value;
-        Text_MaxIterations.text = Slider_MaxIterations.value.ToString();
+        maxIterationsInputField.text = Slider_MaxIterations.value.ToString();
+    }
+    private void OnMaxIterationChanged(string value)
+    {
+        if (int.TryParse(value, out var newMax))
+        {
+            newMax = Mathf.Clamp(newMax, (int)Slider_MaxIterations.minValue, (int)Slider_MaxIterations.maxValue);
+            settingsManager.MaxIterationsValue = newMax;
+        }
+        else
+        {
+            settingsManager.MaxIterationsValue = 1;
+            Debug.LogError("Invalid input for MaxIteration. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     public void OnChangeSimulationSpeed()
     {
         settingsManager.SimulationSpeedValue = Slider_SimulationSpeed.value;
-        Text_SimulationSpeed.text = Slider_SimulationSpeed.value.ToString("F1") + "x";
+        simulationSpeedInputField.text = Slider_SimulationSpeed.value.ToString("F1");
     }
+
+    private void OnSimSpeedChanged(string value)
+    {
+        if (float.TryParse(value, out var newSpeed))
+        {
+            newSpeed = Mathf.Round(newSpeed * 10.0f) * 0.1f;
+            newSpeed = Mathf.Clamp(newSpeed, Slider_SimulationSpeed.minValue, Slider_SimulationSpeed.maxValue);
+            settingsManager.SimulationSpeedValue = newSpeed;
+        }
+        else
+        {
+            settingsManager.SimulationSpeedValue = 1;
+            Debug.LogError("Invalid input for SimulationSpeed. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
+    }
+
     public void OnChangeNumCulpritsPerRow()
     {
        settingsManager.NumCulpritsPerRowValue = (int)Slider_NumCulpritsPerRow.value;
-        Text_NumCulpritePerRow.text = Slider_NumCulpritsPerRow.value.ToString();
+       numCulpritsPerRowInputField.text = Slider_NumCulpritsPerRow.value.ToString();
+    }
+
+    private void OnNumCulpritsChanged(string value)
+    {
+        if (int.TryParse(value, out var newCulprits))
+        {
+            newCulprits = Mathf.Clamp(newCulprits, (int)Slider_NumCulpritsPerRow.minValue, (int)Slider_NumCulpritsPerRow.maxValue);
+            settingsManager.NumCulpritsPerRowValue = newCulprits;
+        }
+        else
+        {
+            settingsManager.NumCulpritsPerRowValue = 1;
+            Debug.LogError("Invalid input for NumCulprits. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
     }
 
     private void OnMinVelocityChanged(string value)
@@ -222,7 +303,6 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newDensity) && newDensity > 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.density = newDensity;
         }
         else
@@ -237,13 +317,12 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newDiameter) && newDiameter > 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.diameter = newDiameter;
         }
         else
         {
             settingsManager.diameter = 0.01f;
-            Debug.LogError("Invalid input for density. Please enter a valid number.");
+            Debug.LogError("Invalid input for diameter. Please enter a valid number.");
         }
         ParseSettingsIntoCurrentValues();
     }
@@ -252,13 +331,27 @@ public class SettingsMenu : MonoBehaviour
     {
         if (float.TryParse(value, out var newRange) && newRange >= 0f)
         {
-            // Add any validation or logic for density if needed
             settingsManager.positionRange= newRange;
         }
         else
         {
             settingsManager.positionRange = 0;
-            Debug.LogError("Invalid input for density. Please enter a valid number.");
+            Debug.LogError("Invalid input for positionRange. Please enter a valid number.");
+        }
+        ParseSettingsIntoCurrentValues();
+    }
+
+    private void OnAngleThresholdChanged(string value)
+    {
+        if (float.TryParse(value, out var newAngle) && newAngle >= 0f)
+        {
+            newAngle = Mathf.Round(newAngle * 10.0f) * 0.1f;
+            settingsManager.angleThreshold = newAngle;
+        }
+        else
+        {
+            settingsManager.angleThreshold = 0;
+            Debug.LogError("Invalid input for angleThreshold. Please enter a valid number.");
         }
         ParseSettingsIntoCurrentValues();
     }
@@ -283,23 +376,29 @@ public class SettingsMenu : MonoBehaviour
     private void AddListenersToSettings()
     {
         Slider_NumCulpritsPerRow.onValueChanged.AddListener(delegate { OnChangeNumCulpritsPerRow(); });
+        numCulpritsPerRowInputField.onEndEdit.AddListener(OnNumCulpritsChanged);
 
         Slider_MaxIterations.onValueChanged.AddListener(delegate { OnChangeMaxIterations(); });
+        maxIterationsInputField.onEndEdit.AddListener(OnMaxIterationChanged);
 
         Slider_SimulationSpeed.onValueChanged.AddListener(delegate { OnChangeSimulationSpeed(); });
+        simulationSpeedInputField.onEndEdit.AddListener(OnSimSpeedChanged);
 
         Slider_Drag.onValueChanged.AddListener(delegate { OnChangeDragCoefficient(); });
+        dragInputField.onEndEdit.AddListener(OnDragChanged);
 
         Slider_Bounce.onValueChanged.AddListener(delegate { OnChangeBounceCoefficient(); });
+        bounceInputField.onEndEdit.AddListener(OnBounceChanged);
 
+        minVelocityInputField.onEndEdit.AddListener(OnMinVelocityChanged);
+        maxVelocityInputField.onEndEdit.AddListener(OnMaxVelocityChanged);
+        velocityIncrementInputField.onEndEdit.AddListener(OnVelocityIncrementChanged);
 
-        minVelocityInputField.onValueChanged.AddListener(OnMinVelocityChanged);
-        maxVelocityInputField.onValueChanged.AddListener(OnMaxVelocityChanged);
-        velocityIncrementInputField.onValueChanged.AddListener(OnVelocityIncrementChanged);
+        densityInputField.onEndEdit.AddListener(OnDensityChanged);
+        diameterInputField.onEndEdit.AddListener(OnDiameterChanged);
+        positionInputField.onEndEdit.AddListener(OnPositionRangeChanged);
 
-        densityInputField.onValueChanged.AddListener(OnDensityChanged);
-        diameterInputField.onValueChanged.AddListener(OnDiameterChanged);
-        positionInputField.onValueChanged.AddListener(OnPositionRangeChanged);
+        angleThresholdInputField.onEndEdit.AddListener(OnAngleThresholdChanged);
 
         timeStepDropdown.onValueChanged.AddListener(OnTimestepDropdownChanged);
         ballDropdown.onValueChanged.AddListener(OnBallDropdownChanged);

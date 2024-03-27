@@ -126,7 +126,7 @@ namespace TMPro.Examples
         void GetPlayerInput()
         {
             moveVector = Vector3.zero;
-
+            if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
             // Check Mouse Wheel Input prior to Shift Key so we can apply multiplier on Shift for Scrolling
             mouseWheel = Input.GetAxis("Mouse ScrollWheel");
 

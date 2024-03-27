@@ -9,6 +9,7 @@ public class FreeCamController : MonoBehaviour
 
     void Update()
     {
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         if (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0)
         {
             // Basic movement

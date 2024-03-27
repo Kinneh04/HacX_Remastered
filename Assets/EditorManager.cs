@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using UnityEngine.UI.Extensions;
 using Cinemachine;
 using RuntimeHandle;
+using UnityEngine.EventSystems;
 
 public class EditorManager : MonoBehaviour
 {
@@ -62,7 +63,7 @@ public class EditorManager : MonoBehaviour
     public Camera OrthoCamera;
     public bool showDistance;
     public UILineRenderer CanvasLineRenderer;
-
+    //public int UILayer;
     [Header("ScenarioSettings")]
     public Slider DistanceBetweenBuildingsSlider;
     public TMP_Text DistanceBetweenBuildingsValueText;
@@ -850,8 +851,9 @@ public class EditorManager : MonoBehaviour
             }
             GizmosInstructions.SetActive(false);
         }
-
-        // Check for scroll input
+        //   if (IsPointerOverUIElement()) return;
+        // Check for scroll inpu t
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         // Adjust orthographic size based on scroll input
@@ -882,6 +884,8 @@ public class EditorManager : MonoBehaviour
         //else CanvasLineRenderer.enabled = false;
     }
 
+    //Returns 'true' if we touched or hovering on Unity UI element.
+ 
     public void DisplayDots()
     {
         int o = 0;

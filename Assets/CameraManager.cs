@@ -132,6 +132,7 @@ public class CameraManager : MonoBehaviour
     }
     void Update()
     {
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         if (canMoveAndZoom && !freecamMode)
         {
 
@@ -242,6 +243,7 @@ public class CameraManager : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         //if (Input.GetMouseButton(1)) // Right mouse button
         //{
         //    // Get mouse input
@@ -263,6 +265,7 @@ public class CameraManager : MonoBehaviour
 
     private void HandleScroll()
     {
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         float scrollDelta = Input.GetAxis("Mouse ScrollWheel");
         float scrollAmount = scrollDelta * scrollSpeed * Time.deltaTime;
         moveSpeed += scrollAmount;

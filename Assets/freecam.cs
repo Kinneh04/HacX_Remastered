@@ -100,7 +100,7 @@ public class freecam : MonoBehaviour
             float newRotationY = transform.localEulerAngles.x - Input.GetAxis("Mouse Y") * freeLookSensitivity;
             transform.localEulerAngles = new Vector3(newRotationY, newRotationX, 0f);
         }
-
+        if (MouseLayerScroll.Instance.IsPointerOverUIElement()) return;
         float axis = Input.GetAxis("Mouse ScrollWheel");
         if (axis != 0)
         {
