@@ -1,5 +1,7 @@
 ﻿
+#if !UNITY_WEBGL
 using AnotherFileBrowser.Windows;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +14,13 @@ public class FileBrowserUpdate : MonoBehaviour
 
     public void OpenFileBrowser()
     {
+
+#if UNITY_WEBGL
+
+        PopupUIManager.Instance.ShowPopup("Error!", "Cloud builds do not support importing of files!");
+        return;
+#endif
+
         var bp = new BrowserProperties();
         bp.filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
         bp.filterIndex = 0;

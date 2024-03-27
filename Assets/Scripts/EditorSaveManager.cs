@@ -4,7 +4,9 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using TMPro;
+#if !UNITY_WEBGL
 using AnotherFileBrowser.Windows;
+#endif
 using UnityEngine.Networking;
 using System;
 
@@ -116,6 +118,14 @@ public class EditorSaveManager : MonoBehaviour
 
     public void ImportScenario()
     {
+
+#if UNITY_WEBGL
+
+        PopupUIManager.Instance.ShowPopup("Error!", "Cloud builds do not support importing of files!");
+        return;
+#endif
+
+
         var bp = new BrowserProperties();
         bp.filterIndex = 0;
         new FileBrowser().OpenFileBrowser(bp, path =>

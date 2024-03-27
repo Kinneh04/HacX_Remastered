@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Linq;
+
+#if !UNITY_WEBGL
 using AnotherFileBrowser.Windows;
+#endif
 using UnityEngine.Networking;
 using System.IO;
 using TMPro;

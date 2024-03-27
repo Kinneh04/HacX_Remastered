@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if !UNITY_WEBGL
 using AnotherFileBrowser.Windows;
+#endif
 using UnityEngine.Networking;
 using System.IO;
 using System.Text;
@@ -41,6 +43,7 @@ public class EditorEnvironmentManager : MonoBehaviour
     public TMP_Text PropLocationText;
 
     private MemoryStream SavedMTLStream;
+
     public void ClearAllProps()
     {
         foreach(GameObject GO in InstantiatedPropButtons)
@@ -57,6 +60,12 @@ public class EditorEnvironmentManager : MonoBehaviour
     }
     public void OpenFileBrowser()
     {
+#if UNITY_WEBGL
+
+        PopupUIManager.Instance.ShowPopup("Error!", "Cloud builds do not support importing of files!");
+        return;
+#endif
+
         var bp = new BrowserProperties();
         bp.filterIndex = 0;
 
