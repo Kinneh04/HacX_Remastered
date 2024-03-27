@@ -4,8 +4,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEditor;
-
+#if UNITY_EDITOR
 [InitializeOnLoad]
+#endif
 public class VersionController : MonoBehaviour
 {
     public TMP_Text VersionText;
@@ -23,6 +24,8 @@ public class VersionController : MonoBehaviour
         VersionText.text = currentVersion.ToString();
     }
 }
+
+#if UNITY_EDITOR
 
 [CustomEditor(typeof(VersionController))]
 public class VersionControllerEditor : Editor
@@ -70,3 +73,5 @@ public class VersionControllerEditor : Editor
 //        Debug.Log("Scripts reloaded.");
 //    }
 //}
+
+#endif
