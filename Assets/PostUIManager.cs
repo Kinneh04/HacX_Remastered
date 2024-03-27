@@ -120,7 +120,13 @@ public class PostUIManager : MonoBehaviour
 
         Culprit AnswerCulprit = mainGameManager.CulpritsDone[0];
 
-        AnswerText.text = $"Most likely culprit on Floor {AnswerCulprit.floor}, Column {AnswerCulprit.column}, with an accuracy of {AnswerCulprit.averageProbability.ToString("F2")}%";
+        if (AnswerCulprit.averageProbability == 0)
+        {
+            PopupUIManager.Instance.ShowPopup("Error!", "Simulation yielded that no culprits were able to hit the spot");
+            AnswerText.text = "-- --";
+        }
+
+        else AnswerText.text = $"Most likely culprit on Floor {AnswerCulprit.floor}, Column {AnswerCulprit.column}, with an accuracy of {AnswerCulprit.averageProbability.ToString("F2")}%";
     }
 
     public float returnCulpritMinAccuracy()
