@@ -32,6 +32,16 @@ public class PresetManager : MonoBehaviour
         else
             PlayerPrefs.SetString(key, jsonString);
     }
+
+    public static void OverridePreset(BallPreset b)
+    {
+        string key = FindKey(b.name);
+        if(PlayerPrefs.HasKey(key))
+        {
+            string jsonString = BallPreset.SerializeToJson(b);
+            PlayerPrefs.SetString(key, jsonString);
+        }
+    }
     public static void DeletePreset(BallPreset preset, int index)
     {
         string key = PresetKeyPrefix + index;
@@ -62,28 +72,41 @@ public class PresetManager : MonoBehaviour
             {
 
                 BallPreset preset = BallPreset.LoadPreset(key);
-                Debug.Log(preset.name + "|" + key);
                 presets.Add(preset);
                 found++;
-                
+                i++;
             }
-
         }
-        //for (int i = 0; i < check ; i++)
-        //{
-        //    string key = PresetKeyPrefix + i;
-        //    if (!PlayerPrefs.HasKey(key))
-        //    {
-        //        //check++;
-        //        //continue;
-        //    }
-        //    BallPreset preset = BallPreset.LoadPreset(key);
-        //    if (preset != null)
-        //    {
-        //        presets.Add(preset);
-        //    }
-        //}
         return presets;
     }
 
+    public static string FindKey(string name)
+    {
+        if (name == null)
+            return null;
+        string key;
+        int check = PlayerPrefs.GetInt("PresetCount");
+        int found = 0;
+        int i = 0;
+        while (i < 20)
+        {
+            key = PresetKeyPrefix + i;
+
+            if (!PlayerPrefs.HasKey(key))
+            {
+                i++;
+                continue;
+            }
+            else
+            {
+
+                BallPreset preset = BallPreset.LoadPreset(key);
+                found++;
+                i++;
+                if (preset.name == name)
+                    return key;
+            }
+        }
+        return null;
+    }
 }

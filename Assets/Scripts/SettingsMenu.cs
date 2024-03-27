@@ -418,11 +418,13 @@ public class SettingsMenu : MonoBehaviour
         }
         ballDropdown.AddOptions(options);
 
+        bool set = false;
         for (int i = 0; i < ballDropdown.options.Count; i++) // set steel as the default
         {
             if (ballDropdown.options[i].text == "Steel")
             {
                 ballDropdown.value = i;
+                set = true;
                 break; 
             }
         }
@@ -457,7 +459,7 @@ public class SettingsMenu : MonoBehaviour
         b.restitution = settingsManager.coefficientOfRestitution;
         b.density = settingsManager.density;
         b.diameter = settingsManager.diameter;
-        PresetManager.SavePreset(b, ballDropdown.value + 1);
+        PresetManager.SavePreset(b, ballDropdown.value);
     }
 
     public void DestroyPreset()
@@ -469,7 +471,7 @@ public class SettingsMenu : MonoBehaviour
         //PopulateBallPresets();
 
  
-        PresetManager.DeletePreset(b, ballDropdown.value + 1);
+        PresetManager.DeletePreset(b, ballDropdown.value);
         // Update dropdown menu after deletion
         PopulateBallPresets();
     }
