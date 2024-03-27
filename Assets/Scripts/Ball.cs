@@ -182,12 +182,18 @@ public class Ball : MonoBehaviour
 
             if (targetWindowPrecision.RicochetMarker != null)
             {
-                if (!hitFirstPoint && (currDist > initDist))
+                if (!hitFirstPoint && (currDist > preciseDist + 1))
+                {
+                    contactPoint = transform.position;
+                    ResetBall();
+                }
+                else if (!hitFirstPoint && (currDist > initDist))
                 {
                     CheckRicochet();
                 }
-                else if(hitFirstPoint)
+                else if (hitFirstPoint)
                 {
+
                     currDist = Vector2.Distance(ricochetxz, ballxz);
                     if (!parentShooter.finishedCurrent && (currDist > ricoPreciseDist + 1))
                     {
@@ -195,6 +201,7 @@ public class Ball : MonoBehaviour
                         ResetBall();
                     }
                 }
+
             }
             else
             {

@@ -58,8 +58,9 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("Ball Presets")]
     public TMP_Dropdown ballDropdown;
-    public BallPreset[] ballPresets;
+    public List<BallPreset> ballPresets;
     public TMP_InputField presetName;
+    public PresetManager presetManager;
 
     public void OpenLink(string s)
     {
@@ -406,19 +407,15 @@ public class SettingsMenu : MonoBehaviour
 
     public void PopulateBallPresets()
     {
-        ballDropdown.ClearOptions(); // Clear any existing options
+        ballPresets = PresetManager.LoadAllPresets();
+        ballDropdown.ClearOptions();
 
         List<TMP_Dropdown.OptionData> options = new List<TMP_Dropdown.OptionData>();
-
-        ballPresets = Resources.LoadAll<BallPreset>("BallPresets"); // Dynamic loading
-
-        // Loop through available ScriptableObjects
-        foreach (BallPreset so in ballPresets)
+        foreach (BallPreset preset in ballPresets)
         {
-            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(so.name);
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData(preset.name);
             options.Add(option);
         }
-
         ballDropdown.AddOptions(options);
 
         for (int i = 0; i < ballDropdown.options.Count; i++) // set steel as the default
@@ -433,14 +430,14 @@ public class SettingsMenu : MonoBehaviour
 
     public void CreateNewPreset()
     {
-        BallPreset b = BallPreset.CreateInstance<BallPreset>();
+        BallPreset b = new();
         b.name = presetName.text;
         b.drag = settingsManager.dragCoefficient;
         b.restitution = settingsManager.coefficientOfRestitution;
         b.density = settingsManager.density;
         b.diameter = settingsManager.diameter;
-        string savePath = "Assets/Resources/BallPresets/" + b.name + ".asset";
-        AssetDatabase.CreateAsset(b, savePath);
+
+        PresetManager.SavePreset(b, 0);
         PopulateBallPresets();
 
         for (int i = 0; i < ballDropdown.options.Count; i++) // set steel as the default
@@ -460,16 +457,23 @@ public class SettingsMenu : MonoBehaviour
         b.restitution = settingsManager.coefficientOfRestitution;
         b.density = settingsManager.density;
         b.diameter = settingsManager.diameter;
+        PresetManager.SavePreset(b, ballDropdown.value + 1);
     }
 
     public void DestroyPreset()
     {
         BallPreset b = ballPresets[ballDropdown.value];
-        string assetPath = "Assets/Resources/BallPresets/" + b.name + ".asset";
-        AssetDatabase.DeleteAsset(assetPath);
-        AssetDatabase.SaveAssets();
+        //string assetPath = "Assets/Resources/BallPresets/" + b.name + ".asset";
+        //AssetDatabase.DeleteAsset(assetPath);
+        //AssetDatabase.SaveAssets();
+        //PopulateBallPresets();
+
+ 
+        PresetManager.DeletePreset(b, ballDropdown.value + 1);
+        // Update dropdown menu after deletion
         PopulateBallPresets();
     }
+   
     public void DisplayHelpMenu(string title, string desc, Sprite Image)
     {
         if (Image)
