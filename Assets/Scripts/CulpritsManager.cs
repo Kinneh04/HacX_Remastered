@@ -61,6 +61,7 @@ public class CulpritsManager : MonoBehaviour
 
     public void SelectCulprit(Culprit C)
     {
+        if (mainGameManager.simState != MainGameManager.SimulationState.POSTSIMULATE) return;
         mainGameManager.PostSimUI.SetActive(false);
         CulpritUI.SetActive(true);
         cameraManager.canMoveAndZoom = false;

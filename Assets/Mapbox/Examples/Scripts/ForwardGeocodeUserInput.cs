@@ -21,6 +21,7 @@ namespace Mapbox.Examples
 		ForwardGeocodeResource _resource;
 
 		Vector2d _coordinate;
+		public MapPickerManager MPM;
 		public Vector2d Coordinate
 		{
 			get
@@ -51,6 +52,8 @@ namespace Mapbox.Examples
 
 		void HandleUserInput(string searchString)
 		{
+			//MPM.ClearAllBuildings();
+			//MPM.EraseCollisionLists();
 			_hasResponse = false;
 			if (!string.IsNullOrEmpty(searchString))
 			{

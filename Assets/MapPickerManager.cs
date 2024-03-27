@@ -35,6 +35,8 @@ public class MapPickerManager : MonoBehaviour
     public EditorManager editorManager;
     public float distanceCalculated;
 
+    public HighlightFeature[] highlights;
+
     private void Start()
     {
         PickerCameraOriginalPosition = PickerCamera.transform.position;
@@ -48,11 +50,13 @@ public class MapPickerManager : MonoBehaviour
             PickerCamera.transform.position = PickerCameraOriginalPosition;
             PickerCamera.transform.rotation = Quaternion.Euler(PickerCameraOriginalRotation);
         }
+
+      
     }
 
     public void EraseCollisionLists()
     {
-        HighlightFeature[] highlights = GameObject.FindObjectsOfType<HighlightFeature>();
+        highlights = GameObject.FindObjectsOfType<HighlightFeature>();
         foreach(HighlightFeature f in highlights)
         {
             f.IntersectingObjects.Clear();
@@ -187,6 +191,7 @@ public class MapPickerManager : MonoBehaviour
     {
         MappickerUI.SetActive(true);
         MapPickerWarningUI.SetActive(false);
+        map.MPM = this;
         map.SetUpMap();
     }
 

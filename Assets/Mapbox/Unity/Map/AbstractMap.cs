@@ -36,7 +36,7 @@ namespace Mapbox.Unity.Map
 		[SerializeField] protected HashSet<UnwrappedTileId> _currentExtent;
 		[SerializeField] protected EditorPreviewOptions _previewOptions = new EditorPreviewOptions();
 		private List<UnwrappedTileId> tilesToProcess;
-
+		public MapPickerManager MPM;
 		protected AbstractMapVisualizer _mapVisualizer;
 		protected float _unityTileSize = 1;
 		protected bool _worldHeightFixed = false;
@@ -777,6 +777,9 @@ namespace Mapbox.Unity.Map
 			SendInitialized();
 
 			TileProvider.UpdateTileExtent();
+
+			if(MPM)
+				MPM.EraseCollisionLists();
 		}
 
 		private void SetScalingStrategy()

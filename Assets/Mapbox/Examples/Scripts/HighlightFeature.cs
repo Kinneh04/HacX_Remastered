@@ -19,6 +19,7 @@
 
         public void OnTriggerEnter(Collider other)
         {
+
 			if (!IntersectingObjects.Contains( other.gameObject))
 			{
 				IntersectingObjects.Add( other.gameObject);
@@ -124,6 +125,7 @@
 			_meshRenderer.materials = _materials.ToArray();
 			if(mapPicker.SelectedBuildings.Contains(gameObject) && rid) mapPicker.SelectedBuildings.Remove(gameObject);
 			DeSelectIntersecting();
+		
 		}
 
         void Start()
@@ -145,12 +147,14 @@
 
 		public void OnMouseEnter()
 		{
+			mapPicker.EraseCollisionLists();
 			if (isSelected) return;
 			_meshRenderer.material = _highlightMaterial;
 		}
 
 		public void OnMouseExit()
 		{
+				mapPicker.EraseCollisionLists();
 			if (isSelected) return;
 			_meshRenderer.materials = _materials.ToArray();
 		}
